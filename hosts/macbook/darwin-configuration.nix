@@ -10,10 +10,8 @@ let
 in
 {
   imports = [
-    # Darwin-level modules only
-    ../../modules/homebrew.nix
-    ../../modules/ui.nix
-    ../../modules/packages.nix
+    # Darwin-level modules
+    ../../modules/default.nix
     ../../modules/vagrant.nix
     # ML tunnels (SSH port forwards via launchd; disabled by default)
     ../../modules/ml-tunnels.nix
@@ -89,9 +87,20 @@ in
       imports = [
         # Home Manager (user) modules only
         ../../modules/home.nix
+        # Optional dotfiles (copied from this repo)
+        ../../modules/dotfiles/default.nix
         # Language/tooling profiles
         ../../modules/profiles/dev-cpp.nix
         ../../modules/profiles/dev-zig.nix
+        ../../modules/profiles/dev-rust.nix
+        ../../modules/profiles/dev-go.nix
+        ../../modules/profiles/dev-node.nix
+        ../../modules/profiles/dev-python.nix
+        ../../modules/profiles/dev-java.nix
+        ../../modules/profiles/dev-kotlin.nix
+        ../../modules/profiles/dev-php.nix
+        ../../modules/profiles/dev-ruby.nix
+        ../../modules/profiles/dev-elixir.nix
         ../../modules/profiles/dev-containers.nix
         ../../modules/profiles/dev-databases.nix
         ../../modules/profiles/dev-vm.nix
@@ -100,9 +109,6 @@ in
         ../../modules/profiles/dev-ml.nix
         ../../modules/ml-env.nix
         ../../modules/ml-remote.nix
-        # Enable more profiles as needed, e.g.:
-        # ../../modules/profiles/dev-python.nix
-        # ../../modules/profiles/dev-node.nix
       ];
 
       # Enable 1Password CLI and SSH agent integration

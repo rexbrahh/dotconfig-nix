@@ -3,7 +3,6 @@
   # PHP + Composer
   home.packages = with pkgs; [
     php
-    composer
+    phpPackages.composer
   ];
 }
-
