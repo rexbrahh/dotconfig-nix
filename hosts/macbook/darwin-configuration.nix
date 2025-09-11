@@ -15,6 +15,8 @@ in
     ../../modules/ui.nix
     ../../modules/packages.nix
     ../../modules/vagrant.nix
+    # ML tunnels (SSH port forwards via launchd; disabled by default)
+    ../../modules/ml-tunnels.nix
     # add more modules here
   ];
   nix.enable = true;
@@ -93,6 +95,11 @@ in
         ../../modules/profiles/dev-containers.nix
         ../../modules/profiles/dev-databases.nix
         ../../modules/profiles/dev-vm.nix
+        ../../modules/onepassword.nix
+        # ML-focused global tooling (opt-in modules)
+        ../../modules/profiles/dev-ml.nix
+        ../../modules/ml-env.nix
+        ../../modules/ml-remote.nix
         # Enable more profiles as needed, e.g.:
         # ../../modules/profiles/dev-python.nix
         # ../../modules/profiles/dev-node.nix
