@@ -21,14 +21,14 @@
     };
   };
   # Or Zsh (toggle as you like)
-  programs.zsh = {
-    enable = false;
-    autosuggestions.enable = true;
-    syntaxHighlighting.enable = true;
-    initExtra = ''
-      export EDITOR=nvim
-    '';
-  };
+#  programs.zsh = {
+ #   enable = false;
+  #  autosuggestions.enable = true;
+  #  syntaxHighlighting.enable = true;
+  #  initExtra = ''
+  #    export EDITOR=nvim
+  #  '';
+  #};
 
   # Prompt
   programs.starship = {
@@ -52,13 +52,17 @@
   programs.fzf.enable = true;
   programs.zoxide.enable = true;
   programs.bat.enable = true;
-  programs.eza = { enable = true; git = true; icons = true; };
+  programs.eza = {
+    enable = true;
+    icons = "auto";   # was true/false
+    git = true;
+  };
 
   # Git setup
   programs.git = {
     enable = true;
-    userName  = "Your Name";
-    userEmail = "you@example.com";
+    userName  = "Rex Liu";
+    userEmail = "hi@r3x.sh";
     delta.enable = true;
     extraConfig = {
       init.defaultBranch = "main";
@@ -76,11 +80,18 @@
   };
   programs.ssh = {
     enable = true;
-    extraConfig = ''
-      Host *
-        AddKeysToAgent yes
-        UseKeychain yes
-    '';
+    enableDefaultConfig = false;
+    matchBlocks."*" = {
+    # native options (camelCase)
+    serverAliveInterval = 60;
+    serverAliveCountMax = 3;
+
+    # raw keys go here (strings)
+    extraOptions = {
+      AddKeysToAgent = "yes";
+      UseKeychain = "yes";
+      };
+    };
   };
 
   # Editor: Neovim with LSP helpers
@@ -133,7 +144,7 @@
   xdg.enable = true;
 
   # Set macOS login shell to fish (optional; requires fish in /etc/shells via nix-darwin)
-  programs.fish.loginShell = true;
+  #programs.fish.loginShell = true;
 
   # HM-managed services you may want later (gui-daemons etc) can be added here
 }
