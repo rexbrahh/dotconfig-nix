@@ -111,8 +111,7 @@
         type = "app";
         program = "${pkgs.writeShellScriptBin "switch" ''
           set -euo pipefail
-          NIX_CONFIG="accept-flake-config = true" \
-            darwin-rebuild switch --flake ${self}
+          darwin-rebuild switch --flake ${self}
         ''}/bin/switch";
       };
 

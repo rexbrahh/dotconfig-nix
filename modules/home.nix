@@ -27,6 +27,7 @@
       fish_add_path -g /run/current-system/sw/bin
       
       set -gx PAGER less
+      umask 077
     '';
     shellAbbrs = {
       gs = "git status -sb";
@@ -130,6 +131,11 @@
   programs.direnv = {
     enable = true;
     nix-direnv.enable = true;
+    config = {
+      strict_env = true;
+      hide_env_diff = true;
+      warn_timeout = "1m";
+    };
   };
 
   # Fuzzy & navigation
@@ -174,8 +180,12 @@
     extraOptions = {
       AddKeysToAgent = "yes";
       UseKeychain = "yes";
+      ForwardAgent = "no";
+      StrictHostKeyChecking = "yes";
+      UpdateHostKeys = "yes";
       };
     };
+    matchBlocks."gpu-box".extraOptions.ForwardAgent = "yes";
   };
 
   # Editor: Neovim with LSP helpers
