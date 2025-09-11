@@ -10,9 +10,11 @@ let
 in
 {
   imports = [
+    # Darwin-level modules only
     ../../modules/homebrew.nix
-    ../../modules/home.nix
     ../../modules/ui.nix
+    ../../modules/packages.nix
+    ../../modules/vagrant.nix
     # add more modules here
   ];
   nix.enable = true;
@@ -76,17 +78,32 @@ in
   ];
   #programs.zsh.enable = true;
   # Home Manager
-  home-manager.useGlobalPkgs = true;
-  home-manager.useUserPackages = true;
-  home-manager.users.rexliu =
-    { pkgs, ... }:
-    {
-      home.username = "rexliu";
-      home.homeDirectory = "/Users/rexliu";
-      home.stateVersion = "25.05";
+  home-manager = {
+    useGlobalPkgs = true;
+    useUserPackages = true;
+
+    users.rexliu = {
+      # Now bring in your HM modules here:
+      imports = [
+        # Home Manager (user) modules only
+        ../../modules/home.nix
+        # Language/tooling profiles
+        ../../modules/profiles/dev-cpp.nix
+        ../../modules/profiles/dev-zig.nix
+        ../../modules/profiles/dev-containers.nix
+        ../../modules/profiles/dev-databases.nix
+        ../../modules/profiles/dev-vm.nix
+        # Enable more profiles as needed, e.g.:
+        # ../../modules/profiles/dev-python.nix
+        # ../../modules/profiles/dev-node.nix
+      ];
     };
+  };
   home-manager.backupFileExtension = "hm-backup";
   programs.fish.enable = true;
+  # Fast package lookups with nix-index (prebuilt DB) + comma wrapper
+  programs.nix-index.enable = true;
+  programs.nix-index-database.comma.enable = true;
   #system.defaults.NSGlobalDomain.ApplePressAndHoldEnabled = false; # faster key repeat
   #system.defaults.NSGlobalDomain.KeyRepeat = 2;
   #system.defaults.NSGlobalDomain.InitialKeyRepeat = 25;
@@ -104,23 +121,7 @@ in
   #    export HOMEBREW_NO_AUTO_UPDATE=1
   #  '';
 
-  environment.systemPackages = with pkgs; [
-    git
-    zsh
-    wget
-    curl
-    jq
-    direnv
-    tree
-    tmux
-    zoxide
-    fd
-    bat
-    neovim
-    devenv
-    gnupg
-    vim
-  ];
+  # System packages moved to modules/packages.nix
 
   # Launch services & quality-of-life
   #services.nix-daemon.enable = true; # needed for multi-user Nix on macOS

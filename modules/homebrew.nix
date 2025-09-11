@@ -3,11 +3,8 @@
  {
   homebrew = {
     enable = true;
-    taps = [
-      "homebrew/cask"
-      "homebrew/cask-fonts"
-      "homebrew/core"
-    ];
+    # Do not force-tap default repos; Homebrew manages core/cask itself.
+    taps = [ ];
     global = {
       brewfile = true; # creates/uses Brewfile for visibility
       autoUpdate = false; # nix controls versions; keep brew quiet
@@ -47,7 +44,6 @@
       "c-ares"
       "ca-certificates"
       "cairo"
-      "cask"
       "ccache"
       "ceres-solver"
       "certifi"
@@ -464,7 +460,7 @@
       "github-copilot-for-xcode"
       "google-drive"
       "gpg-suite"
-      # "hashicorp-vagrant"
+      "vagrant"
       "hiddenbar"
       "insomnia"
       "kaleidoscope"
@@ -478,6 +474,7 @@
       "mysqlworkbench"
       "ngrok"
       "orbstack"
+      "proxy-audio-device"
       "qlmarkdown"
       "rancher"
       "rapidapi"

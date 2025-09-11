@@ -1,0 +1,32 @@
+# Unified formatting config for this repo
+
+[formatter.nix]
+command = "alejandra"
+includes = ["*.nix"]
+
+[formatter.sh]
+command = "shfmt"
+options = ["-i", "2", "-bn", "-ci", "-sr"]
+includes = ["*.sh"]
+
+[formatter.lua]
+command = "stylua"
+options = ["--search-parent-directories"]
+includes = ["*.lua"]
+
+[formatter.toml]
+command = "taplo"
+options = ["fmt", "-"]
+stdin = true
+includes = ["*.toml"]
+
+[formatter.yaml]
+command = "yamlfmt"
+includes = ["*.yml", "*.yaml"]
+
+[formatter.json]
+command = "jq"
+options = ["-S", "."]
+stdin = true
+includes = ["*.json"]
+
