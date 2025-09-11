@@ -1,40 +1,38 @@
 # Repository Guidelines
 
 ## Project Structure & Module Organization
-- `flake.nix` / `flake.lock` — entrypoint; defines inputs and the `macbook` darwin configuration and an app `.#switch`.
-- `hosts/<host>/darwin-configuration.nix` — host-specific settings (users, networking, packages).
-- `modules/` — reusable Nix modules split by concern: `home.nix`, `homebrew.nix`, `ui.nix`, `packages.nix` (imported by hosts).
-  - `modules/profiles/` — optional Home Manager language profiles: `dev-containers.nix`, `dev-databases.nix`, `dev-cpp.nix`, `dev-zig.nix`, `dev-rust.nix`, `dev-go.nix`, `dev-node.nix`, `dev-python.nix`, `dev-java.nix`, `dev-kotlin.nix`, `dev-php.nix`, `dev-ruby.nix`, `dev-elixir.nix`.
-- `home/` and `darwin/` — reserved for user/darwin submodules; keep host-agnostic code in `modules/`.
+- `flake.nix` — entrypoint; inputs, overlays, linux‑builder, and app `.#switch`.
+- `hosts/<host>/darwin-configuration.nix` — host‑specific nix‑darwin config (imports HM user modules).
+- `modules/` — reusable modules: `home.nix`, `homebrew.nix`, `ui.nix`, `packages.nix`, `vagrant.nix`.
+  - `modules/profiles/` — opt‑in HM profiles (languages, containers, databases, VMs).
+  - `modules/dotfiles/` + `dotfiles/` — optional HM‑managed dotfiles (not auto‑imported).
+- `scripts/` — dev helpers (`kind/`, `db/`).
+- `overlays/` — local overrides; `pkgs.stable` exposed from 25.05.
+- `templates/microservice/` — Kind + Postgres starter.
+- `secrets/` — agenix scaffold (ciphertexts only).
 
 ## Build, Test, and Development Commands
-- `nix build .#darwinConfigurations.macbook.system` — build the macOS system derivation for `macbook`.
-- `nix run .#switch` — apply the current config (wrapper for `darwin-rebuild switch --flake .`).
-- `darwin-rebuild switch --flake .` — switch to the latest build immediately.
-- `darwin-rebuild build --flake .` — build only (no activation).
-- `darwin-rebuild switch --flake . --dry-run` — preview changes.
-- `nix flake check` — validate flake and evaluate modules.
-- `nix develop` — enter repo dev shell (treefmt, statix, deadnix, shfmt, stylua, taplo, yamlfmt, jq, pre-commit).
-- `pre-commit install` then `pre-commit run -a` — enforce formatting & nix linting.
+- Build: `nix build .#darwinConfigurations.macbook.system`.
+- Apply: `nix run --accept-flake-config .#switch`.
+- Preview: `darwin-rebuild switch --flake .#macbook --dry-run`.
+- Validate: `nix flake check`.
+- Dev shells: `nix develop` (format/lint), `nix develop .#k8s`, `nix develop .#db`.
+- Format: `nix develop -c treefmt -c treefmt.toml --fix`.
 
 ## Coding Style & Naming Conventions
-- Nix files: 2-space indent, trailing semicolons, 100-char soft wrap, attributes in stable order where practical.
-- Keep modules small and focused; prefer `modules/<area>.nix` (e.g., `ui.nix`, `homebrew.nix`).
-- Host-specific values live only under `hosts/<host>/`.
-- Prefer explicit imports via `modules/default.nix` for composition.
-- Run `nix fmt` (or `nixpkgs-fmt`) before committing.
+- Nix: 2‑space indent, semicolons, <100–120 cols; format with `alejandra`.
+- Lint: `statix` (style), `deadnix` (unused). Shell: `shfmt`; Lua: `stylua`; TOML: `taplo`; YAML: `yamlfmt`.
+- Naming: `modules/<area>.nix`, `profiles/dev-*.nix`, `scripts/<area>/*.sh`. Keep HM vs Darwin options in the proper layer.
 
 ## Testing Guidelines
-- Use `darwin-rebuild ... --dry-run` before switching; include output when proposing changes.
-- Run `nix flake check` locally; ensure evaluation succeeds across all hosts.
-- Naming: test changes with a temporary branch; avoid committing experimental toggles without guards/comments.
-- Formatting: `nix develop` then `treefmt -c treefmt.toml --fix` before PR.
+- Always run `nix flake check` and a `--dry-run` before PRs.
+- For system changes, include the dry‑run summary; for modules, show the minimal diff and affected host(s).
 
 ## Commit & Pull Request Guidelines
-- Commit messages: imperative mood, concise summary; scope prefix optional (e.g., `homebrew: add lazygit`).
-- Group related edits per commit (module/host); avoid large mixed commits.
-- PRs should include: purpose, key diffs, `--dry-run` output (when relevant), and any migration notes.
+- Commits: imperative mood with optional scope (e.g., `home: add fish abbr`). Keep diffs small and focused.
+- PRs: purpose, linked issues, screenshots/logs when helpful, commands used (`flake check`, `--dry-run`).
+- If changing packages, state whether from `pkgs` or `pkgs.stable`.
 
 ## Security & Configuration Tips
-- Do not commit secrets or machine-specific tokens; externalize via environment or a secrets manager.
-- If adding new hosts, mirror the pattern in `hosts/macbook/` and keep credentials out of the repo.
+- Secrets live in `secrets/` via agenix (or sops‑nix, see README). Never commit private keys.
+- Review dotfiles before enabling `modules/dotfiles/default.nix`. Host‑specific values stay in `hosts/<host>/`.
