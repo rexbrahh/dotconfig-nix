@@ -1,38 +1,40 @@
 # Repository Guidelines
 
 ## Project Structure & Module Organization
-- `flake.nix` — entrypoint; inputs, overlays, linux‑builder, and app `.#switch`.
-- `hosts/<host>/darwin-configuration.nix` — host‑specific nix‑darwin config (imports HM user modules).
+- `flake.nix` / `flake.lock` — flake entry; defines inputs, `darwinConfigurations.macbook`, and app `.#switch`.
+- `hosts/<host>/darwin-configuration.nix` — host-specific settings and Home Manager imports.
 - `modules/` — reusable modules: `home.nix`, `homebrew.nix`, `ui.nix`, `packages.nix`, `vagrant.nix`.
-  - `modules/profiles/` — opt‑in HM profiles (languages, containers, databases, VMs).
-  - `modules/dotfiles/` + `dotfiles/` — optional HM‑managed dotfiles (not auto‑imported).
-- `scripts/` — dev helpers (`kind/`, `db/`).
-- `overlays/` — local overrides; `pkgs.stable` exposed from 25.05.
-- `templates/microservice/` — Kind + Postgres starter.
-- `secrets/` — agenix scaffold (ciphertexts only).
+  - `modules/profiles/` — opt-in language/tooling profiles (e.g., `dev-python.nix`, `dev-go.nix`, `dev-rust.nix`, `dev-ml.nix`).
+  - ML helpers: `ml-env.nix`, `ml-remote.nix`, `ml-tunnels.nix`, `onepassword.nix`.
+- `templates/` — starter templates (e.g., microservice devshells).
 
 ## Build, Test, and Development Commands
-- Build: `nix build .#darwinConfigurations.macbook.system`.
-- Apply: `nix run --accept-flake-config .#switch`.
-- Preview: `darwin-rebuild switch --flake .#macbook --dry-run`.
-- Validate: `nix flake check`.
-- Dev shells: `nix develop` (format/lint), `nix develop .#k8s`, `nix develop .#db`.
-- Format: `nix develop -c treefmt -c treefmt.toml --fix`.
+- `darwin-rebuild switch --flake . --dry-run` — preview changes.
+- `nix build .#darwinConfigurations.macbook.system` — build system (no activation).
+- `nix run .#switch` — apply current config (accepts flake config).
+- `nix flake check` — evaluate flake and basic checks.
+- `nix develop` — enter dev shell; then `pre-commit install` and `pre-commit run -a`.
 
 ## Coding Style & Naming Conventions
-- Nix: 2‑space indent, semicolons, <100–120 cols; format with `alejandra`.
-- Lint: `statix` (style), `deadnix` (unused). Shell: `shfmt`; Lua: `stylua`; TOML: `taplo`; YAML: `yamlfmt`.
-- Naming: `modules/<area>.nix`, `profiles/dev-*.nix`, `scripts/<area>/*.sh`. Keep HM vs Darwin options in the proper layer.
+- Nix: 2-space indent, trailing semicolons, ~100-char soft wrap. Keep attributes stable where practical.
+- Keep modules small and focused; host-specific values live only under `hosts/<host>/`.
+- Prefer explicit composition via `modules/default.nix`. Run `nix fmt` (or `nixpkgs-fmt`) before commits.
 
 ## Testing Guidelines
-- Always run `nix flake check` and a `--dry-run` before PRs.
-- For system changes, include the dry‑run summary; for modules, show the minimal diff and affected host(s).
+- Always dry-run before switching; include the output when proposing changes.
+- Run `nix flake check` locally; ensure all hosts evaluate.
+- Format before PR: `nix develop` then `treefmt -c treefmt.toml --fix`.
 
 ## Commit & Pull Request Guidelines
-- Commits: imperative mood with optional scope (e.g., `home: add fish abbr`). Keep diffs small and focused.
-- PRs: purpose, linked issues, screenshots/logs when helpful, commands used (`flake check`, `--dry-run`).
-- If changing packages, state whether from `pkgs` or `pkgs.stable`.
+- Commits: imperative, concise (e.g., `homebrew: add lazygit`). Group related edits by module/host.
+- PRs include: purpose, key diffs, `--dry-run` output (when relevant), and migration notes.
 
 ## Security & Configuration Tips
-- Secrets live in `secrets/` via agenix (or sops‑nix, see README). Never commit private keys.
-- Review dotfiles before enabling `modules/dotfiles/default.nix`. Host‑specific values stay in `hosts/<host>/`.
+- Secrets: never commit tokens/keys. Use 1Password CLI (`op`) or `sops-nix`; inject at runtime.
+- SSH: verify host keys; limit agent forwarding. For tunnels, set `ml.tunnels.destination` to a trusted alias.
+- Local tunnels/services are opt-in; disable when unused. Keep FileVault, firewall, and auto-updates enabled.
+
+## Agent-Specific Notes
+- Don’t enable modules globally in PRs; provide toggles with safe defaults and document host-side enablement.
+- Avoid adding heavy runtime deps globally; prefer profiles and per-host imports.
+
