@@ -5,9 +5,7 @@
     python312
     uv
     ruff
-    ruff-lsp
     pyright
     just
   ];
 }
-

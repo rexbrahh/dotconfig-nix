@@ -6,8 +6,6 @@
     gopls
     delve
     golangci-lint
-    gotools
     just
   ];
 }
-

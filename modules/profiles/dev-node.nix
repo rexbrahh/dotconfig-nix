@@ -3,11 +3,8 @@
   # Node.js + frontend tooling
   home.packages = with pkgs; [
     nodejs_20
-    corepack
-    pnpm
-    yarn
+    corepack   # provides pnpm/yarn via `corepack enable`
     bun
     just
   ];
 }
-
