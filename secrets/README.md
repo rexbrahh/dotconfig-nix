@@ -26,3 +26,14 @@ Notes
 - Do not commit private keys. Only commit `*.age` ciphertext and recipients.
 - For Home Manager, add the snippet under `home-manager.users.<name>.imports` or merge into an HM module.
 
+Alternative: sops-nix
+- If you prefer SOPS (YAML/TOML/JSON), add the input:
+  - `sops-nix.url = "github:Mic92/sops-nix";`
+- Import `sops-nix.darwinModules.sops` and configure `sops.secrets.<name>` like:
+```
+{
+  sops.defaultSopsFile = ./secrets/secrets.yaml;
+  sops.age.keyFile = "~/.age/keys.txt";
+  sops.secrets.my_token = { path = "/Users/rexliu/.config/secrets/my_token"; };
+}
+```

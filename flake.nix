@@ -65,6 +65,9 @@
           # Overlay: expose `pkgs.stable` from nixpkgs-stable while base = nixpkgs (unstable)
           ({ ... }: {
             nixpkgs.overlays = [
+              # Your local overlay (overrides go here)
+              (import ./overlays/default.nix)
+              # Add stable channel under pkgs.stable
               (final: prev:
                 let stable = import inputs."nixpkgs-stable" { inherit (prev) system; config = prev.config; };
                 in { stable = stable; }
