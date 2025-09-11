@@ -27,6 +27,7 @@ in
     home.activation.mlDataDirs = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
       mkdir -p "${base}/raw" "${base}/curated" "${base}/artifacts"
       mkdir -p "${base}/cache/hf/datasets" "${base}/cache/torch" "${base}/cache/wandb"
+      chmod -R go-rwx "${base}" || true
     '';
 
     # Keep XDG defaults; only add ML-specific caches if requested.
@@ -41,4 +42,3 @@ in
     home.packages = with pkgs; [ duckdb jq ];
   };
 }
-

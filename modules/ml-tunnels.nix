@@ -39,6 +39,8 @@ in
         "-o" "ServerAliveInterval=60"
         "-o" "ServerAliveCountMax=3"
         "-o" "ExitOnForwardFailure=yes"
+        "-o" "StrictHostKeyChecking=yes"
+        "-o" "UserKnownHostsFile=~/.ssh/known_hosts"
       ];
       description = "Additional ssh flags for the autossh command (flat list).";
     };
@@ -78,4 +80,3 @@ in
     ]
   );
 }
-

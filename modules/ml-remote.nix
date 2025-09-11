@@ -28,9 +28,11 @@ in
       ControlPersist = lib.mkDefault "30m";
       ControlPath = lib.mkDefault "~/.ssh/cm-%r@%h:%p";
       ExitOnForwardFailure = lib.mkDefault "yes";
-      ForwardAgent = lib.mkDefault "yes";
+      # Default to no agent forwarding; enable per-host as needed.
+      ForwardAgent = lib.mkDefault "no";
       TCPKeepAlive = lib.mkDefault "yes";
+      StrictHostKeyChecking = lib.mkDefault "yes";
+      UpdateHostKeys = lib.mkDefault "yes";
     };
   };
 }
-

@@ -33,6 +33,8 @@ in
         "root"
         "rexliu"
       ];
+      sandbox = true;
+      require-sigs = true;
       substituters = [
         "https://cache.nixos.org"
         # common community caches you might add later
@@ -147,7 +149,7 @@ in
   # System packages moved to modules/packages.nix
 
   # Launch services & quality-of-life
-  #services.nix-daemon.enable = true; # needed for multi-user Nix on macOS
+  # nix-daemon is managed automatically when `nix.enable = true`
    # Networking / hostname
   networking = {
     computerName = "MacBook";
@@ -157,6 +159,14 @@ in
 
   # Allow unfree globally (you can limit in HM instead)
   nixpkgs.config.allowUnfree = true;
+
+  # macOS Application Firewall (ALF)
+  networking.applicationFirewall = {
+    enable = true;
+    allowSignedApp = true;
+    enableStealthMode = true;
+    blockAllIncoming = false; # set true if you want maximum strictness
+  };
 
   # Keep /etc files managed
   system.stateVersion = 5; # <- bump only after reading release notes
