@@ -104,6 +104,16 @@ in
         # ../../modules/profiles/dev-python.nix
         # ../../modules/profiles/dev-node.nix
       ];
+
+      # Enable 1Password CLI and SSH agent integration
+      onepassword = {
+        enable = true;
+        sshAgent.enable = true;
+      };
+
+      # Standardize ML data/cache dirs and remote SSH ergonomics
+      ml.env.enable = true;
+      ml.remote.enable = true;
     };
   };
   home-manager.backupFileExtension = "hm-backup";
@@ -144,4 +154,12 @@ in
 
   # Keep /etc files managed
   system.stateVersion = 5; # <- bump only after reading release notes
+
+  # Launchd-managed SSH tunnels for remote ML workflows
+  ml.tunnels = {
+    enable = true;
+    destination = "gpu-box"; # SSH host alias; update to your remote
+    jupyter.enable = true;
+    mlflow.enable = true;
+  };
 }
