@@ -1,0 +1,32 @@
+name: Update Flake
+
+on:
+  schedule:
+    - cron: '0 7 * * 1' # Mondays at 07:00 UTC
+  workflow_dispatch:
+
+jobs:
+  update:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Install Nix
+        uses: DeterminateSystems/nix-installer-action@v13
+
+      - name: Update flake
+        uses: DeterminateSystems/update-flake@v26
+        with:
+          pr-title: 'flake: weekly update'
+          pr-labels: 'dependencies,flake-update'
+          commit-msg: 'flake: weekly update'
+
+      - name: Show diff (nvd)
+        run: |
+          nix profile install nixpkgs#nvd
+          if [ -e .git/refs/remotes/origin/HEAD ]; then
+            echo "nvd diff is available locally; rely on PR checks"
+          fi
+

@@ -1,0 +1,37 @@
+name: CI
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+
+jobs:
+  build:
+    runs-on: macos-latest
+    env:
+      CACHIX_CACHE: ${{ vars.CACHIX_CACHE }}
+      CACHIX_AUTH_TOKEN: ${{ secrets.CACHIX_AUTH_TOKEN }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install Nix
+        uses: DeterminateSystems/nix-installer-action@v13
+
+      - name: Magic Nix Cache
+        uses: DeterminateSystems/magic-nix-cache-action@v7
+
+      - name: Show flake outputs
+        run: nix flake show --accept-flake-config
+
+      - name: Format check (treefmt)
+        run: nix develop -c treefmt -c treefmt.toml --fail-on-change
+
+      - name: Flake check
+        run: nix flake check --accept-flake-config
+      - name: Cachix (optional)
+        if: env.CACHIX_CACHE != ''
+        uses: cachix/cachix-action@v14
+        with:
+          name: ${{ env.CACHIX_CACHE }}
+          authToken: ${{ env.CACHIX_AUTH_TOKEN }}

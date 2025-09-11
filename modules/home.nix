@@ -3,6 +3,9 @@
 {
   # Home Manager release compatibility (don’t change lightly)
   home.stateVersion = "25.05";
+  programs.home-manager.enable = true;
+
+
 
   # Choose your login shell (per-user)
   programs.fish = {
@@ -31,6 +34,26 @@
       gp = "git push";
       nrs = "darwin-rebuild switch --flake ~/.config/nix";
       hm  = "home-manager";
+      nhs = "nh os switch -- --flake ~/.config/nix";
+      nhb = "nh os boot -- --flake ~/.config/nix";
+      nhc = "nh clean all";
+      # Vagrant QoL
+      vgu = "vagrant up";
+      vgh = "vagrant halt";
+      vgd = "vagrant destroy -f";
+      vgr = "vagrant reload --provision";
+      vgs = "vagrant ssh";
+      vgp = "vagrant plugin list";
+      # Packer
+      pkb = "packer build";
+      # Nix helpers
+      nhd = "nh os diff";
+      # K8s minimal helpers
+      k = "kubectl";
+      kctx = "kubectx";
+      kns = "kubens";
+      kl = "kubectl logs -f";
+      ka = "kubectl apply -f";
     };
     functions = {
      extract = {
@@ -78,7 +101,8 @@
         rm -f "$tmp"
       '';
     };
-   };
+  };
+  
   };
   # Or Zsh (toggle as you like)
 #  programs.zsh = {
@@ -180,11 +204,21 @@
     # Pin versions here if you like, or use per-project .tool-versions
     # tools = { node = "lts"; python = "3.12"; rust = "stable"; };
   };
-
-  # User packages (keep system ones minimal; install most here)
+  # User-scoped packages managed by Home Manager
   home.packages = with pkgs; [
-    # core
-    git gh jq ripgrep fd sd curl wget htop btop tree rsync gnupg
+    git
+    gh
+    jq
+        ripgrep 
+    fd 
+    sd 
+    curl 
+    wget 
+    htop 
+    btop 
+    tree 
+    rsync 
+    gnupg
     # dev
     uv # fast Python packager
     nodejs_20
@@ -196,10 +230,15 @@
     nixd # nix LSP
     nil  # alternative Nix LSP
     alejandra
+    nh
+    nvd
+    nix-tree
+    nix-output-monitor # `nom`
     # quality-of-life
     neofetch
+    # ... add your other packages here
   ];
-
+  # Keep heavy tooling here; keep `environment.systemPackages` minimal on the Darwin side
   # Dotfiles you want generated/managed
   xdg.enable = true;
 
@@ -208,4 +247,3 @@
 
   # HM-managed services you may want later (gui-daemons etc) can be added here
 }
-

@@ -1,0 +1,19 @@
+repos:
+  - repo: local
+    hooks:
+      - id: treefmt
+        name: treefmt
+        entry: treefmt -c treefmt.toml --fail-on-change
+        language: system
+        pass_filenames: false
+      - id: statix
+        name: statix (nix lint)
+        entry: statix check
+        language: system
+        files: \\.(nix)$
+      - id: deadnix
+        name: deadnix (unused nix)
+        entry: deadnix --fail --quiet
+        language: system
+        files: \\.(nix)$
+
