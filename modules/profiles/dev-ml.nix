@@ -28,7 +28,7 @@
     # Secrets
     _1password-cli
 
-    # Solana tooling
-    solana-cli
+    # Solana tooling (install via Homebrew to avoid large Nix build)
+    # solana-cli
   ];
 }
