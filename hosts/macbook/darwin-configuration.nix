@@ -1,19 +1,36 @@
-{ lib, inputs, config, pkgs, ... }:
+{
+  lib,
+  inputs,
+  config,
+  pkgs,
+  ...
+}:
 let
-  user = builtins.getEnv "USER";   # or: "rexliu"
+  user = builtins.getEnv "USER"; # or: "rexliu"
 in
 {
+  imports = [
+    ../../modules/homebrew.nix
+    ../../modules/home.nix
+    ../../modules/ui.nix
+    # add more modules here
+  ];
   nix.enable = true;
   # Core Nix setup
   nix = {
     # Flakes + new CLI
     package = pkgs.nix;
-    extraOptions = ''
-      experimental-features = nix-command flakes
-      warn-dirty = false
-    '';
     settings = {
-      trusted-users = [ "root" "rexliu" ];
+      experimental-features = [
+        "nix-command"
+        "flakes"
+      ];
+      warn-dirty = false;
+      ssl-cert-file = "/nix/var/nix/profiles/default/etc/ssl/certs/ca-bundle.crt";
+      trusted-users = [
+        "root"
+        "rexliu"
+      ];
       substituters = [
         "https://cache.nixos.org"
         # common community caches you might add later
@@ -22,7 +39,11 @@ in
     };
     gc = {
       automatic = true;
-      interval = { Weekday = 0; Hour = 3; Minute = 0; }; # Sundays 03:00
+      interval = {
+        Weekday = 0;
+        Hour = 3;
+        Minute = 0;
+      }; # Sundays 03:00
       options = "--delete-older-than 14d";
     };
   };
@@ -43,39 +64,45 @@ in
 
     # optional: also allow Apple Watch for sudo prompts
     # watchIdAuth = true;
-  }; 
+  };
   users.users.rexliu = {
     name = "rexliu";
     home = "/Users/rexliu";
     shell = pkgs.fish;
-  };  
-  environment.shells = [ pkgs.zsh pkgs.fish ];
+  };
+  environment.shells = [
+    pkgs.zsh
+    pkgs.fish
+  ];
   #programs.zsh.enable = true;
   # Home Manager
   home-manager.useGlobalPkgs = true;
   home-manager.useUserPackages = true;
-  home-manager.users.rexliu = { pkgs, ... }: {
-    home.username = "rexliu";
-    home.homeDirectory = "/Users/rexliu";
-    home.stateVersion = "25.05";
-  };
+  home-manager.users.rexliu =
+    { pkgs, ... }:
+    {
+      home.username = "rexliu";
+      home.homeDirectory = "/Users/rexliu";
+      home.stateVersion = "25.05";
+    };
+  home-manager.backupFileExtension = "hm-backup";
   programs.fish.enable = true;
   #system.defaults.NSGlobalDomain.ApplePressAndHoldEnabled = false; # faster key repeat
   #system.defaults.NSGlobalDomain.KeyRepeat = 2;
   #system.defaults.NSGlobalDomain.InitialKeyRepeat = 25;
   #system.defaults.NSGlobalDomain.TALLogoutReason = "DeveloperFlow";
 
-#  system.defaults.alf.globalstate = 1;  # enable macOS firewall
-#  system.defaults.alf.allowdownloadsignedenabled = true;
+  #  system.defaults.alf.globalstate = 1;  # enable macOS firewall
+  #  system.defaults.alf.allowdownloadsignedenabled = true;
 
-#  system.defaults.finder.AppleShowAllExtensions = true;
+  #  system.defaults.finder.AppleShowAllExtensions = true;
 
-#  programs.zsh.enableCompletion = true;
-#  programs.zsh.enableAutosuggestions = true;
-#  programs.zsh.initExtra = ''
-#    export EDITOR=nvim
-#    export HOMEBREW_NO_AUTO_UPDATE=1
-#  '';
+  #  programs.zsh.enableCompletion = true;
+  #  programs.zsh.enableAutosuggestions = true;
+  #  programs.zsh.initExtra = ''
+  #    export EDITOR=nvim
+  #    export HOMEBREW_NO_AUTO_UPDATE=1
+  #  '';
 
   environment.systemPackages = with pkgs; [
     git
@@ -94,60 +121,13 @@ in
     gnupg
     vim
   ];
-  system.defaults = {
-    NSGlobalDomain = {
-      AppleInterfaceStyleSwitchesAutomatically = true;  # auto light/dark
-      AppleShowAllExtensions = true;
-      InitialKeyRepeat = 15;
-      KeyRepeat = 2;
-      NSDocumentSaveNewDocumentsToCloud = false;
-      "com.apple.swipescrolldirection" = false;        # natural scrolling off
-    };
-    dock = {
-      autohide = true;
-      show-recents = false;
-      tilesize = 48;
-      mru-spaces = false;
-    };
-    finder = {
-      AppleShowAllFiles = true;
-      FXPreferredViewStyle = "clmv"; # column view
-      ShowPathbar = true;
-      ShowStatusBar = true;
-    };
-    trackpad = {
-      Clicking = true;
-      TrackpadThreeFingerDrag = true;
-    };
-    screencapture.location = "/Users/${user}/Screenshots";
-  };
-   # Launch services & quality-of-life
-  #services.nix-daemon.enable = true; # needed for multi-user Nix on macOS
-  homebrew = {
-    enable = true;
-    onActivation = {
-      autoUpdate = true;
-      upgrade = true;
-      cleanup = "zap";
-    };
-    taps = [ "homebrew/cask" "homebrew/cask-fonts" ];
-    brews = [
-      # CLI tools best kept in Nix, but a few have better brew formulae
-    ];
-    casks = [
-      "ghostty"
-      "raycast"
-      "visual-studio-code"
-      "docker"
-      "font-jetbrains-mono"
-    ];
-  };
-  
 
-  # Networking / hostname
+  # Launch services & quality-of-life
+  #services.nix-daemon.enable = true; # needed for multi-user Nix on macOS
+   # Networking / hostname
   networking = {
     computerName = "MacBook";
-    hostName     = "macbook";
+    hostName = "macbook";
     localHostName = "macbook";
   };
 
@@ -157,4 +137,3 @@ in
   # Keep /etc files managed
   system.stateVersion = 5; # <- bump only after reading release notes
 }
-
