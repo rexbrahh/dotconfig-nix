@@ -4,7 +4,7 @@
   # Import this file under home-manager.users.<name>.imports to enable.
   home.packages = with pkgs; [
     # Exploration & notebooks (lean)
-    jupyterlab
+    (pkgs.python312Packages.jupyterlab or pkgs.python3Packages.jupyterlab)
 
     # Data wrangling & formats
     duckdb
@@ -32,4 +32,3 @@
     solana-cli
   ];
 }
-
