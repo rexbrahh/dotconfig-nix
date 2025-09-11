@@ -1,8 +1,10 @@
 { lib, inputs, config, pkgs, ... }:
-
+let
+  user = builtins.getEnv "USER";   # or: "rexliu"
+in
 {
-  nix.enable = false;
-   Core Nix setup
+  nix.enable = true;
+  # Core Nix setup
   nix = {
     # Flakes + new CLI
     package = pkgs.nix;
@@ -11,8 +13,7 @@
       warn-dirty = false
     '';
     settings = {
-      auto-optimise-store = true;
-      trusted-users = [ "root" "${config.users.primaryUser.name}" ];
+      trusted-users = [ "root" "rexliu" ];
       substituters = [
         "https://cache.nixos.org"
         # common community caches you might add later
@@ -25,9 +26,11 @@
       options = "--delete-older-than 14d";
     };
   };
-	
+  nix.optimise.automatic = true;
+  system.primaryUser = "rexliu";
+
   #home-manager.users.rexliu = import ./home.nix;
-  system.stateVersion = 6;
+  #system.stateVersion = 6;
   security.pam.services.sudo_local = {
     # manage /etc/pam.d/sudo_local declaratively (defaults to true)
     enable = true;
@@ -44,9 +47,19 @@
   users.users.rexliu = {
     name = "rexliu";
     home = "/Users/rexliu";
+    shell = pkgs.fish;
   };  
   environment.shells = [ pkgs.zsh pkgs.fish ];
-  programs.zsh.enable = true;
+  #programs.zsh.enable = true;
+  # Home Manager
+  home-manager.useGlobalPkgs = true;
+  home-manager.useUserPackages = true;
+  home-manager.users.rexliu = { pkgs, ... }: {
+    home.username = "rexliu";
+    home.homeDirectory = "/Users/rexliu";
+    home.stateVersion = "25.05";
+  };
+  programs.fish.enable = true;
   #system.defaults.NSGlobalDomain.ApplePressAndHoldEnabled = false; # faster key repeat
   #system.defaults.NSGlobalDomain.KeyRepeat = 2;
   #system.defaults.NSGlobalDomain.InitialKeyRepeat = 25;
@@ -106,10 +119,10 @@
       Clicking = true;
       TrackpadThreeFingerDrag = true;
     };
-    screencapture.location = "${config.users.primaryUser.home}/Screenshots";
+    screencapture.location = "/Users/${user}/Screenshots";
   };
    # Launch services & quality-of-life
-  services.nix-daemon.enable = true; # needed for multi-user Nix on macOS
+  #services.nix-daemon.enable = true; # needed for multi-user Nix on macOS
   homebrew = {
     enable = true;
     onActivation = {
@@ -129,12 +142,7 @@
       "font-jetbrains-mono"
     ];
   };
-  fonts = {
-    enable = true;
-    packages = with pkgs; [
-      (nerdfonts.override { fonts = [ "JetBrainsMono" "FiraCode" ]; })
-    ];
-  };
+  
 
   # Networking / hostname
   networking = {
