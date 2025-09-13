@@ -171,8 +171,8 @@
     enable = true;
     defaultCacheTtl = 7200;
     enableSshSupport = false;
-    # pinentry on macOS
-    pinentryPackage = pkgs.pinentry_mac or pkgs.pinentry;
+    # pinentry on macOS (option renamed)
+    pinentry.package = pkgs.pinentry_mac or pkgs.pinentry;
   };
   programs.ssh = {
     enable = true;
