@@ -156,6 +156,9 @@
       init.defaultBranch = "main";
       pull.ff = "only";
       push.autoSetupRemote = true;
+      gpg.format = "ssh";
+      commit.gpgsign = true;
+      user.signingKey = "~/.ssh/id_ed25519.pub";
     };
   };
 
@@ -179,10 +182,16 @@
         ForwardAgent = "no";
         StrictHostKeyChecking = "yes";
         UpdateHostKeys = "yes";
+        HashKnownHosts = "yes";
       };
     };
     matchBlocks."gpu-box".extraOptions.ForwardAgent = "yes";
   };
+
+  # Ensure tmux log dir exists for user launchd agent
+  home.activation.tmuxLogDir = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+    mkdir -p "$HOME/Library/Logs/tmux"
+  '';
 
   # Editor: Neovim with LSP helpers
   programs.neovim = {
