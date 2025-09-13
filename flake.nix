@@ -106,54 +106,60 @@
           set -euo pipefail
           darwin-rebuild switch --flake ${self}
         ''}/bin/switch";
+        meta = {
+          description = "Activate the macbook nix-darwin configuration";
+        };
       };
 
       # Quick formatter for this repo (nix only)
       formatter.${system} = pkgs.alejandra;
 
-      # Dev shell with formatters & linters used by pre-commit
-      devShells.${system}.default = pkgs.mkShell {
-        packages = with pkgs; [
-          alejandra
-          statix
-          deadnix
-          treefmt
-          shfmt
-          stylua
-          taplo
-          yamlfmt
-          jq
-          pre-commit
-        ];
-      };
+      # Dev shells
+      devShells.${system} = {
+        # Formatters & linters used by pre-commit
+        default = pkgs.mkShell {
+          packages = with pkgs; [
+            alejandra
+            statix
+            deadnix
+            treefmt
+            shfmt
+            stylua
+            taplo
+            yamlfmt
+            jq
+            pre-commit
+          ];
+        };
 
-      # K8s/microservices shell: `nix develop .#k8s`
-      devShells.${system}.k8s = pkgs.mkShell {
-        packages = with pkgs; [
-          kind kubectl kubernetes-helm kustomize skaffold tilt k9s dive
-        ];
-        shellHook = ''
-          export KIND_CLUSTER_NAME=dev
-          alias kind-up='kind create cluster --name "$KIND_CLUSTER_NAME" --wait 120s'
-          alias kind-down='kind delete cluster --name "$KIND_CLUSTER_NAME"'
-          alias kctx='kubectx'
-          alias kns='kubens'
-          alias k='kubectl'
-          alias klogs='kubectl logs -f'
-        '';
-      };
+        # K8s/microservices shell: `nix develop .#k8s`
+        k8s = pkgs.mkShell {
+          packages = with pkgs; [
+            kind kubectl kubernetes-helm kustomize skaffold tilt k9s dive
+          ];
+          shellHook = ''
+            export KIND_CLUSTER_NAME=dev
+            alias kind-up='kind create cluster --name "$KIND_CLUSTER_NAME" --wait 120s'
+            alias kind-down='kind delete cluster --name "$KIND_CLUSTER_NAME"'
+            alias kctx='kubectx'
+            alias kns='kubens'
+            alias k='kubectl'
+            alias klogs='kubectl logs -f'
+          '';
+        };
 
-      # DB tooling shell: `nix develop .#db`
-      devShells.${system}.db = pkgs.mkShell {
-        packages = with pkgs; [
-          postgresql pgcli sqlite litecli redis mongosh
-        ];
-        shellHook = ''
-          alias pg-cli='psql "$PGURL"'
-          alias pg-local='PGURL=postgres://postgres:postgres@localhost:5432/postgres pg-cli'
-          alias redis-cli-local='redis-cli -u redis://localhost:6379'
-          echo "Tip: use 'pg-local' or set PGURL to point at your DB."
-        '';
+        # DB tooling shell: `nix develop .#db`
+        db = pkgs.mkShell {
+          packages = with pkgs; [
+            postgresql pgcli sqlite litecli redis mongosh
+          ];
+          shellHook = ''
+            alias pg-cli='psql "$PGURL"'
+            alias pg-local='PGURL=postgres://postgres:postgres@localhost:5432/postgres pg-cli'
+            alias redis-cli-local='redis-cli -u redis://localhost:6379'
+            echo "Tip: use 'pg-local' or set PGURL to point at your DB."
+          '';
+        };
       };
     };
 }
