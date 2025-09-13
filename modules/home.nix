@@ -32,8 +32,11 @@
       # Auto-attach tmux when launching an interactive shell in Ghostty
       # - skip if already inside tmux
       # - skip for SSH sessions
-      if status is-interactive; and not set -q TMUX; and not set -q SSH_TTY; and test "$TERM_PROGRAM" = "Ghostty"
-        exec ${pkgs.tmux}/bin/tmux new -As main
+      if status is-interactive \
+        and not set -q TMUX \
+        and test -t 0 \
+        and test "$TERM_PROGRAM" = "Ghostty"
+        tmux attach -t main 2>/dev/null; or tmux new -s main
       end
     '';
     shellAbbrs = {
@@ -112,6 +115,22 @@
   };
   
   };
+  programs.tmux = {
+  enable = true;
+  escapeTime = 0;
+  terminal = "screen-256color";
+  plugins = with pkgs.tmuxPlugins; [
+    sensible
+    resurrect
+    continuum
+  ];
+  extraConfig = ''
+    set -g @resurrect-dir "$HOME/.tmux/resurrect"
+    set -g @continuum-restore 'on'
+    set -g @continuum-boot 'on'
+  '';
+  };
+
   # Or Zsh (toggle as you like)
 #  programs.zsh = {
  #   enable = false;
