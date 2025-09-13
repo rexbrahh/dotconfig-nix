@@ -171,9 +171,31 @@ in
   # Keep /etc files managed
   system.stateVersion = 5; # <- bump only after reading release notes
 
+  # Window manager and hotkey daemon (managed via nix-darwin)
+  services.yabai = {
+    enable = true;
+    package = pkgs.yabai;
+    enableScriptingAddition = false; # safer default; enable only if you’ve handled SIP steps
+  };
+  services.skhd = {
+    enable = true;
+    package = pkgs.skhd;
+  };
+
+  # Ensure tmux server is available after login
+  launchd.user.agents."tmux" = {
+    serviceConfig = {
+      ProgramArguments = [ "${pkgs.tmux}/bin/tmux" "start-server" ];
+      RunAtLoad = true;
+      KeepAlive = false; # start once at login is sufficient
+      StandardOutPath = "/tmp/tmux-agent.out";
+      StandardErrorPath = "/tmp/tmux-agent.err";
+    };
+  };
+
   # Launchd-managed SSH tunnels for remote ML workflows
   ml.tunnels = {
-    enable = true;
+    enable = false; # opt-in per host/session; safer default
     destination = "gpu-box"; # SSH host alias; update to your remote
     jupyter.enable = true;
     mlflow.enable = true;

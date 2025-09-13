@@ -1,16 +1,9 @@
 {
   description = "macOS managed with nix-darwin + Home Manager (flakes)";
 
-  # Extra Nix settings applied when using this flake.
-  # Adds popular binary caches for faster builds.
-  nixConfig = {
-    extra-substituters = [
-      "https://nix-community.cachix.org"
-    ];
-    extra-trusted-public-keys = [
-      "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
-    ];
-  };
+  # Optional: declare extra binary caches here if you explicitly trust them.
+  # Keeping this empty reduces supply-chain trust expansion. Prefer
+  # per-user nix.conf if you want third-party caches.
 
   inputs = {
     # Pick a channel you like; “nixpkgs-unstable” gives newest packages.
