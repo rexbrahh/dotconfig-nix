@@ -26,10 +26,10 @@
 [git]
     # Automatically commit and push changes
     autoCommit = true
-    autoPush = true
+    autoPush = false
     
     # Commit message template
-    commitMessageTemplate = "{{ .chezmoi.hostname }}: Update dotfiles"
+    commitMessageTemplate = "dotfiles: update"
 
 # Diff settings
 [diff]
