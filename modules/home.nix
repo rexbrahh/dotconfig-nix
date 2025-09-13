@@ -156,9 +156,11 @@
       init.defaultBranch = "main";
       pull.ff = "only";
       push.autoSetupRemote = true;
-      gpg.format = "ssh";
+      # Global default: GPG/OpenPGP signing
+      gpg.format = "openpgp";
       commit.gpgsign = true;
-      user.signingKey = "~/.ssh/id_ed25519.pub";
+      user.signingKey = "F6E1D95B5DE90338";
+      # Keep SSH verification support for per-repo overrides
       gpg.ssh.allowedSignersFile = "~/.ssh/allowed_signers";
     };
   };
@@ -169,6 +171,8 @@
     enable = true;
     defaultCacheTtl = 7200;
     enableSshSupport = false;
+    # pinentry on macOS
+    pinentryPackage = pkgs.pinentry_mac or pkgs.pinentry;
   };
   programs.ssh = {
     enable = true;
@@ -192,6 +196,14 @@
   # Ensure tmux log dir exists for user launchd agent
   home.activation.tmuxLogDir = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
     mkdir -p "$HOME/Library/Logs/tmux"
+  '';
+
+  # Import GPG public key + ownertrust (safe: public material only)
+  home.activation.importGpgKey = lib.hm.dag.entryAfter [ "tmuxLogDir" ] ''
+    if command -v gpg >/dev/null; then
+      gpg --quiet --import ${../dotfiles/gpg/public.asc} || true
+      gpg --quiet --import-ownertrust ${../dotfiles/gpg/ownertrust.txt} || true
+    fi
   '';
 
   # Editor: Neovim with LSP helpers
