@@ -188,8 +188,8 @@ in
       ProgramArguments = [ "${pkgs.tmux}/bin/tmux" "start-server" ];
       RunAtLoad = true;
       KeepAlive = false; # start once at login is sufficient
-      StandardOutPath = "/tmp/tmux-agent.out";
-      StandardErrorPath = "/tmp/tmux-agent.err";
+      StandardOutPath = "${config.users.users.rexliu.home}/Library/Logs/tmux/agent.out";
+      StandardErrorPath = "${config.users.users.rexliu.home}/Library/Logs/tmux/agent.err";
     };
   };
 
