@@ -28,6 +28,13 @@
       
       set -gx PAGER less
       umask 077
+
+      # Auto-attach tmux when launching an interactive shell in Ghostty
+      # - skip if already inside tmux
+      # - skip for SSH sessions
+      if status is-interactive; and not set -q TMUX; and not set -q SSH_TTY; and test "$TERM_PROGRAM" = "Ghostty"
+        exec ${pkgs.tmux}/bin/tmux new -As main
+      end
     '';
     shellAbbrs = {
       gs = "git status -sb";
@@ -166,7 +173,7 @@
   services.gpg-agent = {
     enable = true;
     defaultCacheTtl = 7200;
-    enableSshSupport = true;
+    enableSshSupport = false;
   };
   programs.ssh = {
     enable = true;
@@ -178,7 +185,8 @@
 
     # raw keys go here (strings)
     extraOptions = {
-      AddKeysToAgent = "yes";
+      AddKeysToAgent = "ask";
+      IdentitiesOnly = "yes";
       UseKeychain = "yes";
       ForwardAgent = "no";
       StrictHostKeyChecking = "yes";

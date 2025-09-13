@@ -29,7 +29,16 @@
       source = ../../dotfiles/yabai/yabairc;
       executable = true;
     };
+    # Ensure default path is present for service defaults
+    ".yabairc" = {
+      source = ../../dotfiles/yabai/yabairc;
+      executable = true;
+    };
     ".config/skhd/skhdrc" = {
+      source = ../../dotfiles/skhd/skhdrc;
+    };
+    # Provide legacy default path for skhd
+    ".skhdrc" = {
       source = ../../dotfiles/skhd/skhdrc;
     };
   };

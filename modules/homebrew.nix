@@ -15,6 +15,8 @@
       cleanup = "zap";
     };
     brews = [
+      "shellcheck"
+      "hadolint"
       "abseil"
       "actionlint"
       "age"
@@ -365,7 +367,6 @@
       "shared-mime-info"
       "shellcheck"
       "simdjson"
-      "skhd"
       "smartmontools"
       "snappy"
       "sops"
@@ -393,7 +394,6 @@
       "the_silver_searcher"
       "theora"
       "tidy-html5"
-      "tmux"
       "tmuxinator"
       "tmuxinator-completion"
       "tree"
@@ -430,7 +430,6 @@
       "xvid"
       "xxhash"
       "xz"
-      "yabai"
       "yarn"
       "yazi"
       "yq"

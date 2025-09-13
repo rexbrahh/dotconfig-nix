@@ -1,0 +1,4 @@
+# Ignore internal agent docs
+AGENTS.md
+AGENT.md
+MIGRATION-COVERAGE.md
