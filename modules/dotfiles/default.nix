@@ -5,6 +5,11 @@
   # so Home Manager can recreate them on a fresh machine.
 
   home.file = {
+    # Chezmoi configuration (manage chezmoi settings declaratively)
+    ".config/chezmoi/chezmoi.toml" = {
+      source = ../../dotfiles/chezmoi/chezmoi.toml;
+    };
+
     # Helix editor
     ".config/helix/config.toml" = {
       source = ../../dotfiles/helix/config.toml;

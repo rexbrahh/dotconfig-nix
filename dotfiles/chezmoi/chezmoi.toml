@@ -1,0 +1,119 @@
+# chezmoi configuration file
+# Location: ~/.config/chezmoi/chezmoi.toml
+
+# Basic settings
+[data]
+    # Personal information for templates
+    name = "Rex Liu"
+    email = "hi@r3x.sh"
+    github_username = "rexbrahh"
+    
+    # System information (auto-detected but can override)
+    hostname = "{{ .chezmoi.hostname }}"
+    os = "{{ .chezmoi.os }}"
+    arch = "{{ .chezmoi.arch }}"
+    
+    # Custom variables for templates
+    editor = "nvim"
+    shell = "/bin/zsh"
+    browser = "Chrome"
+    
+    # Work vs personal distinction
+    is_work = false
+    work_email = "work@company.com"
+
+# Git settings
+[git]
+    # Automatically commit and push changes
+    autoCommit = true
+    autoPush = true
+    
+    # Commit message template
+    commitMessageTemplate = "{{ .chezmoi.hostname }}: Update dotfiles"
+
+# Diff settings
+[diff]
+    # Use your preferred diff tool
+    command = "diff"
+    args = ["-u"]
+    # Alternative: use delta, difftastic, etc
+    # command = "delta"
+
+# Edit settings  
+[edit]
+    # Command to edit files
+    command = "nvim"  # or "code", "nano", etc.
+    args = ["{{ .target }}"]
+    
+    # Apply changes after editing
+    apply = true
+    
+    # Watch for changes and auto-apply
+    watch = false
+
+# Merge settings (for handling conflicts)
+[merge]
+    command = "vimdiff"
+    args = ["{{ .destination }}", "{{ .source }}", "{{ .target }}"]
+
+# Template settings
+[template]
+    # Template options
+    options = ["missingkey=error"]
+
+# OS-specific settings
+[data.packages]
+    # Package names that vary by OS
+    [data.packages.brew]
+        git = "git"
+        vim = "vim"
+        zsh = "zsh"
+    
+    [data.packages.apt]
+        git = "git"
+        vim = "vim-nox" 
+        zsh = "zsh"
+    
+    [data.packages.pacman]
+        git = "git"
+        vim = "vim"
+        zsh = "zsh"
+
+# Conditional logic helpers
+[data.features]
+    # Feature flags for templates
+    gui = true
+    docker = true
+    kubernetes = false
+    development = true
+
+# External command integrations
+[data.onepassword]
+    # 1Password integration (if using)
+    account = "your-account.1password.com"
+
+# Age encryption (if using encrypted files)
+[age]
+    # identity = "~/.age/key.txt"
+    # recipient = "age1xxxxxx..."
+
+# GPG encryption (alternative to age)
+[gpg]
+    # recipient = "your-key-id"
+    # symmetric = false
+
+# Interpreters for different file types
+[interpreters.ps1]
+    command = "pwsh"
+    args = ["-NoLogo"]
+
+# Status excludes (files to ignore in chezmoi status)
+[status]
+    exclude = ["scripts"]
+
+# Warning: Sensitive data examples
+# DON'T put actual secrets here! Use templates instead.
+# [data.secrets] 
+#     api_key = "{{ (bitwarden \"item\" \"api-key\").password }}"
+#     ssh_key_passphrase = "{{ (onepassword \"SSH Key\" \"password\").password }}"
+

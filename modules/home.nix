@@ -5,13 +5,11 @@
   home.stateVersion = "25.05";
   programs.home-manager.enable = true;
 
-
-
   # Choose your login shell (per-user)
   programs.fish = {
     enable = true;
     interactiveShellInit = ''
-          # PATH & basics
+      # PATH & basics
       if test -d /opt/homebrew/bin
         fish_add_path -g /opt/homebrew/bin /opt/homebrew/sbin
       end
@@ -25,7 +23,7 @@
 
       set -gx VISUAL nvim
       fish_add_path -g /run/current-system/sw/bin
-      
+
       set -gx PAGER less
       umask 077
 
@@ -67,7 +65,7 @@
       ka = "kubectl apply -f";
     };
     functions = {
-     extract = {
+      extract = {
         description = "Extract many archive types by extension";
         body = ''
           for file in $argv
@@ -98,48 +96,22 @@
           end
         '';
       };
-     y = {
-      description = "Run yazi and cd into the chosen directory";
-      body = ''
-        set tmp (mktemp -t yazi-cwd.XXXXXX)
-        yazi $argv --cwd-file="$tmp"
-        if test -s "$tmp"
-          set cwd (cat "$tmp")
-          if test -d "$cwd"
-            cd "$cwd"
+      y = {
+        description = "Run yazi and cd into the chosen directory";
+        body = ''
+          set tmp (mktemp -t yazi-cwd.XXXXXX)
+          yazi $argv --cwd-file="$tmp"
+          if test -s "$tmp"
+            set cwd (cat "$tmp")
+            if test -d "$cwd"
+              cd "$cwd"
+            end
           end
-        end
-        rm -f "$tmp"
-      '';
+          rm -f "$tmp"
+        '';
+      };
     };
   };
-  
-  };
-  programs.tmux = {
-  enable = true;
-  escapeTime = 0;
-  terminal = "screen-256color";
-  plugins = with pkgs.tmuxPlugins; [
-    sensible
-    resurrect
-    continuum
-  ];
-  extraConfig = ''
-    set -g @resurrect-dir "$HOME/.tmux/resurrect"
-    set -g @continuum-restore 'on'
-    set -g @continuum-boot 'on'
-  '';
-  };
-
-  # Or Zsh (toggle as you like)
-#  programs.zsh = {
- #   enable = false;
-  #  autosuggestions.enable = true;
-  #  syntaxHighlighting.enable = true;
-  #  initExtra = ''
-  #    export EDITOR=nvim
-  #  '';
-  #};
 
   # Prompt
   programs.starship = {
@@ -170,7 +142,7 @@
   programs.bat.enable = true;
   programs.eza = {
     enable = true;
-    icons = "auto";   # was true/false
+    icons = "auto";
     git = true;
   };
 
@@ -187,7 +159,7 @@
     };
   };
 
-  # GPG & SSH (optional scaffolding)
+  # GPG & SSH
   programs.gpg.enable = true;
   services.gpg-agent = {
     enable = true;
@@ -198,18 +170,15 @@
     enable = true;
     enableDefaultConfig = false;
     matchBlocks."*" = {
-    # native options (camelCase)
-    serverAliveInterval = 60;
-    serverAliveCountMax = 3;
-
-    # raw keys go here (strings)
-    extraOptions = {
-      AddKeysToAgent = "ask";
-      IdentitiesOnly = "yes";
-      UseKeychain = "yes";
-      ForwardAgent = "no";
-      StrictHostKeyChecking = "yes";
-      UpdateHostKeys = "yes";
+      serverAliveInterval = 60;
+      serverAliveCountMax = 3;
+      extraOptions = {
+        AddKeysToAgent = "ask";
+        IdentitiesOnly = "yes";
+        UseKeychain = "yes";
+        ForwardAgent = "no";
+        StrictHostKeyChecking = "yes";
+        UpdateHostKeys = "yes";
       };
     };
     matchBlocks."gpu-box".extraOptions.ForwardAgent = "yes";
@@ -232,55 +201,24 @@
     ];
   };
 
-  # Runtime/toolchains with "mise" (or swap for asdf)
+  # Runtime/toolchains with "mise"
   programs.mise = {
     enable = true;
-    settings = {
-      experimental = true;
-    };
-    # Pin versions here if you like, or use per-project .tool-versions
-    # tools = { node = "lts"; python = "3.12"; rust = "stable"; };
+    settings = { experimental = true; };
   };
+
   # User-scoped packages managed by Home Manager
   home.packages = with pkgs; [
-    git
-    gh
-    jq
-        ripgrep 
-    fd 
-    sd 
-    curl 
-    wget 
-    htop 
-    btop 
-    tree 
-    rsync 
-    gnupg
-    # dev
-    uv # fast Python packager
-    nodejs_20
-    python312
-    rustup
-    go
-    # nix helpers
-    nixpkgs-fmt
-    nixd # nix LSP
-    nil  # alternative Nix LSP
-    alejandra
-    nh
-    nvd
-    nix-tree
-    nix-output-monitor # `nom`
-    # quality-of-life
+    git gh jq ripgrep fd sd curl wget htop btop tree rsync gnupg
+    uv nodejs_20 python312 rustup go
+    nixpkgs-fmt nixd nil alejandra nh nvd nix-tree nix-output-monitor
     neofetch
-    # ... add your other packages here
   ];
-  # Keep heavy tooling here; keep `environment.systemPackages` minimal on the Darwin side
+
   # Dotfiles you want generated/managed
   xdg.enable = true;
 
-  # Set macOS login shell to fish (optional; requires fish in /etc/shells via nix-darwin)
-  #programs.fish.loginShell = true;
-
-  # HM-managed services you may want later (gui-daemons etc) can be added here
+  # Set macOS login shell to fish (optional)
+  # programs.fish.loginShell = true;
 }
+
