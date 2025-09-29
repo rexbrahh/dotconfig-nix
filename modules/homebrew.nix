@@ -15,6 +15,12 @@
       cleanup = "zap";
     };
     brews = [
+      "pgcli"
+      "bazel"
+      "mercurial"
+      "cloc"
+      "render"
+      "nasm"
       "shellcheck"
       "hadolint"
       "abseil"
@@ -445,13 +451,13 @@
       "zstd"
     ];
     casks = [
-      "another-redis-desktop-manager"
+      "vscodium"
+      "ungoogled-chromium"
       "applite"
       "clickhouse"
       "cyberduck"
       "db-browser-for-sqlite"
       "devtoys"
-      "drawio"
       "font-jetbrains-mono"
       "font-symbols-only-nerd-font"
       "ghostty"
@@ -465,7 +471,6 @@
       "kaleidoscope"
       "keka"
       "kitty"
-      "localsend"
       "macupdater"
       "mongodb-compass"
       "mos"
@@ -487,7 +492,6 @@
       "temurin@21"
       "termius"
       "tuist"
-      "visual-studio-code"
       "zotero"
     ];
   };
