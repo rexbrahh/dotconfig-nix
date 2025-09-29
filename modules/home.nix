@@ -10,10 +10,14 @@
     enable = true;
     interactiveShellInit = ''
       # PATH & basics
+      set -Ux fish_greeting
       if test -d /opt/homebrew/bin
         fish_add_path -g /opt/homebrew/bin /opt/homebrew/sbin
       end
-
+      fish_add_path $HOME/.local/bin
+      fish_add_path $HOME/.local/share/solana/install/active_release/bin
+      direnv hook fish | source 
+      source "/Users/rexliu/emsdk/emsdk_env.fish"
       # EDITOR (SSH-aware) + VISUAL/PAGER
       if set -q SSH_CONNECTION
         set -gx EDITOR vim
@@ -26,15 +30,17 @@
 
       set -gx PAGER less
       umask 077
+      
+      zoxide init fish | source
+
 
       # Auto-attach tmux when launching an interactive shell in Ghostty
       # - skip if already inside tmux
       # - skip for SSH sessions
-      if status is-interactive \
-        and not set -q TMUX \
-        and test -t 0 \
+      if status is-interactive
+        and test -z "$TMUX"
         and test "$TERM_PROGRAM" = "Ghostty"
-        tmux attach -t main 2>/dev/null; or tmux new -s main
+        exec tmux -u new-session -A -s main
       end
     '';
     shellAbbrs = {
