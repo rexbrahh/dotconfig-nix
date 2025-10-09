@@ -9,7 +9,6 @@
     redis
     mongosh
     sqlx-cli
-    kcat          # Kafka client (formerly kafkacat)
+    pkgs.stable.kcat # temporary workaround: unstable build fails with fmt 11.2.0
   ];
 }
-
