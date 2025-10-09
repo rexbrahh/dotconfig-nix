@@ -1,5 +1,8 @@
 { config, pkgs, lib, ... }:
 
+let
+  anthropicKeyPath = "${config.home.homeDirectory}/.config/secrets/anthropic_api_key";
+in
 {
   # Home Manager release compatibility (don’t change lightly)
   home.stateVersion = "25.05";
@@ -33,7 +36,9 @@
       
       zoxide init fish | source
       #set -gx ANTHROPIC_BASE_URL https://cc.yovy.app
-      #set -gx ANTHROPIC_API_KEY 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
+      if test -f "${anthropicKeyPath}"
+        set -gx ANTHROPIC_API_KEY (string trim (cat "${anthropicKeyPath}"))
+      end
       #set -gx ANTHROPIC_MODEL anthropic/claude-sonnet-4.5
       #set -gx ANTHROPIC_SMALL_FAST_MODEL x-ai/grok-4-fast:free
 
