@@ -17,6 +17,7 @@
       fish_add_path $HOME/.local/bin
       fish_add_path $HOME/.local/share/solana/install/active_release/bin
       direnv hook fish | source 
+      set -gx EMSDK_QUIET 1
       source "/Users/rexliu/emsdk/emsdk_env.fish"
       # EDITOR (SSH-aware) + VISUAL/PAGER
       if set -q SSH_CONNECTION
@@ -27,12 +28,14 @@
 
       set -gx VISUAL nvim
       fish_add_path -g /run/current-system/sw/bin
-
       set -gx PAGER less
       umask 077
       
       zoxide init fish | source
-
+      #set -gx ANTHROPIC_BASE_URL https://cc.yovy.app
+      #set -gx ANTHROPIC_API_KEY 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
+      #set -gx ANTHROPIC_MODEL anthropic/claude-sonnet-4.5
+      #set -gx ANTHROPIC_SMALL_FAST_MODEL x-ai/grok-4-fast:free
 
       # Auto-attach tmux when launching an interactive shell in Ghostty
       # - skip if already inside tmux

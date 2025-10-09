@@ -4,7 +4,9 @@
   homebrew = {
     enable = true;
     # Do not force-tap default repos; Homebrew manages core/cask itself.
-    taps = [ ];
+    taps = [ 
+    "koekeishiya/formulae"
+    ];
     global = {
       brewfile = true; # creates/uses Brewfile for visibility
       autoUpdate = false; # nix controls versions; keep brew quiet
@@ -15,6 +17,8 @@
       cleanup = "zap";
     };
     brews = [
+      "yabai"
+      "bufbuild/buf/buf"
       "pgcli"
       "bazel"
       "mercurial"

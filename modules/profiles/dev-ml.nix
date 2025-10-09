@@ -21,8 +21,8 @@
     procs
     tmux
 
-    # Storage / sync
-    awscli2
+    # Storage / sync (prefer stable build to avoid long source builds)
+    pkgs.stable.awscli2
     rclone
 
     # Secrets

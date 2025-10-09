@@ -33,7 +33,7 @@ in
         "root"
         "rexliu"
       ];
-      sandbox = true;
+      sandbox = lib.mkForce "relaxed";
       require-sigs = true;
       substituters = [
         "https://cache.nixos.org"
@@ -124,7 +124,7 @@ in
       ml.remote.enable = true;
     };
   };
-  home-manager.backupFileExtension = "hm-backup";
+  home-manager.backupFileExtension = "rebuild";
   programs.fish.enable = true;
   # Fast package lookups with nix-index (prebuilt DB) + comma wrapper
   programs.nix-index.enable = true;
