@@ -9,14 +9,20 @@ let
   user = builtins.getEnv "USER"; # or: "rexliu"
 in
 {
-  imports = [
-    # Darwin-level modules
-    ../../modules/default.nix
-    ../../modules/vagrant.nix
-    # ML tunnels (SSH port forwards via launchd; disabled by default)
-    ../../modules/ml-tunnels.nix
-    # add more modules here
-  ];
+  imports =
+    let
+      secretsModule = ../../secrets/secrets.nix;
+    in
+    [
+      # Darwin-level modules
+      ../../modules/default.nix
+      ../../modules/vagrant.nix
+      # ML tunnels (SSH port forwards via launchd; disabled by default)
+      ../../modules/ml-tunnels.nix
+      # add more modules here
+    ]
+    # Declarative secrets (agenix; only import when the module exists)
+    ++ lib.optional (builtins.pathExists secretsModule) secretsModule;
   nix.enable = true;
   # Core Nix setup
   nix = {
