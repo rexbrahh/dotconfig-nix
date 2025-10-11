@@ -17,6 +17,7 @@
       cleanup = "zap";
     };
     brews = [
+      "typst"
       "yabai"
       "bufbuild/buf/buf"
       "pgcli"
