@@ -456,7 +456,6 @@
       "zstd"
     ];
     casks = [
-      "tailscale"
       "vscodium"
       "ungoogled-chromium"
       "applite"
