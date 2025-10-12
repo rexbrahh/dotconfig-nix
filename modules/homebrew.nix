@@ -17,6 +17,8 @@
       cleanup = "zap";
     };
     brews = [
+      "iperf3"
+      "tailscale"
       "typst"
       "yabai"
       "bufbuild/buf/buf"
@@ -456,6 +458,7 @@
       "zstd"
     ];
     casks = [
+      "tailscale-app"
       "vscodium"
       "ungoogled-chromium"
       "applite"
