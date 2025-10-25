@@ -17,6 +17,7 @@
       cleanup = "zap";
     };
     brews = [
+      "joshmedeski/sesh/sesh"
       "iperf3"
       "tailscale"
       "typst"
@@ -460,7 +461,6 @@
     casks = [
       "tailscale-app"
       "vscodium"
-      "ungoogled-chromium"
       "applite"
       "clickhouse"
       "cyberduck"
@@ -475,13 +475,9 @@
       "gpg-suite"
       "vagrant"
       "hiddenbar"
-      "insomnia"
-      "kaleidoscope"
-      "keka"
       "kitty"
       "macupdater"
       "mongodb-compass"
-      "mos"
       "multipass"
       "mysqlworkbench"
       "ngrok"
@@ -497,7 +493,6 @@
       "ssh-config-editor"
       "tableplus"
       "temurin"
-      "temurin@21"
       "termius"
       "tuist"
       "zotero"
