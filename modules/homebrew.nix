@@ -460,8 +460,6 @@
     ];
     casks = [
       "tailscale-app"
-      "vscodium"
-      "applite"
       "clickhouse"
       "cyberduck"
       "db-browser-for-sqlite"
@@ -477,16 +475,13 @@
       "hiddenbar"
       "kitty"
       "macupdater"
-      "mongodb-compass"
       "multipass"
       "mysqlworkbench"
       "ngrok"
       "orbstack"
       "proxy-audio-device"
-      "qlmarkdown"
       "rancher"
       "rapidapi"
-      "raycast"
       "sequel-ace"
       "session-manager-plugin"
       "skim"
@@ -494,8 +489,6 @@
       "tableplus"
       "temurin"
       "termius"
-      "tuist"
-      "zotero"
     ];
   };
 
