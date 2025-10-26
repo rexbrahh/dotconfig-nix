@@ -192,6 +192,20 @@ in
   launchd.user.agents."tmux" = {
     serviceConfig = {
       ProgramArguments = [ "${pkgs.tmux}/bin/tmux" "start-server" ];
+      EnvironmentVariables = {
+        PATH = lib.concatStringsSep ":" [
+          "${config.users.users.rexliu.home}/.nix-profile/bin"
+          "/etc/profiles/per-user/${config.users.users.rexliu.name}/bin"
+          "/run/current-system/sw/bin"
+          "/nix/var/nix/profiles/default/bin"
+          "/opt/homebrew/bin"
+          "/opt/homebrew/sbin"
+          "/usr/local/bin"
+          "/usr/bin"
+          "/bin"
+        ];
+        SHELL = "/bin/sh";
+      };
       RunAtLoad = true;
       KeepAlive = false; # start once at login is sufficient
       StandardOutPath = "${config.users.users.rexliu.home}/Library/Logs/tmux/agent.out";
