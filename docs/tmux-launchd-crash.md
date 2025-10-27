@@ -49,3 +49,5 @@ After rebuilding (`darwin-rebuild switch --flake .#macbook`) and killing the old
 
 - If you ever relocate fish, update both the tmux config and the launch agent PATH.
 - `Tmux.Start.plist` created by tmux-continuum still spawns iTerm sessions; consider pruning it if you rely solely on Ghostty.
+- Tmux continuum’s auto-restore (`@continuum-restore on`) triggers tmux-resurrect during server startup; when no sessions exist yet, it exits tmux after attempting to restore. Keep continuum’s restore/boot toggles off unless you’re ready to debug its restore flow.
+- Manual restores now run through `scripts/tmux-resurrect-safe-restore.sh`, which temporarily creates a guard session before invoking tmux-resurrect. This prevents the server from exiting even if the plugin removes the last active session mid-restore.
