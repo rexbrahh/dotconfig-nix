@@ -17,6 +17,7 @@
       cleanup = "zap";
     };
     brews = [
+      "satococoa/tap/wtp"
       "joshmedeski/sesh/sesh"
       "iperf3"
       "tailscale"
