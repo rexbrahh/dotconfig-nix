@@ -477,7 +477,6 @@
       "kitty"
       "macupdater"
       "multipass"
-      "mysqlworkbench"
       "ngrok"
       "orbstack"
       "proxy-audio-device"
