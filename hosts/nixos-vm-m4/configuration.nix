@@ -17,26 +17,27 @@ let
    networking.networkmanager.enable = true;
    time.timeZone = "America/Los_Angeles";
 
-   users.users.rex = {
-     isNormalUser = true;
-     description = "Rex Liu";
-     extraGroups = [ "wheel" "networkmanager" ];
-     shell = pkgs.fish;
-   };
+  users.users.rxl = {
+    isNormalUser = true;
+    description = "Rex Liu";
+    extraGroups = [ "wheel" "networkmanager" ];
+    shell = pkgs.fish;
+    home = "/home/rxl";
+  };
 
    services.openssh.enable = true;
 
    nix.settings = {
      experimental-features = [ "nix-command" "flakes" ];
-     trusted-users = [ "root" "rex" ];
+    trusted-users = [ "root" "rxl" ];
      auto-optimise-store = true;
    };
 
    home-manager = {
      useGlobalPkgs = true;
-     useUserPackages = true;
-     users.rex = import ./home.nix;
-   };
+    useUserPackages = true;
+    users.rxl = import ./home.nix;
+  };
 
    system.stateVersion = "24.11";
  }

@@ -7,7 +7,7 @@ Shared flake for macOS (nix-darwin), NixOS, and standalone Linux + Home Manager 
 ## Supported targets
 - **macbook (nix-darwin)** – `nix run .#switch` or `./scripts/darwin-switch.sh`. Lives under `hosts/macbook/`.
 - **nixos-vm-m4 (NixOS VM)** – `sudo nixos-rebuild switch --flake .#nixos-vm-m4` or `./scripts/nixos-switch.sh`. Config in `hosts/nixos-vm-m4/`.
-- **rex@ubuntu (Home Manager only)** – `home-manager switch --flake .#rex@ubuntu` or `./scripts/home-switch.sh`. Profile in `hosts/ubuntu-server/`.
+- **rxl@ubuntu (Home Manager only)** – `home-manager switch --flake .#rxl@ubuntu` or `./scripts/home-switch.sh`. Profile in `hosts/ubuntu-server/`.
 
 Add more hosts by copying one of the existing directories and wiring it into `flake.nix`.
 

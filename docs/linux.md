@@ -10,7 +10,7 @@ This repo now exposes both full NixOS hosts and standalone Home Manager profiles
 
 ## Ubuntu server (Home Manager)
 1. Install the [Nix installer](https://nixos.org/download.html#nix-install-linux) on the Hetzner box.
-2. Run `nix run nixpkgs#home-manager -- switch --flake ~/.config/nix#rex@ubuntu` (or `./scripts/home-switch.sh`).
+2. Run `nix run nixpkgs#home-manager -- switch --flake ~/.config/nix#rxl@ubuntu` (or `./scripts/home-switch.sh`).
 3. `hosts/ubuntu-server/home.nix` holds any server-specific overrides (e.g., disable desktop tooling, change username/path).
 
 ### Tips

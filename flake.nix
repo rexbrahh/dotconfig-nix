@@ -127,7 +127,7 @@
 
       # --- Standalone Home Manager profiles ---
       homeConfigurations = {
-        "rex@ubuntu" = home-manager.lib.homeManagerConfiguration {
+        "rxl@ubuntu" = home-manager.lib.homeManagerConfiguration {
           pkgs = pkgsFor."x86_64-linux";
           modules = [
             ./hosts/ubuntu-server/home.nix
