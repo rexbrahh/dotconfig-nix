@@ -15,7 +15,7 @@ in
     in
     [
       # Darwin-level modules
-      ../../modules/default.nix
+      ../../modules/os/darwin/default.nix
       ../../modules/vagrant.nix
       # ML tunnels (SSH port forwards via launchd; disabled by default)
       ../../modules/ml-tunnels.nix
