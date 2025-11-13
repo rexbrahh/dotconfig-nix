@@ -1,5 +1,5 @@
 {
-  description = "macOS managed with nix-darwin + Home Manager (flakes)";
+  description = "Cross-platform Nix configs for macOS (nix-darwin) and Linux (NixOS & Home Manager)";
 
   # Optional: declare extra binary caches here if you explicitly trust them.
   # Keeping this empty reduces supply-chain trust expansion. Prefer
@@ -43,30 +43,43 @@
       ...
     }:
     let
-      # Helper for Intel vs Apple Silicon
-      system = "aarch64-darwin"; # use "x86_64-darwin" for Intel Macs
-      pkgs = import nixpkgs {
-        inherit system;
-        config.allowUnfree = true;
-      };
+      inherit (nixpkgs.lib) genAttrs optionalAttrs;
+      primarySystem = "aarch64-darwin";
+      supportedSystems = [
+        "aarch64-darwin"
+        "x86_64-darwin"
+        "x86_64-linux"
+        "aarch64-linux"
+      ];
+      overlaysFor = system: [
+        (import ./overlays/default.nix)
+        (final: prev:
+          let
+            stable = import inputs."nixpkgs-stable" {
+              inherit system;
+              config = prev.config;
+            };
+          in
+          {
+            stable = stable;
+          }
+        )
+      ];
+      pkgsFor = genAttrs supportedSystems (system:
+        import nixpkgs {
+          inherit system;
+          config.allowUnfree = true;
+          overlays = overlaysFor system;
+        }
+      );
     in
     {
       # --- nix-darwin host(s) ---
       darwinConfigurations."macbook" = darwin.lib.darwinSystem {
-        inherit system;
+        system = primarySystem;
         modules = [
           # Overlay: expose `pkgs.stable` from nixpkgs-stable while base = nixpkgs (unstable)
-          ({ ... }: {
-            nixpkgs.overlays = [
-              # Your local overlay (overrides go here)
-              (import ./overlays/default.nix)
-              # Add stable channel under pkgs.stable
-              (final: prev:
-                let stable = import inputs."nixpkgs-stable" { inherit (prev) system; config = prev.config; };
-                in { stable = stable; }
-              )
-            ];
-          })
+          ({ ... }: { nixpkgs.overlays = overlaysFor primarySystem; })
           # Install & manage Homebrew itself (pinned)
           nix-homebrew.darwinModules.nix-homebrew
           {
@@ -100,66 +113,76 @@
       };
 
       # Convenience: `nix run .#switch`
-      apps.${system}.switch = {
-        type = "app";
-        program = "${pkgs.writeShellScriptBin "switch" ''
-          set -euo pipefail
-          darwin-rebuild switch --flake ${self}
-        ''}/bin/switch";
-        meta = {
-          description = "Activate the macbook nix-darwin configuration";
-        };
-      };
+      apps = genAttrs supportedSystems (system:
+        let
+          pkgs = pkgsFor.${system};
+        in
+        optionalAttrs pkgs.stdenv.isDarwin {
+          switch = {
+            type = "app";
+            program = "${pkgs.writeShellScriptBin "switch" ''
+              set -euo pipefail
+              darwin-rebuild switch --flake ${self}
+            ''}/bin/switch";
+            meta.description = "Activate the macbook nix-darwin configuration";
+          };
+        }
+      );
 
       # Quick formatter for this repo (nix only)
-      formatter.${system} = pkgs.alejandra;
+      formatter = genAttrs supportedSystems (system: (pkgsFor.${system}).alejandra);
 
       # Dev shells
-      devShells.${system} = {
-        # Formatters & linters used by pre-commit
-        default = pkgs.mkShell {
-          packages = with pkgs; [
-            alejandra
-            statix
-            deadnix
-            treefmt
-            shfmt
-            stylua
-            taplo
-            yamlfmt
-            jq
-            pre-commit
-          ];
-        };
+      devShells = genAttrs supportedSystems (system:
+        let
+          pkgs = pkgsFor.${system};
+        in
+        {
+          # Formatters & linters used by pre-commit
+          default = pkgs.mkShell {
+            packages = with pkgs; [
+              alejandra
+              statix
+              deadnix
+              treefmt
+              shfmt
+              stylua
+              taplo
+              yamlfmt
+              jq
+              pre-commit
+            ];
+          };
 
-        # K8s/microservices shell: `nix develop .#k8s`
-        k8s = pkgs.mkShell {
-          packages = with pkgs; [
-            kind kubectl kubernetes-helm kustomize skaffold tilt k9s dive
-          ];
-          shellHook = ''
-            export KIND_CLUSTER_NAME=dev
-            alias kind-up='kind create cluster --name "$KIND_CLUSTER_NAME" --wait 120s'
-            alias kind-down='kind delete cluster --name "$KIND_CLUSTER_NAME"'
-            alias kctx='kubectx'
-            alias kns='kubens'
-            alias k='kubectl'
-            alias klogs='kubectl logs -f'
-          '';
-        };
+          # K8s/microservices shell: `nix develop .#k8s`
+          k8s = pkgs.mkShell {
+            packages = with pkgs; [
+              kind kubectl kubernetes-helm kustomize skaffold tilt k9s dive
+            ];
+            shellHook = ''
+              export KIND_CLUSTER_NAME=dev
+              alias kind-up='kind create cluster --name "$KIND_CLUSTER_NAME" --wait 120s'
+              alias kind-down='kind delete cluster --name "$KIND_CLUSTER_NAME"'
+              alias kctx='kubectx'
+              alias kns='kubens'
+              alias k='kubectl'
+              alias klogs='kubectl logs -f'
+            '';
+          };
 
-        # DB tooling shell: `nix develop .#db`
-        db = pkgs.mkShell {
-          packages = with pkgs; [
-            postgresql pgcli sqlite litecli redis mongosh
-          ];
-          shellHook = ''
-            alias pg-cli='psql "$PGURL"'
-            alias pg-local='PGURL=postgres://postgres:postgres@localhost:5432/postgres pg-cli'
-            alias redis-cli-local='redis-cli -u redis://localhost:6379'
-            echo "Tip: use 'pg-local' or set PGURL to point at your DB."
-          '';
-        };
-      };
+          # DB tooling shell: `nix develop .#db`
+          db = pkgs.mkShell {
+            packages = with pkgs; [
+              postgresql pgcli sqlite litecli redis mongosh
+            ];
+            shellHook = ''
+              alias pg-cli='psql "$PGURL"'
+              alias pg-local='PGURL=postgres://postgres:postgres@localhost:5432/postgres pg-cli'
+              alias redis-cli-local='redis-cli -u redis://localhost:6379'
+              echo "Tip: use 'pg-local' or set PGURL to point at your DB."
+            '';
+          };
+        }
+      );
     };
 }
