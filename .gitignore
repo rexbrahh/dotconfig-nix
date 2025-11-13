@@ -5,3 +5,4 @@ MIGRATION-COVERAGE.md
 result
 result-*
 hosts/nixos-vm-m4/hardware/generated.nix
+hosts/server-ubuntu/local.nix
