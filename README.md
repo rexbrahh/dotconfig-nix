@@ -6,14 +6,14 @@ Shared flake for macOS (nix-darwin), NixOS, and standalone Linux + Home Manager 
 
 ## Supported targets
 - **macbook (nix-darwin)** – `nix run .#switch` or `./scripts/darwin-switch.sh`. Lives under `hosts/macbook/`.
-- **framework (NixOS)** – `sudo nixos-rebuild switch --flake .#framework` or `./scripts/nixos-switch.sh`. Config in `hosts/framework/`.
-- **rex@wsl (Home Manager only)** – `home-manager switch --flake .#rex@wsl` or `./scripts/home-switch.sh`. Profile in `hosts/wsl/`.
+- **nixos-vm-m4 (NixOS VM)** – `sudo nixos-rebuild switch --flake .#nixos-vm-m4` or `./scripts/nixos-switch.sh`. Config in `hosts/nixos-vm-m4/`.
+- **rex@ubuntu (Home Manager only)** – `home-manager switch --flake .#rex@ubuntu` or `./scripts/home-switch.sh`. Profile in `hosts/ubuntu-server/`.
 
 Add more hosts by copying one of the existing directories and wiring it into `flake.nix`.
 
 ## Repository layout
 - `flake.nix` – pins nixpkgs, nix-darwin, Home Manager, overlays.
-- `hosts/` – per-host system modules (`macbook`, `framework`, `wsl`, ...).
+- `hosts/` – per-host system modules (`macbook`, `nixos-vm-m4`, `ubuntu-server`, ...).
 - `modules/` – reusable system + HM modules, split into `common/` and `os/<platform>/`.
 - `home/users/rex/` – shared Home Manager profile(s).
 - `dotfiles/`, `templates/`, `scripts/`, `secrets/` – supporting assets (Agenix payloads stay encrypted).
