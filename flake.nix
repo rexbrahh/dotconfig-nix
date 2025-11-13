@@ -112,6 +112,29 @@
         ];
       };
 
+      # --- NixOS host(s) ---
+      nixosConfigurations = {
+        framework = nixpkgs.lib.nixosSystem {
+          system = "x86_64-linux";
+          modules = [
+            ({ ... }: { nixpkgs.overlays = overlaysFor "x86_64-linux"; })
+            ./hosts/framework/configuration.nix
+            home-manager.nixosModules.home-manager
+            agenix.nixosModules.default
+          ];
+        };
+      };
+
+      # --- Standalone Home Manager profiles ---
+      homeConfigurations = {
+        "rex@wsl" = home-manager.lib.homeManagerConfiguration {
+          pkgs = pkgsFor."x86_64-linux";
+          modules = [
+            ./hosts/wsl/home.nix
+          ];
+        };
+      };
+
       # Convenience: `nix run .#switch`
       apps = genAttrs supportedSystems (system:
         let

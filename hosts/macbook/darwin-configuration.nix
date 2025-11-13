@@ -90,45 +90,7 @@ in
     useGlobalPkgs = true;
     useUserPackages = true;
 
-    users.rexliu = {
-      # Now bring in your HM modules here:
-      imports = [
-        # Home Manager (user) modules only
-        ../../modules/home.nix
-        # Optional dotfiles (copied from this repo)
-        ../../modules/dotfiles/default.nix
-        # Language/tooling profiles
-        ../../modules/profiles/dev-cpp.nix
-        ../../modules/profiles/dev-zig.nix
-        ../../modules/profiles/dev-rust.nix
-        ../../modules/profiles/dev-go.nix
-        ../../modules/profiles/dev-node.nix
-        ../../modules/profiles/dev-python.nix
-        ../../modules/profiles/dev-java.nix
-        ../../modules/profiles/dev-kotlin.nix
-        ../../modules/profiles/dev-php.nix
-        ../../modules/profiles/dev-ruby.nix
-        ../../modules/profiles/dev-elixir.nix
-        ../../modules/profiles/dev-containers.nix
-        ../../modules/profiles/dev-databases.nix
-        ../../modules/profiles/dev-vm.nix
-        ../../modules/onepassword.nix
-        # ML-focused global tooling (opt-in modules)
-        ../../modules/profiles/dev-ml.nix
-        ../../modules/ml-env.nix
-        ../../modules/ml-remote.nix
-      ];
-
-      # Enable 1Password CLI and SSH agent integration
-      onepassword = {
-        enable = true;
-        sshAgent.enable = true;
-      };
-
-      # Standardize ML data/cache dirs and remote SSH ergonomics
-      ml.env.enable = true;
-      ml.remote.enable = true;
-    };
+    users.rexliu = import ./home.nix;
   };
   home-manager.backupFileExtension = "rebuild";
   programs.fish.enable = true;
