@@ -13,9 +13,10 @@ let
    boot.loader.systemd-boot.enable = true;
    boot.loader.efi.canTouchEfiVariables = true;
 
-   networking.hostName = "nixos-vm-m4";
-   networking.networkmanager.enable = true;
-   time.timeZone = "America/Los_Angeles";
+  networking.hostName = "nixos-vm-m4";
+  networking.networkmanager.enable = true;
+  time.timeZone = "America/Los_Angeles";
+  console.keyMap = "us";
 
   users.users.rxl = {
     isNormalUser = true;
@@ -23,21 +24,30 @@ let
     extraGroups = [ "wheel" "networkmanager" ];
     shell = pkgs.fish;
     home = "/home/rxl";
+    initialPassword = "changeme";
   };
 
-   services.openssh.enable = true;
+  services.openssh.enable = true;
+  services.qemuGuest.enable = true;
 
-   nix.settings = {
-     experimental-features = [ "nix-command" "flakes" ];
+  nix.settings = {
+    experimental-features = [ "nix-command" "flakes" ];
     trusted-users = [ "root" "rxl" ];
-     auto-optimise-store = true;
-   };
+    auto-optimise-store = true;
+  };
 
-   home-manager = {
-     useGlobalPkgs = true;
+  environment.systemPackages = with pkgs; [
+    git
+    vim
+    curl
+    wget
+  ];
+
+  home-manager = {
+    useGlobalPkgs = true;
     useUserPackages = true;
     users.rxl = import ./home.nix;
   };
 
-   system.stateVersion = "24.11";
- }
+  system.stateVersion = "24.11";
+}

@@ -1,9 +1,9 @@
-# nixos-vm-m4 (NixOS VM)
+# nixos-vm-m4
 
-Apple Silicon VM target that runs the shared configuration. Generate hardware info inside the VM:
+Apple Silicon (aarch64) VM target. See `docs/nixos-vm-m4.md` for the full bootstrap walkthrough using the minimal NixOS ISO.
 
-```
-sudo nixos-generate-config --show-hardware-config > hosts/nixos-vm-m4/hardware/generated.nix
-```
-
-The flake automatically imports that file; until you add it, `nix flake check` will emit a warning.
+Key defaults:
+- user `rxl` (initial password `changeme`, part of `wheel` and `networkmanager`)
+- qemu guest agent enabled
+- `nix develop` tooling via shared modules
+- hardware file expected at `hosts/nixos-vm-m4/hardware/generated.nix`

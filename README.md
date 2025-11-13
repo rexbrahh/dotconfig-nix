@@ -17,7 +17,7 @@ Add more hosts by copying one of the existing directories and wiring it into `fl
 - `modules/` – reusable system + HM modules, split into `common/` and `os/<platform>/`.
 - `home/users/rex/` – shared Home Manager profile(s).
 - `dotfiles/`, `templates/`, `scripts/`, `secrets/` – supporting assets (Agenix payloads stay encrypted).
-- `docs/` – extra notes (`docs/linux.md` explains Linux bootstrap flows).
+- `docs/` – extra notes (`docs/linux.md` for Linux targets, `docs/nixos-vm-m4.md` for the VM bootstrap).
 
 ## Daily commands
 - `nix flake check` – evaluate all host outputs (use `--all-systems` to include Linux derivations).
