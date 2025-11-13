@@ -21,7 +21,10 @@ in
       fish_add_path $HOME/.local/share/solana/install/active_release/bin
       direnv hook fish | source 
       set -gx EMSDK_QUIET 1
-      source "/Users/rexliu/emsdk/emsdk_env.fish"
+      set -l emsdk_env "$HOME/emsdk/emsdk_env.fish"
+      if test -f "$emsdk_env"
+        source "$emsdk_env"
+      end
       # EDITOR (SSH-aware) + VISUAL/PAGER
       if set -q SSH_CONNECTION
         set -gx EDITOR vim
@@ -185,8 +188,7 @@ in
     enable = true;
     defaultCacheTtl = 7200;
     enableSshSupport = false;
-    # pinentry on macOS (option renamed)
-    pinentry.package = pkgs.pinentry_mac or pkgs.pinentry;
+    pinentry.package = if pkgs.stdenv.isDarwin then pkgs.pinentry_mac else pkgs.pinentry;
   };
   programs.ssh = {
     enable = true;
@@ -194,15 +196,18 @@ in
     matchBlocks."*" = {
       serverAliveInterval = 60;
       serverAliveCountMax = 3;
-      extraOptions = {
-        AddKeysToAgent = "ask";
-        IdentitiesOnly = "yes";
-        UseKeychain = "yes";
-        ForwardAgent = "no";
-        StrictHostKeyChecking = "yes";
-        UpdateHostKeys = "yes";
-        HashKnownHosts = "yes";
-      };
+      extraOptions =
+        {
+          AddKeysToAgent = "ask";
+          IdentitiesOnly = "yes";
+          ForwardAgent = "no";
+          StrictHostKeyChecking = "yes";
+          UpdateHostKeys = "yes";
+          HashKnownHosts = "yes";
+        }
+        // lib.optionalAttrs pkgs.stdenv.isDarwin {
+          UseKeychain = "yes";
+        };
     };
     matchBlocks."gpu-box".extraOptions.ForwardAgent = "yes";
   };
