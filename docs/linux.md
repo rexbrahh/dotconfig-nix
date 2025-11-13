@@ -8,10 +8,10 @@ This repo now exposes both full NixOS hosts and standalone Home Manager profiles
 3. Review `hosts/nixos-vm-m4/configuration.nix` for VM-specific services.
 4. Activate with `sudo nixos-rebuild switch --flake ~/.config/nix#nixos-vm-m4` or `scripts/nixos-switch.sh`.
 
-## Ubuntu server (Home Manager)
+## htznrpsnl (Ubuntu server, Home Manager)
 1. Install the [Nix installer](https://nixos.org/download.html#nix-install-linux) on the Hetzner box.
-2. Run `nix run nixpkgs#home-manager -- switch --flake ~/.config/nix#rxl@ubuntu` (or `./scripts/home-switch.sh`).
-3. `hosts/ubuntu-server/home.nix` holds any server-specific overrides (e.g., disable desktop tooling, change username/path).
+2. Run `nix run nixpkgs#home-manager -- switch --flake ~/.config/nix#rxl@htznrpsnl` (or `./scripts/home-switch.sh`).
+3. `hosts/htznrpsnl/home.nix` holds any server-specific overrides (e.g., disable desktop tooling, change username/path).
 
 ### Tips
 - Use `nix develop .#default --system x86_64-linux` to test Linux devShell changes from macOS.
