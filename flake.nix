@@ -127,10 +127,10 @@
 
       # --- Standalone Home Manager profiles ---
       homeConfigurations = {
-        "rxl@ubuntu" = home-manager.lib.homeManagerConfiguration {
+        "rxl@htznrpsnl" = home-manager.lib.homeManagerConfiguration {
           pkgs = pkgsFor."x86_64-linux";
           modules = [
-            ./hosts/ubuntu-server/home.nix
+            ./hosts/htznrpsnl/home.nix
           ];
         };
       };
