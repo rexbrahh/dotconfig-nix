@@ -21,7 +21,7 @@ Add more hosts by copying one of the existing directories and wiring it into `fl
 
 ## Daily commands
 - `nix flake check` – evaluate all host outputs (use `--all-systems` to include Linux derivations).
-- `nix fmt` / `nix run nixpkgs#treefmt` – format everything (uses Alejandra/Treefmt).
+- `nix fmt` – runs treefmt using `treefmt.toml` (or invoke `treefmt` manually).
 - `nix develop .#default` – enter the lint shell (Statix, Deadnix, shfmt, etc.).
 - `./scripts/<target>-switch.sh` – human-friendly wrappers for darwin/nixos/home-manager activates.
 

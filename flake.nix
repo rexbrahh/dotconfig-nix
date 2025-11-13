@@ -152,8 +152,8 @@
         }
       );
 
-      # Quick formatter for this repo (nix only)
-      formatter = genAttrs supportedSystems (system: (pkgsFor.${system}).alejandra);
+      # Quick formatter for this repo (treefmt handles multi-language formatting)
+      formatter = genAttrs supportedSystems (system: (pkgsFor.${system}).treefmt);
 
       # Dev shells
       devShells = genAttrs supportedSystems (system:

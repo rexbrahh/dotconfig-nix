@@ -1,12 +1,12 @@
 { lib, ... }:
+let
+  generated = ./hardware/generated.nix;
+  example = ./hardware/generated.example.nix;
+  hardwareModule = if builtins.pathExists generated then generated else example;
+in
 {
-  imports = [ ];
+  imports = [ hardwareModule ];
 
-  # Replace these with the values from `nixos-generate-config` on the host.
-  fileSystems."/" = lib.mkDefault {
-    device = "/dev/disk/by-uuid/00000000-0000-4000-8000-000000000000";
-    fsType = "ext4";
-  };
-
-  swapDevices = [ ];
+  warnings = lib.optional (!builtins.pathExists generated)
+    "hosts/framework/hardware/generated.nix missing — run `nixos-generate-config --show-hardware-config > hosts/framework/hardware/generated.nix` on the Framework laptop.";
 }

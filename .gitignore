@@ -4,3 +4,4 @@ AGENT.md
 MIGRATION-COVERAGE.md
 result
 result-*
+hosts/framework/hardware/generated.nix

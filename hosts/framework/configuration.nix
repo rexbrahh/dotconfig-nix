@@ -1,9 +1,12 @@
 { lib, inputs, config, pkgs, ... }:
+let
+  secretsModule = ../../secrets/secrets.nix;
+in
 {
   imports = [
     ./hardware-configuration.nix
     ../../modules/os/nixos/default.nix
-  ];
+  ] ++ lib.optional (builtins.pathExists secretsModule) secretsModule;
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
 
