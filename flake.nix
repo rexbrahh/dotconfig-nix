@@ -114,11 +114,11 @@
 
       # --- NixOS host(s) ---
       nixosConfigurations = {
-        framework = nixpkgs.lib.nixosSystem {
-          system = "x86_64-linux";
+        "nixos-vm-m4" = nixpkgs.lib.nixosSystem {
+          system = "aarch64-linux";
           modules = [
-            ({ ... }: { nixpkgs.overlays = overlaysFor "x86_64-linux"; })
-            ./hosts/framework/configuration.nix
+            ({ ... }: { nixpkgs.overlays = overlaysFor "aarch64-linux"; })
+            ./hosts/nixos-vm-m4/configuration.nix
             home-manager.nixosModules.home-manager
             agenix.nixosModules.default
           ];
@@ -127,10 +127,10 @@
 
       # --- Standalone Home Manager profiles ---
       homeConfigurations = {
-        "rex@wsl" = home-manager.lib.homeManagerConfiguration {
+        "rex@ubuntu" = home-manager.lib.homeManagerConfiguration {
           pkgs = pkgsFor."x86_64-linux";
           modules = [
-            ./hosts/wsl/home.nix
+            ./hosts/ubuntu-server/home.nix
           ];
         };
       };
