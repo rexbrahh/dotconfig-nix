@@ -462,7 +462,6 @@
     casks = [
       "tailscale-app"
       "clickhouse"
-      "cyberduck"
       "db-browser-for-sqlite"
       "devtoys"
       "font-jetbrains-mono"
