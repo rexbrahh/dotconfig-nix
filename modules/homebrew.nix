@@ -462,7 +462,6 @@
     casks = [
       "tailscale-app"
       "clickhouse"
-      "db-browser-for-sqlite"
       "devtoys"
       "font-jetbrains-mono"
       "font-symbols-only-nerd-font"
@@ -487,7 +486,6 @@
       "ssh-config-editor"
       "tableplus"
       "temurin"
-      "termius"
     ];
   };
 
