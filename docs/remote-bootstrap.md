@@ -20,9 +20,9 @@ This mirrors the mitchellh/nixos-config flow but hardens after the final switch.
    ```bash
    NIXUSER=root make vm/bootstrap   # copies repo, switch to flake, optional secrets copy, reboot
    ```
-4) Log in as `rexliu` (initial password `changeme`); the final config disables root login and password SSH (keys only) via `modules/os/nixos/default.nix`.
+4) Log in as `rexliu` (initial password `changeme`); the final config disables root login and password SSH (keys only), requires sudo passwords, keeps users immutable, and enables the firewall with SSH open via `modules/os/nixos/default.nix`.
 
 ## Notes
 - `vm/secrets` rsyncs `~/.ssh` and `~/.gnupg`; run only on trusted networks or skip by editing the Makefile invocation.
-- If you rely on password SSH long-term, override `services.openssh.settings.PasswordAuthentication = true;` in the host, but default is hardened.
+- If you rely on password SSH long-term, override `services.openssh.settings.PasswordAuthentication = true;` in the host, but default is hardened and the firewall allows only SSH by default.
 - Always regenerate `hosts/<name>/hardware-configuration.nix` on each machine before switching.
