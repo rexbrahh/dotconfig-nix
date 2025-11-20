@@ -50,6 +50,7 @@ cache:
 # Bootstrap a brand-new NixOS install over SSH. Assumes you set a root password on the ISO.
 vm/bootstrap0:
 	ssh $(SSH_OPTIONS) -p$(NIXPORT) root@$(NIXADDR) " \
+		if [ ! -b $(DISK) ]; then echo \"Error: $(DISK) not found\"; exit 1; fi; \
 		parted $(DISK) -- mklabel gpt; \
 		parted $(DISK) -- mkpart primary 512MiB -8GB; \
 		parted $(DISK) -- mkpart primary linux-swap -8GB 100\%; \
