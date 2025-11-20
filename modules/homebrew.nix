@@ -471,7 +471,6 @@
       "google-drive"
       "gpg-suite"
       "vagrant"
-      "hiddenbar"
       "kitty"
       "macupdater"
       "multipass"
