@@ -12,6 +12,10 @@
   };
 
   services.openssh.enable = lib.mkDefault true;
+  services.openssh.settings = {
+    PasswordAuthentication = lib.mkDefault false;
+    PermitRootLogin = lib.mkDefault "no";
+  };
   programs.fish.enable = lib.mkDefault true;
   programs.zsh.enable = lib.mkDefault true;
 
