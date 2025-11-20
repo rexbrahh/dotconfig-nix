@@ -4,7 +4,6 @@ let
   secretFile = ./anthropic-api-key.age;
   owners = [
     { name = "rexliu"; defaultGroup = "staff"; }
-    { name = "rxl"; defaultGroup = "users"; }
   ];
 
   mkSecret = { name, defaultGroup }:

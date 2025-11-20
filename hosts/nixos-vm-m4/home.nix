@@ -1,5 +1,5 @@
 { lib, ... }@args:
   (import ../../home/users/rex/workstation.nix args) // {
-    home.username = lib.mkDefault "rxl";
-    home.homeDirectory = lib.mkDefault "/home/rxl";
+    home.username = lib.mkDefault "rexliu";
+    home.homeDirectory = lib.mkDefault "/home/rexliu";
   }
