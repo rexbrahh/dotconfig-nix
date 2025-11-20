@@ -4,8 +4,8 @@ Generic Home Manager profile for the rented Ubuntu server. To keep the real host
 
 ```
 {
-  username = "rxl";
-  homeDirectory = "/home/rxl";
+  username = "rexliu";
+  homeDirectory = "/home/rexliu";
 }
 ```
 

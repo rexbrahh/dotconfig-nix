@@ -27,6 +27,6 @@ These are the steps I use to bring up the Apple Silicon VM with the base NixOS I
    ```bash
    nixos-install --root /mnt --flake /mnt/etc/nixos#nixos-vm-m4
    ```
-7. Reboot, log in as user `rxl` (initial password `changeme`), and immediately change the password with `passwd`.
+7. Reboot, log in as user `rexliu` (initial password `changeme`), and immediately change the password with `passwd`.
 
 If you keep your repo elsewhere, just adjust the clone path and the `nixos-install --flake` argument accordingly. The important bit is that `hosts/nixos-vm-m4/hardware/generated.nix` contains the VM’s hardware profile before the install.

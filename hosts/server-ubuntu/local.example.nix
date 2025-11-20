@@ -1,5 +1,5 @@
 {
-  username = "rxl";
-  homeDirectory = "/home/rxl";
+  username = "rexliu";
+  homeDirectory = "/home/rexliu";
   enableRemoteMl = false;
 }

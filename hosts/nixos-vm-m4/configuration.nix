@@ -18,12 +18,12 @@ let
   time.timeZone = "America/Los_Angeles";
   console.keyMap = "us";
 
-  users.users.rxl = {
+  users.users.rexliu = {
     isNormalUser = true;
     description = "Rex Liu";
     extraGroups = [ "wheel" "networkmanager" ];
     shell = pkgs.fish;
-    home = "/home/rxl";
+    home = "/home/rexliu";
     initialPassword = "changeme";
   };
 
@@ -32,7 +32,7 @@ let
 
   nix.settings = {
     experimental-features = [ "nix-command" "flakes" ];
-    trusted-users = [ "root" "rxl" ];
+    trusted-users = [ "root" "rexliu" ];
     auto-optimise-store = true;
   };
 
@@ -46,7 +46,7 @@ let
   home-manager = {
     useGlobalPkgs = true;
     useUserPackages = true;
-    users.rxl = import ./home.nix;
+    users.rexliu = import ./home.nix;
   };
 
   system.stateVersion = "24.11";
