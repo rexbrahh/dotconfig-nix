@@ -6,6 +6,9 @@ let
    imports = [
      ./hardware-configuration.nix
      ../../modules/os/nixos/default.nix
+     ../../modules/os/nixos/vmware-fusion.nix
+     ../../modules/os/nixos/desktop.nix
+     ../../modules/os/nixos/docker.nix
    ] ++ lib.optional (builtins.pathExists secretsModule) secretsModule;
 
    nixpkgs.hostPlatform = lib.mkDefault "aarch64-linux";
@@ -21,14 +24,14 @@ let
   users.users.rexliu = {
     isNormalUser = true;
     description = "Rex Liu";
-    extraGroups = [ "wheel" "networkmanager" ];
+    extraGroups = [ "wheel" "networkmanager" "docker" ];
     shell = pkgs.fish;
     home = "/home/rexliu";
     initialPassword = "changeme";
   };
 
   services.openssh.enable = true;
-  services.qemuGuest.enable = true;
+  services.qemuGuest.enable = false;
 
   nix.settings = {
     experimental-features = [ "nix-command" "flakes" ];

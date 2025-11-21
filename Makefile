@@ -49,6 +49,7 @@ cache:
 
 # Bootstrap a brand-new NixOS install over SSH. Assumes you set a root password on the ISO.
 vm/bootstrap0:
+	@if [ "$${CONFIRM:-}" != "1" ]; then echo "Set CONFIRM=1 to run destructive bootstrap0"; exit 1; fi
 	ssh $(SSH_OPTIONS) -p$(NIXPORT) root@$(NIXADDR) " \
 		if [ ! -b $(DISK) ]; then echo \"Error: $(DISK) not found\"; exit 1; fi; \
 		parted $(DISK) -- mklabel gpt; \
