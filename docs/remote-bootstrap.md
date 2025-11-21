@@ -14,7 +14,7 @@ This mirrors the mitchellh/nixos-config flow but hardens after the final switch.
 2) From your workstation (macOS):
    ```bash
    export NIXADDR=192.168.x.x NIXPORT=22 NIXNAME=nixos-vm-m4 DISK=/dev/vda
-   make vm/bootstrap0    # partitions/formats, enables temp password SSH, installs, reboots
+   CONFIRM=1 make vm/bootstrap0    # partitions/formats, enables temp password SSH, installs, reboots
    ```
 3) After it reboots, copy config and switch:
    ```bash
@@ -25,4 +25,5 @@ This mirrors the mitchellh/nixos-config flow but hardens after the final switch.
 ## Notes
 - `vm/secrets` rsyncs `~/.ssh` and `~/.gnupg`; run only on trusted networks or skip by editing the Makefile invocation.
 - If you rely on password SSH long-term, override `services.openssh.settings.PasswordAuthentication = true;` in the host, but default is hardened and the firewall allows only SSH by default.
+- Default desktop stack is Hyprland with i3 and GNOME sessions available via GDM. Docker runs by default; the firewall stays on.
 - Always regenerate `hosts/<name>/hardware-configuration.nix` on each machine before switching.
