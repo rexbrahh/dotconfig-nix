@@ -158,11 +158,13 @@ fi
 
 ## from andres' dotfiles
 
-# If not in tmux, start tmux.
-#if [[ -z ${TMUX+X}${ZSH_SCRIPT+X}
-#${ZSH_EXECUTION_STRING+X} ]]; then
-#    exec tmux -u new -s init -A -D
-#fi
+# Only auto attach tmux for interactive, local terminal sessions
+if [[ -o interactive ]] \
+   && [[ -z ${TMUX+X} ]] \
+   && [[ -z ${SSH_TTY+X} ]] \
+   && [[ "$TERM_PROGRAM" = "Ghostty" || "$TERM_PROGRAM" = "Apple_Terminal" ]]; then
+  exec tmux -u new -s init -A -D
+fi
 
 function zcompile-many() {
     local f
