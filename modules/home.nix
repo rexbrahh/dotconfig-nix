@@ -153,6 +153,14 @@ in {
     PAGER = "less";
   };
 
+  programs.tmux = {
+    enable = true;
+    terminal = "tmux-256color";
+    escapeTime = 20;
+    historyLimit = 2000000000;
+    extraConfig = builtins.readFile ../dotfiles/tmux/tmux.conf;
+  };
+
   # Prompt
   programs.starship = {
     enable = true;
