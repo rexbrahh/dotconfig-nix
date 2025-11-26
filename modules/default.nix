@@ -1,2 +1,2 @@
-{ ... }@args:
-  import ./os/darwin/default.nix args
+{...} @ args:
+import ./os/darwin/default.nix args

@@ -1,5 +1,4 @@
-{ pkgs, ... }:
-{
+{pkgs, ...}: {
   # Minimal, global CLI/data tooling for ML workflows (no heavy frameworks).
   # Import this file under home-manager.users.<name>.imports to enable.
   home.packages = with pkgs; [

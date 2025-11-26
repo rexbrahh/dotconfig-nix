@@ -1,16 +1,23 @@
-{ lib, config, ... }:
-
-let
+{
+  lib,
+  config,
+  ...
+}: let
   secretFile = ./anthropic-api-key.age;
   owners = [
-    { name = "rexliu"; defaultGroup = "staff"; }
+    {
+      name = "rexliu";
+      defaultGroup = "staff";
+    }
   ];
 
-  mkSecret = { name, defaultGroup }:
-    let
-      homePath = lib.attrByPath [ "users" "users" name "home" ] null config;
-      group = lib.attrByPath [ "users" "users" name "group" ] defaultGroup config;
-    in
+  mkSecret = {
+    name,
+    defaultGroup,
+  }: let
+    homePath = lib.attrByPath ["users" "users" name "home"] null config;
+    group = lib.attrByPath ["users" "users" name "group"] defaultGroup config;
+  in
     lib.mkIf (homePath != null) {
       "anthropic-api-key-${name}" = {
         file = secretFile;
@@ -21,6 +28,6 @@ let
       };
     };
 in
-lib.mkIf (builtins.pathExists secretFile) {
-  age.secrets = lib.mkMerge (map mkSecret owners);
-}
+  lib.mkIf (builtins.pathExists secretFile) {
+    age.secrets = lib.mkMerge (map mkSecret owners);
+  }

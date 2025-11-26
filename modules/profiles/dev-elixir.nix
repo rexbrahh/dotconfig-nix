@@ -1,5 +1,4 @@
-{ pkgs, ... }:
-{
+{pkgs, ...}: {
   # Elixir/Erlang toolchain
   home.packages = with pkgs; [
     erlang
@@ -7,4 +6,3 @@
     rebar3
   ];
 }
-

@@ -1,5 +1,4 @@
-{ lib, ... }:
-{
+{lib, ...}: {
   imports = [
     ../../../modules/home.nix
     ../../../modules/dotfiles/default.nix

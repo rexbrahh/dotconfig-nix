@@ -1,8 +1,7 @@
-{ pkgs, ... }:
-{
+{pkgs, ...}: {
   # Database client workflows (CLI tools). Prefer project devShells for servers.
   home.packages = with pkgs; [
-    postgresql    # includes psql
+    postgresql # includes psql
     pgcli
     sqlite
     litecli
