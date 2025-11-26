@@ -1,16 +1,19 @@
-{ config, pkgs, lib, ... }:
-
-let
-  anthropicKeyPath = "${config.home.homeDirectory}/.config/secrets/anthropic_api_key";
-in
 {
+  config,
+  pkgs,
+  lib,
+  ...
+}: let
+  anthropicKeyPath = "${config.home.homeDirectory}/.config/secrets/anthropic_api_key";
+  zshrcPath = ../dotfiles/zsh/.zshrc;
+in {
   # Home Manager release compatibility (don’t change lightly)
   home.stateVersion = "25.05";
   programs.home-manager.enable = true;
 
   # Choose your login shell (per-user)
   programs.fish = {
-    enable = true;
+    enable = false;
     interactiveShellInit = ''
       # PATH & basics
       set -Ux fish_greeting
@@ -19,7 +22,7 @@ in
       end
       fish_add_path $HOME/.local/bin
       fish_add_path $HOME/.local/share/solana/install/active_release/bin
-      direnv hook fish | source 
+      direnv hook fish | source
       set -gx EMSDK_QUIET 1
       set -l emsdk_env "$HOME/emsdk/emsdk_env.fish"
       if test -f "$emsdk_env"
@@ -36,7 +39,7 @@ in
       fish_add_path -g /run/current-system/sw/bin
       set -gx PAGER less
       umask 077
-      
+
       zoxide init fish | source
       #set -gx ANTHROPIC_BASE_URL https://cc.yovy.app
       if test -f "${anthropicKeyPath}"
@@ -59,7 +62,7 @@ in
       gl = "git pull --ff-only";
       gp = "git push";
       nrs = "darwin-rebuild switch --flake ~/.config/nix";
-      hm  = "home-manager";
+      hm = "home-manager";
       nhs = "nh os switch -- --flake ~/.config/nix";
       nhb = "nh os boot -- --flake ~/.config/nix";
       nhc = "nh clean all";
@@ -130,6 +133,26 @@ in
     };
   };
 
+  programs.zsh = {
+    enable = true;
+    enableCompletion = true;
+    autosuggestion.enable = true;
+    syntaxHighlighting.enable = true;
+    initContent = ''
+      ${builtins.readFile zshrcPath}
+      if command -v comma >/dev/null; then
+        alias ,="comma"
+      fi
+    '';
+  };
+
+  home.sessionVariables = {
+    SHELL = "${pkgs.zsh}/bin/zsh";
+    EDITOR = "nvim";
+    VISUAL = "nvim";
+    PAGER = "less";
+  };
+
   # Prompt
   programs.starship = {
     enable = true;
@@ -166,7 +189,7 @@ in
   # Git setup
   programs.git = {
     enable = true;
-    userName  = "Rex Liu";
+    userName = "Rex Liu";
     userEmail = "hi@r3x.sh";
     delta.enable = true;
     extraConfig = {
@@ -188,7 +211,10 @@ in
     enable = true;
     defaultCacheTtl = 7200;
     enableSshSupport = false;
-    pinentry.package = if pkgs.stdenv.isDarwin then pkgs.pinentry_mac else pkgs.pinentry;
+    pinentry.package =
+      if pkgs.stdenv.isDarwin
+      then pkgs.pinentry_mac
+      else pkgs.pinentry;
   };
   programs.ssh = {
     enable = true;
@@ -213,12 +239,12 @@ in
   };
 
   # Ensure tmux log dir exists for user launchd agent
-  home.activation.tmuxLogDir = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+  home.activation.tmuxLogDir = lib.hm.dag.entryAfter ["writeBoundary"] ''
     mkdir -p "$HOME/Library/Logs/tmux"
   '';
 
   # Import GPG public key + ownertrust (safe: public material only)
-  home.activation.importGpgKey = lib.hm.dag.entryAfter [ "tmuxLogDir" ] ''
+  home.activation.importGpgKey = lib.hm.dag.entryAfter ["tmuxLogDir"] ''
     if command -v gpg >/dev/null; then
       gpg --quiet --import ${../dotfiles/gpg/public.asc} || true
       gpg --quiet --import-ownertrust ${../dotfiles/gpg/ownertrust.txt} || true
@@ -245,14 +271,37 @@ in
   # Runtime/toolchains with "mise"
   programs.mise = {
     enable = true;
-    settings = { experimental = true; };
+    settings = {experimental = true;};
   };
 
   # User-scoped packages managed by Home Manager
   home.packages = with pkgs; [
-    git gh jq ripgrep fd sd curl wget htop btop tree rsync gnupg
-    uv nodejs_20 python312 rustup go
-    nixpkgs-fmt nixd nil alejandra nh nvd nix-tree nix-output-monitor
+    git
+    gh
+    jq
+    ripgrep
+    fd
+    sd
+    curl
+    wget
+    htop
+    btop
+    tree
+    rsync
+    gnupg
+    uv
+    nodejs_20
+    python312
+    rustup
+    go
+    nixpkgs-fmt
+    nixd
+    nil
+    alejandra
+    nh
+    nvd
+    nix-tree
+    nix-output-monitor
     pre-commit
     neofetch
   ];
