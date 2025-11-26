@@ -147,7 +147,7 @@ in {
   };
 
   home.sessionVariables = {
-    SHELL = "${pkgs.zsh}/bin/zsh";
+    SHELL = "/run/current-system/sw/bin/zsh";
     EDITOR = "nvim";
     VISUAL = "nvim";
     PAGER = "less";
