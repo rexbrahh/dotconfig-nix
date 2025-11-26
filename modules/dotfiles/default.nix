@@ -1,5 +1,4 @@
-{ lib, ... }:
-{
+{lib, ...}: {
   # Do not import this module automatically. Opt in from your host HM imports
   # after reviewing. These entries copy your existing dotfiles into the flake
   # so Home Manager can recreate them on a fresh machine.

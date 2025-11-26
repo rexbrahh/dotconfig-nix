@@ -4,15 +4,12 @@
   config,
   pkgs,
   ...
-}:
-let
+}: let
   user = builtins.getEnv "USER"; # or: "rexliu"
-in
-{
-  imports =
-    let
-      secretsModule = ../../secrets/secrets.nix;
-    in
+in {
+  imports = let
+    secretsModule = ../../secrets/secrets.nix;
+  in
     [
       # Darwin-level modules
       ../../modules/os/darwin/default.nix
@@ -34,6 +31,7 @@ in
         "flakes"
       ];
       warn-dirty = false;
+      fallback = true;
       ssl-cert-file = "/nix/var/nix/profiles/default/etc/ssl/certs/ca-bundle.crt";
       trusted-users = [
         "root"
@@ -78,13 +76,12 @@ in
   users.users.rexliu = {
     name = "rexliu";
     home = "/Users/rexliu";
-    shell = pkgs.fish;
+    shell = pkgs.zsh;
   };
   environment.shells = [
     pkgs.zsh
     pkgs.fish
   ];
-  #programs.zsh.enable = true;
   # Home Manager
   home-manager = {
     useGlobalPkgs = true;
@@ -93,7 +90,11 @@ in
     users.rexliu = import ./home.nix;
   };
   home-manager.backupFileExtension = "rebuild";
-  programs.fish.enable = true;
+  programs.zsh = {
+    enable = true;
+    enableCompletion = true;
+  };
+  programs.fish.enable = false;
   # Fast package lookups with nix-index (prebuilt DB) + comma wrapper
   programs.nix-index.enable = true;
   programs.nix-index-database.comma.enable = true;
@@ -118,7 +119,7 @@ in
 
   # Launch services & quality-of-life
   # nix-daemon is managed automatically when `nix.enable = true`
-   # Networking / hostname
+  # Networking / hostname
   networking = {
     computerName = "MacBook";
     hostName = "macbook";
@@ -153,7 +154,7 @@ in
   # Ensure tmux server is available after login
   launchd.user.agents."tmux" = {
     serviceConfig = {
-      ProgramArguments = [ "${pkgs.tmux}/bin/tmux" "start-server" ];
+      ProgramArguments = ["${pkgs.tmux}/bin/tmux" "start-server"];
       EnvironmentVariables = {
         PATH = lib.concatStringsSep ":" [
           "${config.users.users.rexliu.home}/.nix-profile/bin"
