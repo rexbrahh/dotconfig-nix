@@ -76,7 +76,7 @@ in {
   users.users.rexliu = {
     name = "rexliu";
     home = "/Users/rexliu";
-    shell = pkgs.zsh;
+    shell = "/run/current-system/sw/bin/zsh";
   };
   environment.shells = [
     pkgs.zsh

@@ -3,7 +3,7 @@
 source <(fzf --zsh)
 # Path to your Oh My Zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
-export PATH="$HOME/.nix-profile/bin:/nix/var/nix/profiles/default/bin:$PATH"
+export PATH="/run/current-system/sw/bin:$HOME/.nix-profile/bin:/nix/var/nix/profiles/default/bin:$PATH"
 export PATH=$PATH:~/opt/homebrew/bin/Zig
 export PATH="/opt/homebrew/Cellar/node/24.6.0/bin:$PATH"
 
