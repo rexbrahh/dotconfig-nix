@@ -1,5 +1,8 @@
-{ config, pkgs, ... }:
 {
+  config,
+  pkgs,
+  ...
+}: {
   # Extra UI defaults & small quality-of-life bits live here.
   system.defaults = {
     NSGlobalDomain = {
@@ -45,5 +48,4 @@
     # Restart the preferences daemon for the user so the change applies
     killall -qu ${config.system.primaryUser} cfprefsd || true
   '';
-
 }

@@ -16,4 +16,3 @@ repos:
         entry: deadnix --fail --quiet
         language: system
         files: \\.(nix)$
-

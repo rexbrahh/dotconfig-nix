@@ -1,5 +1,4 @@
-{ ... }:
-{
+{...}: {
   # Example hardware file. Inside the VM, run:
   #   nixos-generate-config --show-hardware-config > hosts/nixos-vm-m4/hardware/generated.nix
   # then commit the generated file.
@@ -8,5 +7,5 @@
     fsType = "ext4";
   };
 
-  swapDevices = [ ];
+  swapDevices = [];
 }

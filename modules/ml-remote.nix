@@ -1,14 +1,17 @@
-{ lib, config, pkgs, ... }:
-let
-  cfg = config.ml.remote;
-in
 {
+  lib,
+  config,
+  pkgs,
+  ...
+}: let
+  cfg = config.ml.remote;
+in {
   options.ml.remote = {
     enable = lib.mkEnableOption "Remote ML workflow helpers (SSH/mosh/autossh)";
 
     packages = lib.mkOption {
       type = with lib.types; listOf package;
-      default = with pkgs; [ mosh autossh rsync openssh ];
+      default = with pkgs; [mosh autossh rsync openssh];
       description = "Extra packages useful for remote workflows.";
     };
 

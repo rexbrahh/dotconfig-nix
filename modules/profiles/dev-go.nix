@@ -1,5 +1,4 @@
-{ pkgs, ... }:
-{
+{pkgs, ...}: {
   # Go toolchain and helpers
   home.packages = with pkgs; [
     go

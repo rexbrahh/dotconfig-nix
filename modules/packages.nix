@@ -1,5 +1,4 @@
-{ pkgs, ... }:
-{
+{pkgs, ...}: {
   # System-scoped packages installed at the macOS level.
   # Keep this list lean; prefer user tooling in Home Manager via `home.packages`.
   environment.systemPackages = with pkgs; [
@@ -20,4 +19,3 @@
     vim
   ];
 }
-

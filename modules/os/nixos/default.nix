@@ -1,5 +1,8 @@
-{ lib, pkgs, ... }:
 {
+  lib,
+  pkgs,
+  ...
+}: {
   imports = [
     ../../common/default.nix
   ];
@@ -7,7 +10,7 @@
   nixpkgs.config.allowUnfree = lib.mkDefault true;
 
   nix.settings = {
-    experimental-features = lib.mkDefault [ "nix-command" "flakes" ];
+    experimental-features = lib.mkDefault ["nix-command" "flakes"];
     auto-optimise-store = lib.mkDefault true;
   };
 
@@ -19,7 +22,7 @@
   programs.fish.enable = lib.mkDefault true;
   programs.zsh.enable = lib.mkDefault true;
 
-  environment.shells = lib.mkDefault [ pkgs.fish pkgs.zsh pkgs.bashInteractive ];
+  environment.shells = lib.mkDefault [pkgs.fish pkgs.zsh pkgs.bashInteractive];
 
   # Mutate users via Nix, not imperatively, and require sudo passwords by default.
   users.mutableUsers = lib.mkDefault false;
@@ -28,6 +31,6 @@
   # Keep a firewall on by default; allow SSH explicitly.
   networking.firewall = {
     enable = lib.mkDefault true;
-    allowedTCPPorts = lib.mkDefault [ 22 ];
+    allowedTCPPorts = lib.mkDefault [22];
   };
 }

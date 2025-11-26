@@ -1,8 +1,20 @@
-{ pkgs }:
+{pkgs}:
 pkgs.mkShell {
   packages = with pkgs; [
-    kind kubectl kubernetes-helm kustomize skaffold tilt k9s dive
-    postgresql pgcli sqlite litecli redis mongosh
+    kind
+    kubectl
+    kubernetes-helm
+    kustomize
+    skaffold
+    tilt
+    k9s
+    dive
+    postgresql
+    pgcli
+    sqlite
+    litecli
+    redis
+    mongosh
   ];
   shellHook = ''
     export KIND_CLUSTER_NAME=dev
@@ -15,4 +27,3 @@ pkgs.mkShell {
     echo "DB: docker compose -f .dev/compose.yml up -d"
   '';
 }
-

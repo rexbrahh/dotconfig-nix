@@ -1,5 +1,8 @@
-{ lib, pkgs, ... }:
 {
+  lib,
+  pkgs,
+  ...
+}: {
   # Base display server + sessions
   services.xserver = {
     enable = lib.mkDefault true;

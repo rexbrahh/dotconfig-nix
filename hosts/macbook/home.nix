@@ -1,2 +1,2 @@
-{ ... }@args:
-  import ../../home/users/rex/workstation.nix args
+{...} @ args:
+import ../../home/users/rex/workstation.nix args
