@@ -159,9 +159,10 @@ fi
 ## from andres' dotfiles
 
 # If not in tmux, start tmux.
-if [[ -z ${TMUX+X}${ZSH_SCRIPT+X}${ZSH_EXECUTION_STRING+X} ]]; then
-    exec tmux -u new -s init -A -D
-fi
+#if [[ -z ${TMUX+X}${ZSH_SCRIPT+X}
+#${ZSH_EXECUTION_STRING+X} ]]; then
+#    exec tmux -u new -s init -A -D
+#fi
 
 function zcompile-many() {
     local f
