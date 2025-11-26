@@ -8,13 +8,9 @@ let direnv_hook = {||
     return
   }
 
-  let direnv_dir = [$cache_dir "direnv"] | path join
-  let direnv_init = [$direnv_dir "env.nu"] | path join
-  mkdir $direnv_dir
-  let direnv_export = (try { direnv export nushell } catch {|_| "" })
+  let direnv_export = (try { direnv export json | from json } catch {|_| {}})
   if (not ($direnv_export | is-empty)) {
-    $direnv_export | save --force $direnv_init
-    source-env $direnv_init
+    load-env $direnv_export
   }
 }
 

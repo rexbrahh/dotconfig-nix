@@ -9,17 +9,21 @@ mkdir $cache_dir
 mkdir $config_dir
 
 # PATH hygiene: prepend common Nix/Homebrew locations
-let-env PATH = (
-  [
-    "/run/current-system/sw/bin"
-    "/nix/var/nix/profiles/default/bin"
-    "$home/.nix-profile/bin"
-    "$home/.local/bin"
-    "/opt/homebrew/bin"
-    "/opt/homebrew/sbin"
-  ]
-  ++ ($env.PATH | split row (char ":"))
+let existing_path = (
+  if ($env.PATH? | describe | str contains "list") {
+    $env.PATH
+  } else {
+    ($env.PATH? | default "" | split row (char ":"))
+  }
 )
+$env.PATH = [
+  "/run/current-system/sw/bin"
+  "/nix/var/nix/profiles/default/bin"
+  "$home/.nix-profile/bin"
+  "$home/.local/bin"
+  "/opt/homebrew/bin"
+  "/opt/homebrew/sbin"
+] ++ $existing_path
 
 let-env EDITOR = ($env.EDITOR? | default "nvim")
 let-env VISUAL = ($env.VISUAL? | default "nvim")
@@ -51,13 +55,9 @@ if (not (which zoxide | is-empty)) {
 
 # direnv (automatic env loading)
 if (not (which direnv | is-empty)) {
-  let direnv_dir = [$cache_dir "direnv"] | path join
-  let direnv_init = [$direnv_dir "env.nu"] | path join
-  mkdir $direnv_dir
-  let direnv_export = (try { direnv export nushell } catch {|_| "" })
+  let direnv_export = (try { direnv export json | from json } catch {|_| {}})
   if (not ($direnv_export | is-empty)) {
-    $direnv_export | save --force $direnv_init
-    source-env $direnv_init
+    load-env $direnv_export
   }
 }
 
