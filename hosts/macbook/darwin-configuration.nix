@@ -94,7 +94,7 @@ in {
     enable = true;
     enableCompletion = true;
   };
-  programs.fish.enable = true;
+  programs.fish.enable = false;
   # Fast package lookups with nix-index (prebuilt DB) + comma wrapper
   programs.nix-index.enable = true;
   programs.nix-index-database.comma.enable = true;

@@ -16,7 +16,7 @@ in {
 
   # Choose your login shell (per-user)
   programs.fish = {
-    enable = true;
+    enable = false;
     interactiveShellInit = builtins.readFile fishConfigPath;
     shellAbbrs = {
       gs = "git status -sb";
