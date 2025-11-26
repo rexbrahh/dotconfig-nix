@@ -163,7 +163,9 @@ if [[ -o interactive ]] \
    && [[ -z ${TMUX+X} ]] \
    && [[ -z ${SSH_TTY+X} ]] \
    && [[ "$TERM_PROGRAM" = "Ghostty" || "$TERM_PROGRAM" = "Apple_Terminal" ]]; then
-  exec tmux -u new -s init -A -D
+  if command -v tmux >/dev/null; then
+    tmux new -As init
+  fi
 fi
 
 function zcompile-many() {
