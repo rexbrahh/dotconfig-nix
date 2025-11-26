@@ -6,6 +6,9 @@
 }: let
   anthropicKeyPath = "${config.home.homeDirectory}/.config/secrets/anthropic_api_key";
   zshrcPath = ../dotfiles/zsh/.zshrc;
+  fishConfigPath = ../dotfiles/fish/config.fish;
+  nushellConfigPath = ../dotfiles/nushell/config.nu;
+  nushellEnvPath = ../dotfiles/nushell/env.nu;
 in {
   # Home Manager release compatibility (don’t change lightly)
   home.stateVersion = "25.05";
@@ -13,50 +16,8 @@ in {
 
   # Choose your login shell (per-user)
   programs.fish = {
-    enable = false;
-    interactiveShellInit = ''
-      # PATH & basics
-      set -Ux fish_greeting
-      if test -d /opt/homebrew/bin
-        fish_add_path -g /opt/homebrew/bin /opt/homebrew/sbin
-      end
-      fish_add_path $HOME/.local/bin
-      fish_add_path $HOME/.local/share/solana/install/active_release/bin
-      direnv hook fish | source
-      set -gx EMSDK_QUIET 1
-      set -l emsdk_env "$HOME/emsdk/emsdk_env.fish"
-      if test -f "$emsdk_env"
-        source "$emsdk_env"
-      end
-      # EDITOR (SSH-aware) + VISUAL/PAGER
-      if set -q SSH_CONNECTION
-        set -gx EDITOR vim
-      else
-        set -gx EDITOR nvim
-      end
-
-      set -gx VISUAL nvim
-      fish_add_path -g /run/current-system/sw/bin
-      set -gx PAGER less
-      umask 077
-
-      zoxide init fish | source
-      #set -gx ANTHROPIC_BASE_URL https://cc.yovy.app
-      if test -f "${anthropicKeyPath}"
-        set -gx ANTHROPIC_API_KEY (string trim (cat "${anthropicKeyPath}"))
-      end
-      #set -gx ANTHROPIC_MODEL anthropic/claude-sonnet-4.5
-      #set -gx ANTHROPIC_SMALL_FAST_MODEL x-ai/grok-4-fast:free
-
-      # Auto-attach tmux when launching an interactive shell in Ghostty
-      # - skip if already inside tmux
-      # - skip for SSH sessions
-      if status is-interactive
-        and test -z "$TMUX"
-        and test "$TERM_PROGRAM" = "Ghostty"
-        exec tmux -u new-session -A -s main
-      end
-    '';
+    enable = true;
+    interactiveShellInit = builtins.readFile fishConfigPath;
     shellAbbrs = {
       gs = "git status -sb";
       gl = "git pull --ff-only";
@@ -144,6 +105,23 @@ in {
         alias ,="comma"
       fi
     '';
+  };
+
+  programs.nushell = {
+    enable = true;
+    package = pkgs.nushell;
+    envFile.source = nushellEnvPath;
+    configFile.source = nushellConfigPath;
+    plugins = let
+      np = pkgs.nushellPlugins;
+    in
+      lib.flatten [
+        (lib.optional (np ? nu_plugin_query) np.nu_plugin_query)
+        (lib.optional (np ? nu_plugin_polars) np.nu_plugin_polars)
+        (lib.optional (np ? nu_plugin_formats) np.nu_plugin_formats)
+        (lib.optional (np ? nu_plugin_gstat) np.nu_plugin_gstat)
+        (lib.optional (np ? nu_plugin_custom_values) np.nu_plugin_custom_values)
+      ];
   };
 
   home.sessionVariables = {
@@ -312,6 +290,7 @@ in {
     nix-output-monitor
     pre-commit
     neofetch
+    carapace
   ];
 
   # Dotfiles you want generated/managed
