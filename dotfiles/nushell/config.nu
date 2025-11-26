@@ -11,8 +11,11 @@ let direnv_hook = {||
   let direnv_dir = [$cache_dir "direnv"] | path join
   let direnv_init = [$direnv_dir "env.nu"] | path join
   mkdir $direnv_dir
-  direnv export nushell | save --force $direnv_init
-  source-env $direnv_init
+  let direnv_export = (try { direnv export nushell } catch {|_| "" })
+  if (not ($direnv_export | is-empty)) {
+    $direnv_export | save --force $direnv_init
+    source-env $direnv_init
+  }
 }
 
 # External completer via carapace (falls back to built-in completion if absent).
