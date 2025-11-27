@@ -1,8 +1,8 @@
 # Nushell environment initialization (managed via Home Manager)
 
-let home = $env.HOME
-let cache_dir = ($env.XDG_CACHE_HOME? | default ($home | path join ".cache"))
-let config_dir = ($env.XDG_CONFIG_HOME? | default ($home | path join ".config")) | path join "nushell"
+const home = $nu.home-path
+const cache_dir = ($nu.cache-dir | path dirname)  # keep general cache root, not nushell-specific child
+const config_dir = $nu.default-config-dir
 
 # Ensure common directories exist
 mkdir $cache_dir
@@ -31,7 +31,7 @@ $env.PAGER = ($env.PAGER? | default "less")
 
 # Starship prompt (guarded; skip silently if binary missing)
 if (not (which starship | is-empty)) {
-  let starship_init = [$cache_dir "starship" "init.nu"] | path join
+  const starship_init = [$cache_dir "starship" "init.nu"] | path join
   mkdir ($starship_init | path dirname)
   try {
     starship init nu | save --force $starship_init
@@ -43,7 +43,7 @@ if (not (which starship | is-empty)) {
 
 # zoxide (smart cd)
 if (not (which zoxide | is-empty)) {
-  let zoxide_init = [$cache_dir "zoxide" "init.nu"] | path join
+  const zoxide_init = [$cache_dir "zoxide" "init.nu"] | path join
   mkdir ($zoxide_init | path dirname)
   try {
     zoxide init nushell --cmd z | save --force $zoxide_init
