@@ -124,6 +124,10 @@ in {
       ];
   };
 
+  # Provide stub init files so Nushell's parser can source them even if binaries are absent
+  home.file.".cache/starship/init.nu".text = "# starship nushell stub; overwritten at runtime if starship is installed\n";
+  home.file.".cache/zoxide/init.nu".text = "# zoxide nushell stub; overwritten at runtime if zoxide is installed\n";
+
   home.sessionVariables = {
     SHELL = "/run/current-system/sw/bin/zsh";
     EDITOR = "nvim";
