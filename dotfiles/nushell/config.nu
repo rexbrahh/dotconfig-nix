@@ -18,9 +18,10 @@ let direnv_hook = {||
 let carapace_completer = {|spans|
   let bin = (which carapace | get 0.path? | default "")
   if ($bin | is-empty) {
-    return $nothing
+    []
+  } else {
+    ^$bin $spans | from json
   }
-  ^$bin $spans | from json
 }
 
 $env.config = {
@@ -61,19 +62,19 @@ $env.config = {
 }
 
 # Aliases to mirror other shells
-alias ls = "eza --color=auto --group-directories-first"
-alias ll = "eza -lah --color=auto --group-directories-first"
-alias la = "eza -la --color=auto --group-directories-first"
-alias cat = "bat --style=plain --paging=never"
-alias gs = "git status -sb"
-alias gl = "git pull --ff-only"
-alias gp = "git push"
-alias nrs = "darwin-rebuild switch --flake ~/.config/nix"
-alias hm = "home-manager"
-alias k = "kubectl"
-alias kctx = "kubectx"
-alias kns = "kubens"
-alias llm = "llm"
+alias ls = eza --color=auto --group-directories-first
+alias ll = eza -lah --color=auto --group-directories-first
+alias la = eza -la --color=auto --group-directories-first
+alias cat = bat --style=plain --paging=never
+alias gs = git status -sb
+alias gl = git pull --ff-only
+alias gp = git push
+alias nrs = darwin-rebuild switch --flake ~/.config/nix
+alias hm = home-manager
+alias k = kubectl
+alias kctx = kubectx
+alias kns = kubens
+alias llm = llm
 
 def --env mkcd [dir: string] {
   mkdir $dir
