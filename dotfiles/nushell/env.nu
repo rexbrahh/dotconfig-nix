@@ -31,20 +31,26 @@ $env.PAGER = ($env.PAGER? | default "less")
 
 # Starship prompt (guarded; skip silently if binary missing)
 if (not (which starship | is-empty)) {
-  mkdir ~/.cache/starship
+  let starship_init = [$cache_dir "starship" "init.nu"] | path join
+  mkdir ($starship_init | path dirname)
   try {
-    starship init nu | save --force ~/.cache/starship/init.nu
-    source ~/.cache/starship/init.nu
+    starship init nu | save --force $starship_init
   } catch {|_| {}}
+  if (path exists $starship_init) {
+    try { source $starship_init } catch {|_| {}}
+  }
 }
 
 # zoxide (smart cd)
 if (not (which zoxide | is-empty)) {
-  mkdir ~/.cache/zoxide
+  let zoxide_init = [$cache_dir "zoxide" "init.nu"] | path join
+  mkdir ($zoxide_init | path dirname)
   try {
-    zoxide init nushell --cmd z | save --force ~/.cache/zoxide/init.nu
-    source ~/.cache/zoxide/init.nu
+    zoxide init nushell --cmd z | save --force $zoxide_init
   } catch {|_| {}}
+  if (path exists $zoxide_init) {
+    try { source $zoxide_init } catch {|_| {}}
+  }
 }
 
 # direnv (automatic env loading)

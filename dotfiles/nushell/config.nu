@@ -47,9 +47,6 @@ $env.config = {
       PWD: [ $direnv_hook ]
     }
   }
-  menus: {
-    completion_menu: { max_display_size: 10 placement: "cursor" }
-  }
   table: {
     mode: "rounded"
     index_mode: "always"
