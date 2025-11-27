@@ -36,7 +36,7 @@ if (not (which starship | is-empty)) {
   try {
     starship init nu | save --force $starship_init
   } catch {|_| {}}
-  if (path exists --path $starship_init) {
+  if (path exists $starship_init) {
     try { source $starship_init } catch {|_| {}}
   }
 }
@@ -48,7 +48,7 @@ if (not (which zoxide | is-empty)) {
   try {
     zoxide init nushell --cmd z | save --force $zoxide_init
   } catch {|_| {}}
-  if (path exists --path $zoxide_init) {
+  if (path exists $zoxide_init) {
     try { source $zoxide_init } catch {|_| {}}
   }
 }
