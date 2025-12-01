@@ -1,4 +1,6 @@
 [
+  "llvm"
+  "autoconf-archive"
   "bison"
   "ninja"
   "nushell"
