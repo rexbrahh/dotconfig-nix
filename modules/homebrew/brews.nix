@@ -1,4 +1,5 @@
 [
+  "bison"
   "ninja"
   "nushell"
   "satococoa/tap/wtp"
