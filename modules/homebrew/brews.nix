@@ -1,4 +1,5 @@
 [
+  "ninja"
   "nushell"
   "satococoa/tap/wtp"
   "joshmedeski/sesh/sesh"
