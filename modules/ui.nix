@@ -23,11 +23,8 @@
       "autohide-delay" = 0.0;
       "autohide-time-modifier" = 0.21;
       persistent-apps = [
-        #"/System/Applications/Launchpad.app"
-        "Applications/Google\ Chrome.app"
+        "/Applications/Brave Browser.app"
         "/Applications/Ghostty.app"
-
-        #"/Applications/Visual Studio Code.app"
       ];
     };
     finder = {
@@ -47,5 +44,29 @@
       defaults write -g com.apple.swipescrolldirection -bool true
     # Restart the preferences daemon for the user so the change applies
     killall -qu ${config.system.primaryUser} cfprefsd || true
+  '';
+
+  # Keep default browser/terminal handlers pinned to Brave/Ghostty.
+  system.activationScripts.setDefaultApps.text = ''
+    set -euo pipefail
+
+    as_user() {
+      launchctl asuser "$(id -u -- ${config.system.primaryUser})" \
+        sudo --user=${config.system.primaryUser} -- "$@"
+    }
+
+    # Browser handlers
+    as_user ${pkgs.duti}/bin/duti -s com.brave.Browser http
+    as_user ${pkgs.duti}/bin/duti -s com.brave.Browser https
+    as_user ${pkgs.duti}/bin/duti -s com.brave.Browser ftp
+    as_user ${pkgs.duti}/bin/duti -s com.brave.Browser public.html all
+    as_user ${pkgs.duti}/bin/duti -s com.brave.Browser public.xhtml all
+    as_user ${pkgs.duti}/bin/duti -s com.brave.Browser public.url all
+
+    # Terminal handlers
+    as_user ${pkgs.duti}/bin/duti -s com.mitchellh.ghostty ssh
+    as_user ${pkgs.duti}/bin/duti -s com.mitchellh.ghostty sftp
+    as_user ${pkgs.duti}/bin/duti -s com.mitchellh.ghostty telnet
+    as_user ${pkgs.duti}/bin/duti -s com.mitchellh.ghostty ftp
   '';
 }
