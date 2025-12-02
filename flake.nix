@@ -23,6 +23,8 @@
 
     # Manage the Homebrew installation declaratively
     nix-homebrew.url = "github:zhaofengli/nix-homebrew";
+    # Pin Homebrew itself; this determines the brew CLI version installed
+    nix-homebrew.inputs.brew-src.url = "github:Homebrew/brew/5.0.3";
 
     # Secrets management (age/agenix scaffold)
     agenix.url = "github:ryantm/agenix";
