@@ -164,6 +164,10 @@ ZSH_DEN=$HOME/zsh-den
 if [[ ! -e $ZSH_DEN/fzf-tab ]]; then
     git clone --depth=1 https://github.com/Aloxaf/fzf-tab "$ZSH_DEN/fzf-tab"
 fi
+# zsh-autopair (fish-like bracket/quote pairing)
+if [[ ! -e $ZSH_DEN/zsh-autopair ]]; then
+    git clone --depth=1 https://github.com/hlissner/zsh-autopair "$ZSH_DEN/zsh-autopair"
+fi
 
 # sourcing forgit utils in case patching is needed
 source "$ZSH_DEN/forgit.zsh"
@@ -171,6 +175,7 @@ if [[ ! -e $ZSH_DEN/forgit ]]; then
     git clone --depth=1 https://github.com/wfxr/forgit.git "$ZSH_DEN/forgit"
     zden-patch-forgit
 fi
+source "$ZSH_DEN/zsh-autopair/autopair.zsh"
 
 # zden setup
 source "$ZSH_DEN/aliases.zsh"
