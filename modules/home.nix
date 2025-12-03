@@ -314,10 +314,9 @@ in {
   # Git setup
   programs.git = {
     enable = true;
-    userName = "Rex Liu";
-    userEmail = "hi@r3x.sh";
-    delta.enable = true;
-    extraConfig = {
+    settings = {
+      user.name = "Rex Liu";
+      user.email = "hi@r3x.sh";
       init.defaultBranch = "main";
       pull.ff = "only";
       push.autoSetupRemote = true;
@@ -328,6 +327,11 @@ in {
       # Keep SSH verification support for per-repo overrides
       gpg.ssh.allowedSignersFile = "~/.ssh/allowed_signers";
     };
+  };
+
+  programs.delta = {
+    enable = true;
+    enableGitIntegration = true;
   };
 
   # GPG & SSH
