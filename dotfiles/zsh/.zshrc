@@ -79,7 +79,7 @@ ZSH_THEME=""
 # Add wisely, as too many plugins slow down shell startup.
 
 
-plugins=(git zsh-autosuggestions zsh-syntax-highlighting you-should-use history-substring-search autopair)
+plugins=(git zsh-autosuggestions zsh-syntax-highlighting you-should-use history-substring-search)
 
 source $ZSH/oh-my-zsh.sh
 eval "$(starship init zsh)"
@@ -172,6 +172,10 @@ fi
 if [[ ! -e $ZSH_DEN/zsh-abbrev-alias ]]; then
     git clone --depth=1 https://github.com/momo-lab/zsh-abbrev-alias "$ZSH_DEN/zsh-abbrev-alias"
 fi
+# zsh-autocomplete (fish-like completion menu)
+if [[ ! -e $ZSH_DEN/zsh-autocomplete ]]; then
+    git clone --depth=1 https://github.com/marlonrichert/zsh-autocomplete "$ZSH_DEN/zsh-autocomplete"
+fi
 
 # sourcing forgit utils in case patching is needed
 source "$ZSH_DEN/forgit.zsh"
@@ -181,6 +185,7 @@ if [[ ! -e $ZSH_DEN/forgit ]]; then
 fi
 source "$ZSH_DEN/zsh-autopair/autopair.zsh"
 source "$ZSH_DEN/zsh-abbrev-alias/zsh-abbrev-alias.plugin.zsh"
+source "$ZSH_DEN/zsh-autocomplete/zsh-autocomplete.plugin.zsh"
 
 # zden setup
 source "$ZSH_DEN/aliases.zsh"
@@ -195,10 +200,23 @@ source "$ZSH_DEN/forgit/forgit.plugin.zsh" && PATH="$PATH:$FORGIT_INSTALL_DIR/bi
 
 eval "$(zoxide init zsh)"
 eval "$(direnv hook zsh)"
+setopt auto_cd
+setopt auto_pushd pushd_silent pushd_ignore_dups
 bindkey '^P' history-substring-search-up
 bindkey '^N' history-substring-search-down
 bindkey '^[OA' history-substring-search-up   # up arrow
 bindkey '^[OB' history-substring-search-down # down arrow
+
+# Fish-like abbreviations
+abbrev-alias gco='git checkout'
+abbrev-alias gcb='git checkout -b'
+abbrev-alias gst='git status -sb'
+abbrev-alias gl='git pull --ff-only'
+abbrev-alias gp='git push'
+abbrev-alias gcm='git commit -m'
+abbrev-alias gca='git commit --amend --no-edit'
+abbrev-alias ..='cd ..'
+abbrev-alias ...='cd ../..'
 
 export EDITOR='nvim' 
 
