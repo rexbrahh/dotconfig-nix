@@ -168,6 +168,10 @@ fi
 if [[ ! -e $ZSH_DEN/zsh-autopair ]]; then
     git clone --depth=1 https://github.com/hlissner/zsh-autopair "$ZSH_DEN/zsh-autopair"
 fi
+# zsh-abbrev-alias (fish-style abbreviations)
+if [[ ! -e $ZSH_DEN/zsh-abbrev-alias ]]; then
+    git clone --depth=1 https://github.com/momo-lab/zsh-abbrev-alias "$ZSH_DEN/zsh-abbrev-alias"
+fi
 
 # sourcing forgit utils in case patching is needed
 source "$ZSH_DEN/forgit.zsh"
@@ -176,6 +180,7 @@ if [[ ! -e $ZSH_DEN/forgit ]]; then
     zden-patch-forgit
 fi
 source "$ZSH_DEN/zsh-autopair/autopair.zsh"
+source "$ZSH_DEN/zsh-abbrev-alias/zsh-abbrev-alias.plugin.zsh"
 
 # zden setup
 source "$ZSH_DEN/aliases.zsh"
@@ -190,6 +195,10 @@ source "$ZSH_DEN/forgit/forgit.plugin.zsh" && PATH="$PATH:$FORGIT_INSTALL_DIR/bi
 
 eval "$(zoxide init zsh)"
 eval "$(direnv hook zsh)"
+bindkey '^P' history-substring-search-up
+bindkey '^N' history-substring-search-down
+bindkey '^[OA' history-substring-search-up   # up arrow
+bindkey '^[OB' history-substring-search-down # down arrow
 
 export EDITOR='nvim' 
 
