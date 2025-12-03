@@ -7,6 +7,7 @@ in {
     # Do not force-tap default repos; Homebrew manages core/cask itself.
     taps = [
       "koekeishiya/formulae"
+      "nextdns/tap"
     ];
     global = {
       brewfile = true; # creates/uses Brewfile for visibility

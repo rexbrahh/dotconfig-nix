@@ -285,6 +285,7 @@
   "netpbm"
   "nghttp2"
   "nginx"
+  "nextdns/tap/nextdns"
   "nlohmann-json"
   "nmap"
   "node"
