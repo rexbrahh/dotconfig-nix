@@ -158,7 +158,7 @@ in {
       add_newline = false;
       scan_timeout = 50;
       format = "$directory$git_branch$git_status$fill$hostname$time$line_break$character";
-      right_format = "$zig$rust$golang$nodejs$python$ruby$java$lua$docker_context$package$nix_shell$custom.nixver";
+      right_format = "$status$jobs$hostname$time$zig$rust$golang$nodejs$python$docker_context$package$nix_shell$custom.nixver";
 
       aws.disabled = true;
       gcloud.disabled = true;
@@ -181,7 +181,7 @@ in {
 
       git_status = {
         style = "fg:#7dcfff";
-        format = "[$all_status$ahead_behind]($style) ";
+        format = "[$all_status$ahead_behind]($style)";
       };
 
       hostname = {
@@ -247,18 +247,6 @@ in {
         style = "fg:#f7768e";
       };
 
-      java = {
-        symbol = "☕ ";
-        format = "[$symbol$version]($style) ";
-        style = "fg:#e0af68";
-      };
-
-      lua = {
-        symbol = "🌙 ";
-        format = "[$symbol$version]($style) ";
-        style = "fg:#7aa2f7";
-      };
-
       docker_context = {
         symbol = "🐳 ";
         format = "[$symbol$context]($style) ";
@@ -270,6 +258,20 @@ in {
         detect_files = [ "flake.nix" "shell.nix" ];
         style = "fg:#9aa5ce";
         format = "[❄️ $output]($style) ";
+      };
+
+      status = {
+        style = "fg:#f7768e";
+        format = "[✖ $status]($style) ";
+        disabled = false;
+        map_symbol = true;
+      };
+
+      jobs = {
+        symbol = " ";
+        style = "fg:#9aa5ce";
+        format = "[$symbol$number]($style) ";
+        number_threshold = 1;
       };
     };
   };

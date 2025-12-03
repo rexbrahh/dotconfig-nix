@@ -81,6 +81,14 @@ ZSH_THEME=""
 
 plugins=(git zsh-autosuggestions zsh-syntax-highlighting you-should-use history-substring-search)
 
+ZSH_DEN=$HOME/zsh-den
+mkdir -p "$ZSH_DEN"
+# Extra completions (fish-like breadth)
+if [[ ! -e $ZSH_DEN/zsh-completions ]]; then
+    git clone --depth=1 https://github.com/zsh-users/zsh-completions "$ZSH_DEN/zsh-completions"
+fi
+fpath=("$ZSH_DEN/zsh-completions/src" $fpath)
+
 source $ZSH/oh-my-zsh.sh
 eval "$(starship init zsh)"
 
@@ -158,9 +166,6 @@ if [[ -o interactive ]] \
   fi
 fi
 
-ZSH_DEN=$HOME/zsh-den
-mkdir -p "$ZSH_DEN"
-
 # Clone missing plugins that aren't provided by oh-my-zsh.
 if [[ ! -e $ZSH_DEN/fzf-tab ]]; then
     git clone --depth=1 https://github.com/Aloxaf/fzf-tab "$ZSH_DEN/fzf-tab"
@@ -194,6 +199,7 @@ source "$ZSH_DEN/opts.zsh"
 source "$ZSH_DEN/git.zsh"
 source "$ZSH_DEN/fzf.zsh"
 source "$ZSH_DEN/uv.zsh"
+[[ -r "$ZSH_DEN/zsh-completions/zsh-completions.plugin.zsh" ]] && source "$ZSH_DEN/zsh-completions/zsh-completions.plugin.zsh"
 
 # Load plugins
 source "$ZSH_DEN/fzf-tab/fzf-tab.plugin.zsh"
@@ -208,18 +214,7 @@ bindkey '^N' history-substring-search-down
 bindkey '^[OA' history-substring-search-up   # up arrow
 bindkey '^[OB' history-substring-search-down # down arrow
 
-# Fish-like abbreviations
-if command -v abbrev-alias >/dev/null; then
-  abbrev-alias gco='git checkout'
-  abbrev-alias gcb='git checkout -b'
-  abbrev-alias gst='git status -sb'
-  abbrev-alias gl='git pull --ff-only'
-  abbrev-alias gp='git push'
-  abbrev-alias gcm='git commit -m'
-  abbrev-alias gca='git commit --amend --no-edit'
-  abbrev-alias ..='cd ..'
-  abbrev-alias ...='cd ../..'
-fi
+[[ -r "$HOME/.config/nix/dotfiles/zsh/abbr.zsh" ]] && source "$HOME/.config/nix/dotfiles/zsh/abbr.zsh"
 
 export EDITOR='nvim' 
 
