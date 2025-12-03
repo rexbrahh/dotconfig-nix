@@ -158,7 +158,7 @@ in {
       add_newline = false;
       scan_timeout = 50;
       format = "$directory$git_branch$git_status$fill$hostname$time$line_break$character";
-      right_format = "";
+      right_format = "$zig$rust$go$nodejs$python$ruby$java$lua$docker_context$package$nix_shell$custom.nixinfo";
 
       aws.disabled = true;
       gcloud.disabled = true;
@@ -196,9 +196,80 @@ in {
       };
 
       character = {
-        success_symbol = "[❯](fg:#9ece6a)";
+        success_symbol = "[❯](fg:#7dcfff)";
         error_symbol = "[❯](fg:#f7768e)";
         vicmd_symbol = "[❮](fg:#7dcfff)";
+      };
+
+      package = {
+        format = "[$symbol$version]($style) ";
+        style = "fg:#9aa5ce";
+      };
+
+      nix_shell = {
+        format = "[❄️ $name]($style) ";
+        style = "fg:#9aa5ce";
+      };
+
+      zig = {
+        symbol = "🦎 ";
+        format = "[$symbol$version]($style) ";
+        style = "fg:#7dcfff";
+      };
+
+      rust = {
+        symbol = "🦀 ";
+        format = "[$symbol$version]($style) ";
+        style = "fg:#e0af68";
+      };
+
+      go = {
+        symbol = "🐹 ";
+        format = "[$symbol$version]($style) ";
+        style = "fg:#7dcfff";
+      };
+
+      nodejs = {
+        symbol = "⬢ ";
+        format = "[$symbol$version]($style) ";
+        style = "fg:#9ece6a";
+      };
+
+      python = {
+        symbol = "🐍 ";
+        format = "[$symbol$version]($style) ";
+        style = "fg:#c0caf5";
+      };
+
+      ruby = {
+        symbol = "💎 ";
+        format = "[$symbol$version]($style) ";
+        style = "fg:#f7768e";
+      };
+
+      java = {
+        symbol = "☕ ";
+        format = "[$symbol$version]($style) ";
+        style = "fg:#e0af68";
+      };
+
+      lua = {
+        symbol = "🌙 ";
+        format = "[$symbol$version]($style) ";
+        style = "fg:#7aa2f7";
+      };
+
+      docker_context = {
+        symbol = "🐳 ";
+        format = "[$symbol$context]($style) ";
+        style = "fg:#7dcfff";
+      };
+
+      custom.nixinfo = {
+        command = "nix --version | awk '{print \"❄️ \" $3}'";
+        detect_files = [ "flake.nix" "shell.nix" ];
+        style = "fg:#9aa5ce";
+        format = "[$output]($style) ";
       };
     };
   };
