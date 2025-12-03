@@ -3,9 +3,13 @@
 source <(fzf --zsh)
 # Path to your Oh My Zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
+ZSH_DISABLE_COMPFIX=true
+POWERLEVEL9K_DISABLE_GITSTATUS=true
+POWERLEVEL10K_DISABLE_GITSTATUS=true
 export PATH="/run/current-system/sw/bin:$HOME/.nix-profile/bin:/nix/var/nix/profiles/default/bin:$PATH"
 export PATH=$PATH:~/opt/homebrew/bin/Zig
 export PATH="/opt/homebrew/Cellar/node/24.6.0/bin:$PATH"
+fpath=(/Users/rexliu/.docker/completions $fpath)
 
 # Set list of themes to pick from when loading at random
 # Setting this variable when ZSH_THEME=random will cause zsh to load
@@ -111,27 +115,6 @@ export PATH="$HOME/.cargo/bin:$PATH"
 export PATH="$HOME/.local/bin:$PATH"
 
 
-# >>> conda initialize >>>
-# !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$('/Users/rexliu/anaconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
-if [ $? -eq 0 ]; then
-    eval "$__conda_setup"
-else
-    if [ -f "/Users/rexliu/anaconda3/etc/profile.d/conda.sh" ]; then
-        . "/Users/rexliu/anaconda3/etc/profile.d/conda.sh"
-    else
-        export PATH="/Users/rexliu/anaconda3/bin:$PATH"
-    fi
-fi
-unset __conda_setup
-# <<< conda initialize <<<
-
-# The following lines have been added by Docker Desktop to enable Docker CLI completions.
-fpath=(/Users/rexliu/.docker/completions $fpath)
-autoload -Uz compinit
-compinit
-# End of Docker CLI completions
-
 export TERM=xterm-256color
 
 function y() {
@@ -168,28 +151,11 @@ if [[ -o interactive ]] \
   fi
 fi
 
-function zcompile-many() {
-    local f
-    for f; do zcompile -R -- "$f".zwc "$f"; done
-}
-
 ZSH_DEN=$HOME/zsh-den
 
-# Clone and compile to wordcode missing plugins.
-if [[ ! -e $ZSH_DEN/powerlevel10k ]]; then
-    git clone --depth=1 https://github.com/romkatv/powerlevel10k.git "$ZSH_DEN/powerlevel10k"
-    make -C "$ZSH_DEN/powerlevel10k" pkg
-fi
+# Clone missing plugins that aren't provided by oh-my-zsh.
 if [[ ! -e $ZSH_DEN/fzf-tab ]]; then
     git clone --depth=1 https://github.com/Aloxaf/fzf-tab "$ZSH_DEN/fzf-tab"
-fi
-if [[ ! -e $ZSH_DEN/zsh-syntax-highlighting ]]; then
-    git clone --depth=1 https://github.com/zsh-users/zsh-syntax-highlighting.git "$ZSH_DEN/zsh-syntax-highlighting"
-    zcompile-many "$ZSH_DEN/zsh-syntax-highlighting/{zsh-syntax-highlighting.zsh,highlighters/*/*.zsh}"
-fi
-if [[ ! -e $ZSH_DEN/zsh-autosuggestions ]]; then
-    git clone --depth=1 https://github.com/zsh-users/zsh-autosuggestions.git "$ZSH_DEN/zsh-autosuggestions"
-    zcompile-many "$ZSH_DEN/zsh-autosuggestions/{zsh-autosuggestions.zsh,src/**/*.zsh}"
 fi
 
 # sourcing forgit utils in case patching is needed
@@ -204,19 +170,6 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
     source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
-# Enable the "new" completion system (compsys).
-autoload -Uz compinit && compinit
-[[ ~/.zcompdump.zwc -nt ~/.zcompdump ]] || zcompile-many ~/.zcompdump
-unfunction zcompile-many
-
-# Nix
-if [ -e '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh' ]; then
-    . '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh'
-fi
-
-source "$ZSH_DEN/powerlevel10k/powerlevel10k.zsh-theme"
-[[ ! -f $ZSH_DEN/p10k.zsh ]] || source "$ZSH_DEN/p10k.zsh"
-
 # zden setup
 source "$ZSH_DEN/aliases.zsh"
 source "$ZSH_DEN/opts.zsh"
@@ -226,9 +179,7 @@ source "$ZSH_DEN/uv.zsh"
 
 # Load plugins
 source "$ZSH_DEN/fzf-tab/fzf-tab.plugin.zsh"
-source "$ZSH_DEN/zsh-autosuggestions/zsh-autosuggestions.zsh"
 source "$ZSH_DEN/forgit/forgit.plugin.zsh" && PATH="$PATH:$FORGIT_INSTALL_DIR/bin"
-source "$ZSH_DEN/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
 
 eval "$(zoxide init zsh)"
 eval "$(direnv hook zsh)"
