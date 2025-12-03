@@ -196,9 +196,9 @@ in {
       };
 
       character = {
-        success_symbol = "[❯](fg:#7dcfff)";
+        success_symbol = "[❯](fg:#85befd)";
         error_symbol = "[❯](fg:#f7768e)";
-        vicmd_symbol = "[❮](fg:#7dcfff)";
+        vicmd_symbol = "[❮](fg:#85befd)";
       };
 
       package = {
