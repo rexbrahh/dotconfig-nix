@@ -4,8 +4,6 @@ source <(fzf --zsh)
 # Path to your Oh My Zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
 ZSH_DISABLE_COMPFIX=true
-POWERLEVEL9K_DISABLE_GITSTATUS=true
-POWERLEVEL10K_DISABLE_GITSTATUS=true
 export PATH="/run/current-system/sw/bin:$HOME/.nix-profile/bin:/nix/var/nix/profiles/default/bin:$PATH"
 export PATH=$PATH:~/opt/homebrew/bin/Zig
 export PATH="/opt/homebrew/Cellar/node/24.6.0/bin:$PATH"
@@ -16,7 +14,7 @@ fpath=(/Users/rexliu/.docker/completions $fpath)
 # a theme from this variable instead of looking in $ZSH/themes/
 # If set to an empty array, this variable will have no effect.
 #ZSH_THEME="robbyrussell"
-ZSH_THEME="powerlevel10k/powerlevel10k"
+ZSH_THEME=""
 # Uncomment the following line to use case-sensitive completion.
 # CASE_SENSITIVE="true"
 
@@ -73,9 +71,10 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 # Add wisely, as too many plugins slow down shell startup.
 
 
-plugins=(git zsh-autosuggestions zsh-syntax-highlighting you-should-use)
+plugins=(git zsh-autosuggestions zsh-syntax-highlighting you-should-use history-substring-search autopair)
 
 source $ZSH/oh-my-zsh.sh
+eval "$(starship init zsh)"
 
 # User configuration
 
@@ -165,11 +164,6 @@ if [[ ! -e $ZSH_DEN/forgit ]]; then
     zden-patch-forgit
 fi
 
-# Enable Powerlevel10k instant prompt. This is after the plugin verfs.
-if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-    source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
-fi
-
 # zden setup
 source "$ZSH_DEN/aliases.zsh"
 source "$ZSH_DEN/opts.zsh"
@@ -183,9 +177,6 @@ source "$ZSH_DEN/forgit/forgit.plugin.zsh" && PATH="$PATH:$FORGIT_INSTALL_DIR/bi
 
 eval "$(zoxide init zsh)"
 eval "$(direnv hook zsh)"
-
-# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
 export EDITOR='nvim' 
 
