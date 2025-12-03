@@ -217,36 +217,48 @@ in {
         symbol = "🦎 ";
         format = "[$symbol$version]($style) ";
         style = "fg:#7dcfff";
+        detect_extensions = [ "zig" "zon" ];
+        detect_files = [ "build.zig" ];
       };
 
       rust = {
         symbol = "🦀 ";
         format = "[$symbol$version]($style) ";
         style = "fg:#e0af68";
+        detect_extensions = [ "rs" ];
+        detect_files = [ "Cargo.toml" "rust-toolchain" "rust-toolchain.toml" ];
       };
 
       golang = {
         symbol = "🐹 ";
         format = "[$symbol$version]($style) ";
         style = "fg:#7dcfff";
+        detect_extensions = [ "go" ];
+        detect_files = [ "go.mod" "go.work" "Gopkg.toml" ];
       };
 
       nodejs = {
         symbol = "⬢ ";
         format = "[$symbol$version]($style) ";
         style = "fg:#9ece6a";
+        detect_extensions = [ "js" "mjs" "cjs" "ts" "tsx" ];
+        detect_files = [ "package.json" "pnpm-lock.yaml" "yarn.lock" "bun.lockb" "deno.json" ];
       };
 
       python = {
         symbol = "🐍 ";
         format = "[$symbol$version]($style) ";
         style = "fg:#c0caf5";
+        detect_extensions = [ "py" ];
+        detect_files = [ "requirements.txt" "pyproject.toml" "Pipfile" "setup.py" ];
       };
 
       ruby = {
         symbol = "💎 ";
         format = "[$symbol$version]($style) ";
         style = "fg:#f7768e";
+        detect_extensions = [ "rb" ];
+        detect_files = [ "Gemfile" "Gemfile.lock" ];
       };
 
       docker_context = {
