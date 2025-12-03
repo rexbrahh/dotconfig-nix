@@ -157,8 +157,9 @@ in {
     settings = {
       add_newline = false;
       scan_timeout = 50;
-      format = "$directory$git_branch$git_status$line_break$character";
-      right_format = "$hostname$time$status$jobs$zig$rust$golang$nodejs$python$ruby$docker_context$package$nix_shell$custom.nixver";
+      format =
+        "$directory$git_branch$git_status$fill$hostname$time$status$jobs$zig$rust$golang$nodejs$python$ruby$docker_context$package$nix_shell$custom.nixver$line_break$character";
+      right_format = "";
 
       aws.disabled = true;
       gcloud.disabled = true;
