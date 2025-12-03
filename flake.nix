@@ -24,7 +24,7 @@
     # Manage the Homebrew installation declaratively
     nix-homebrew.url = "github:zhaofengli/nix-homebrew";
     # Pin Homebrew itself; this determines the brew CLI version installed
-    nix-homebrew.inputs.brew-src.url = "github:Homebrew/brew/5.0.3";
+    nix-homebrew.inputs.brew-src.url = "github:Homebrew/brew/5.0.4";
 
     # Secrets management (age/agenix scaffold)
     agenix.url = "github:ryantm/agenix";
@@ -87,6 +87,12 @@
             enableRosetta = true; # on Apple Silicon, also install Intel prefix
             autoMigrate = true; # migrate an existing install if found
             user = "rexliu";
+            # Override package metadata so patching embeds the correct version when
+            # using a newer brew-src than upstream nix-homebrew's lockfile.
+            package = inputs.nix-homebrew.inputs.brew-src // {
+              name = "brew-5.0.4";
+              version = "5.0.4";
+            };
             # Declarative taps are optional; leave empty to avoid brew warnings
             taps = {};
           };

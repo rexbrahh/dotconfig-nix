@@ -16,6 +16,8 @@ in {
       ../../modules/vagrant.nix
       # ML tunnels (SSH port forwards via launchd; disabled by default)
       ../../modules/ml-tunnels.nix
+      # Homebrew auto-update launchd agent
+      ../../modules/homebrew-autoupdate.nix
       # add more modules here
     ]
     # Declarative secrets (agenix; only import when the module exists)
@@ -183,4 +185,6 @@ in {
     jupyter.enable = true;
     mlflow.enable = true;
   };
+
+  brewAutoUpdate.enable = true;
 }
