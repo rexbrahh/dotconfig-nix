@@ -113,6 +113,7 @@ in {
       source "$HOME/.orbstack/shell/init.zsh"
     fi
   '';
+  home.file.".p10k.zsh".source = ../dotfiles/zsh/.p10k.zsh;
 
   programs.nushell = {
     enable = true;
