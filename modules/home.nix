@@ -157,8 +157,8 @@ in {
     settings = {
       add_newline = false;
       scan_timeout = 50;
-      format = "$directory$git_branch$git_status$fill$hostname$time $zig$rust$golang$nodejs$python$ruby$java$lua$docker_context$package$nix_shell$custom.nixinfo$line_break$character";
-      right_format = "";
+      format = "$directory$git_branch$git_status$fill$hostname$time$line_break$character";
+      right_format = "$zig$rust$golang$nodejs$python$ruby$java$lua$docker_context$package$nix_shell$custom.nixver";
 
       aws.disabled = true;
       gcloud.disabled = true;
@@ -265,11 +265,11 @@ in {
         style = "fg:#7dcfff";
       };
 
-      custom.nixinfo = {
-        command = "nix --version | awk '{print \"❄️ \" $3}'";
+      custom.nixver = {
+        command = "nix --version | head -n1 | awk '{print $3}'";
         detect_files = [ "flake.nix" "shell.nix" ];
         style = "fg:#9aa5ce";
-        format = "[$output]($style) ";
+        format = "[❄️ $output]($style) ";
       };
     };
   };
