@@ -157,8 +157,8 @@ in {
     settings = {
       add_newline = false;
       scan_timeout = 50;
-      format = "$directory$git_branch$git_status$fill$hostname$time$line_break$character";
-      right_format = "$zig$rust$go$nodejs$python$ruby$java$lua$docker_context$package$nix_shell$custom.nixinfo";
+      format = "$directory$git_branch$git_status$fill$hostname$time $zig$rust$golang$nodejs$python$ruby$java$lua$docker_context$package$nix_shell$custom.nixinfo$line_break$character";
+      right_format = "";
 
       aws.disabled = true;
       gcloud.disabled = true;
@@ -223,7 +223,7 @@ in {
         style = "fg:#e0af68";
       };
 
-      go = {
+      golang = {
         symbol = "🐹 ";
         format = "[$symbol$version]($style) ";
         style = "fg:#7dcfff";

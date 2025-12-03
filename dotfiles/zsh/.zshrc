@@ -159,6 +159,7 @@ if [[ -o interactive ]] \
 fi
 
 ZSH_DEN=$HOME/zsh-den
+mkdir -p "$ZSH_DEN"
 
 # Clone missing plugins that aren't provided by oh-my-zsh.
 if [[ ! -e $ZSH_DEN/fzf-tab ]]; then
@@ -183,9 +184,9 @@ if [[ ! -e $ZSH_DEN/forgit ]]; then
     git clone --depth=1 https://github.com/wfxr/forgit.git "$ZSH_DEN/forgit"
     zden-patch-forgit
 fi
-source "$ZSH_DEN/zsh-autopair/autopair.zsh"
-source "$ZSH_DEN/zsh-abbrev-alias/zsh-abbrev-alias.plugin.zsh"
-source "$ZSH_DEN/zsh-autocomplete/zsh-autocomplete.plugin.zsh"
+[[ -r "$ZSH_DEN/zsh-autopair/autopair.zsh" ]] && source "$ZSH_DEN/zsh-autopair/autopair.zsh"
+[[ -r "$ZSH_DEN/zsh-abbrev-alias/zsh-abbrev-alias.plugin.zsh" ]] && source "$ZSH_DEN/zsh-abbrev-alias/zsh-abbrev-alias.plugin.zsh"
+[[ -r "$ZSH_DEN/zsh-autocomplete/zsh-autocomplete.plugin.zsh" ]] && source "$ZSH_DEN/zsh-autocomplete/zsh-autocomplete.plugin.zsh"
 
 # zden setup
 source "$ZSH_DEN/aliases.zsh"
@@ -208,15 +209,17 @@ bindkey '^[OA' history-substring-search-up   # up arrow
 bindkey '^[OB' history-substring-search-down # down arrow
 
 # Fish-like abbreviations
-abbrev-alias gco='git checkout'
-abbrev-alias gcb='git checkout -b'
-abbrev-alias gst='git status -sb'
-abbrev-alias gl='git pull --ff-only'
-abbrev-alias gp='git push'
-abbrev-alias gcm='git commit -m'
-abbrev-alias gca='git commit --amend --no-edit'
-abbrev-alias ..='cd ..'
-abbrev-alias ...='cd ../..'
+if command -v abbrev-alias >/dev/null; then
+  abbrev-alias gco='git checkout'
+  abbrev-alias gcb='git checkout -b'
+  abbrev-alias gst='git status -sb'
+  abbrev-alias gl='git pull --ff-only'
+  abbrev-alias gp='git push'
+  abbrev-alias gcm='git commit -m'
+  abbrev-alias gca='git commit --amend --no-edit'
+  abbrev-alias ..='cd ..'
+  abbrev-alias ...='cd ../..'
+fi
 
 export EDITOR='nvim' 
 
