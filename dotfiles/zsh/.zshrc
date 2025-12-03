@@ -204,6 +204,16 @@ source "$ZSH_DEN/uv.zsh"
 # Load plugins
 source "$ZSH_DEN/fzf-tab/fzf-tab.plugin.zsh"
 source "$ZSH_DEN/forgit/forgit.plugin.zsh" && PATH="$PATH:$FORGIT_INSTALL_DIR/bin"
+if [[ -r "$ZSH_DEN/zsh-autocomplete/zsh-autocomplete.plugin.zsh" ]]; then
+  # Limit fzf-tab to file/path completion to reduce overlap with autocomplete menus
+  zstyle ':completion:*' menu select
+  zstyle ':completion:*:default' list-colors ''
+  zstyle ':completion:*:*:*:*:*' file-sort modification
+  zstyle ':completion:*:complete:*:files' use-cache on
+  zstyle ':completion:*:complete:*:paths' use-cache on
+  # Enable autocomplete core
+  source "$ZSH_DEN/zsh-autocomplete/zsh-autocomplete.plugin.zsh"
+fi
 
 eval "$(zoxide init zsh)"
 eval "$(direnv hook zsh)"
