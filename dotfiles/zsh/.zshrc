@@ -8,6 +8,14 @@ export PATH="/run/current-system/sw/bin:$HOME/.nix-profile/bin:/nix/var/nix/prof
 export PATH=$PATH:~/opt/homebrew/bin/Zig
 export PATH="/opt/homebrew/Cellar/node/24.6.0/bin:$PATH"
 fpath=(/Users/rexliu/.docker/completions $fpath)
+umask 077
+export EMSDK_QUIET=1
+if [ -f "$HOME/emsdk/emsdk_env.sh" ]; then
+  . "$HOME/emsdk/emsdk_env.sh" >/dev/null
+fi
+if [ -f "$HOME/.config/secrets/anthropic_api_key" ]; then
+  export ANTHROPIC_API_KEY="$(cat "$HOME/.config/secrets/anthropic_api_key" | tr -d '\n')"
+fi
 
 # Set list of themes to pick from when loading at random
 # Setting this variable when ZSH_THEME=random will cause zsh to load
@@ -146,7 +154,7 @@ if [[ -o interactive ]] \
    && [[ -z ${SSH_TTY+X} ]] \
    && [[ "$TERM_PROGRAM" = "Ghostty" || "$TERM_PROGRAM" = "Apple_Terminal" ]]; then
   if command -v tmux >/dev/null; then
-    tmux new -As init
+    tmux new -As main
   fi
 fi
 
