@@ -157,9 +157,49 @@ in {
     settings = {
       add_newline = false;
       scan_timeout = 50;
-      format = "$all";
+      format = "$directory$git_branch$git_status$fill$hostname$time$line_break$character";
+      right_format = "";
+
       aws.disabled = true;
       gcloud.disabled = true;
+
+      fill.symbol = " ";
+
+      directory = {
+        style = "fg:#7aa2f7 bold";
+        truncation_length = 3;
+        truncate_to_repo = true;
+        read_only = " ";
+        format = "[$path]($style) ";
+      };
+
+      git_branch = {
+        symbol = " ";
+        style = "fg:#7dcfff bold";
+        format = "[$symbol$branch]($style) ";
+      };
+
+      git_status = {
+        style = "fg:#7dcfff";
+        format = "[$all_status$ahead_behind]($style) ";
+      };
+
+      hostname = {
+        ssh_only = false;
+        format = "[$hostname](fg:#9aa5ce) ";
+      };
+
+      time = {
+        disabled = false;
+        format = "[$time](fg:#565f89)";
+        time_format = "%H:%M";
+      };
+
+      character = {
+        success_symbol = "[❯](fg:#9ece6a)";
+        error_symbol = "[❯](fg:#f7768e)";
+        vicmd_symbol = "[❮](fg:#7dcfff)";
+      };
     };
   };
 
