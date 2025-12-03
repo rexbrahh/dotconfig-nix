@@ -107,6 +107,13 @@ in {
     '';
   };
 
+  home.file.".zprofile".text = ''
+    # OrbStack CLI hooks
+    if [ -r "$HOME/.orbstack/shell/init.zsh" ]; then
+      source "$HOME/.orbstack/shell/init.zsh"
+    fi
+  '';
+
   programs.nushell = {
     enable = true;
     package = pkgs.nushell;
