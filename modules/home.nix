@@ -403,6 +403,9 @@ in {
     settings = {experimental = true;};
   };
 
+  # fuck corepack
+  # home.file.".nix-profile/bin/corepack".enable = false;
+  
   # User-scoped packages managed by Home Manager
   home.packages = with pkgs; [
     git
@@ -419,7 +422,13 @@ in {
     rsync
     gnupg
     uv
-    nodejs_20
+    
+    (nodejs_20.overrideAttrs (old: {
+      postInstall = (old.postInstall or "") + ''
+        rm -f $out/bin/corepack
+      '';
+    }))
+
     python312
     rustup
     go
