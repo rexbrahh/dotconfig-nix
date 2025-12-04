@@ -423,12 +423,8 @@ in {
     gnupg
     uv
     
-    (nodejs_20.overrideAttrs (old: {
-      postInstall = (old.postInstall or "") + ''
-        rm -f $out/bin/corepack
-      '';
-    }))
-
+    # nodejs_20
+    
     python312
     rustup
     go
