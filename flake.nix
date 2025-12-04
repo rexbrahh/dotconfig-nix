@@ -109,8 +109,8 @@
         # Agenix secrets module (scaffold; define secrets in ./secrets)
         agenix.darwinModules.default
 
-        # Linux builder (speed up Linux builds from macOS)
-        ({...}: {nix.linux-builder.enable = true;})
+        # Linux builder (speed up Linux builds from macOS; requires nix.enable)
+        ({config, lib, ...}: lib.mkIf config.nix.enable {nix.linux-builder.enable = true;})
 
         # Optional: share nix-index database
         # programs.nix-index-database.comma.enable = true;
