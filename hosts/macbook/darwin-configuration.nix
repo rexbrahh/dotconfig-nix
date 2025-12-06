@@ -41,6 +41,7 @@ in {
       ];
       sandbox = lib.mkForce "relaxed";
       require-sigs = true;
+      auto-optimise-store = true;
       substituters = [
         "https://cache.nixos.org"
         # common community caches you might add later
