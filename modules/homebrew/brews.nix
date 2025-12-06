@@ -18,6 +18,7 @@
   "render"
   "nasm"
   "shellcheck"
+  "skhd"
   "hadolint"
   "abseil"
   "actionlint"
