@@ -1,6 +1,5 @@
 [
   "tailscale-app"
-  "clickhouse"
   "devtoys"
   "font-jetbrains-mono"
   "font-symbols-only-nerd-font"
@@ -19,7 +18,6 @@
   "rancher"
   "rapidapi"
   "sequel-ace"
-  "session-manager-plugin"
   "skim"
   "ssh-config-editor"
   "tableplus"
