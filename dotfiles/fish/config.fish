@@ -36,10 +36,12 @@ end
 # Auto-attach tmux when launching an interactive shell in Ghostty
 # - skip if already inside tmux
 # - skip for SSH sessions
+# Opt-in tmux auto-attach inside Ghostty: set FISH_AUTO_TMUX=1 to enable; FISH_NO_AUTO_TMUX disables.
 if status is-interactive
   and test -z "$TMUX"
   and test "$TERM_PROGRAM" = "Ghostty"
   and command -sq tmux
+  and test -n "$FISH_AUTO_TMUX"
   and test -z "$FISH_NO_AUTO_TMUX"
   exec tmux -u new-session -A -s main
 end
