@@ -443,7 +443,4 @@ in {
 
   # Dotfiles you want generated/managed
   xdg.enable = true;
-
-  # Keep login shell as zsh; fish is available when run manually
-  programs.fish.loginShell = false;
 }
