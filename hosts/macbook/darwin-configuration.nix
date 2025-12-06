@@ -143,11 +143,9 @@ in {
   system.stateVersion = 5; # <- bump only after reading release notes
 
   # Window manager and hotkey daemon (managed via nix-darwin)
-  services.yabai = {
-    enable = true;
-    package = pkgs.yabai;
-    enableScriptingAddition = false; # safer default; enable only if you’ve handled SIP steps
-  };
+  # Disabled here so Homebrew can own the service (nix-managed launch agent was
+  # blocked by Accessibility). Start with `brew services start yabai`.
+  services.yabai.enable = false;
   services.skhd = {
     enable = true;
     package = pkgs.skhd;
