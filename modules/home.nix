@@ -137,7 +137,7 @@ in {
   home.file.".cache/zoxide/init.nu".text = "# zoxide nushell stub; overwritten at runtime if zoxide is installed\n";
 
   home.sessionVariables = {
-    SHELL = "/run/current-system/sw/bin/fish";
+    SHELL = "/run/current-system/sw/bin/zsh";
     EDITOR = "nvim";
     VISUAL = "nvim";
     PAGER = "less";
@@ -444,6 +444,6 @@ in {
   # Dotfiles you want generated/managed
   xdg.enable = true;
 
-  # Set macOS login shell to fish
-  programs.fish.loginShell = true;
+  # Keep login shell as zsh; fish is available when run manually
+  programs.fish.loginShell = false;
 }
