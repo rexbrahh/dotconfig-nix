@@ -39,5 +39,7 @@ end
 if status is-interactive
   and test -z "$TMUX"
   and test "$TERM_PROGRAM" = "Ghostty"
+  and command -sq tmux
+  and test -z "$FISH_NO_AUTO_TMUX"
   exec tmux -u new-session -A -s main
 end
