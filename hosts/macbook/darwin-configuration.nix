@@ -146,10 +146,8 @@ in {
   # Disabled here so Homebrew can own the service (nix-managed launch agent was
   # blocked by Accessibility). Start with `brew services start yabai`.
   services.yabai.enable = false;
-  services.skhd = {
-    enable = true;
-    package = pkgs.skhd;
-  };
+  # Disabled; manage via Homebrew instead (`brew install skhd && skhd --start-service`)
+  services.skhd.enable = false;
 
   # Ensure tmux server is available after login
   launchd.user.agents."tmux" = {
