@@ -1,0 +1,118 @@
+add_newline = false
+scan_timeout = 50
+# Left line: dir+git on the left, host/time on the right.
+format = "$directory$git_branch$git_status$fill$hostname$time$line_break$character"
+# Right prompt (still right-aligned on line 1; Starship hides it if no space).
+right_format = "$status$jobs$zig$rust$golang$nodejs$python$ruby$docker_context$package$nix_shell$custom.nixver"
+
+[aws]
+disabled = true
+
+[gcloud]
+disabled = true
+
+[fill]
+symbol = " "
+
+[directory]
+style = "fg:#7aa2f7 bold"
+truncation_length = 3
+truncate_to_repo = true
+read_only = " "
+format = "[$path]($style) "
+
+[git_branch]
+symbol = " "
+style = "fg:#7dcfff bold"
+format = "[$symbol$branch]($style) "
+
+[git_status]
+style = "fg:#7dcfff"
+format = "[$all_status$ahead_behind]($style)"
+
+[hostname]
+ssh_only = false
+format = "[$hostname](fg:#9aa5ce) "
+
+[time]
+disabled = false
+format = "[$time](fg:#565f89)"
+time_format = "%H:%M"
+
+[character]
+success_symbol = "[❯](fg:#85befd)"
+error_symbol = "[❯](fg:#f7768e)"
+vicmd_symbol = "[❮](fg:#85befd)"
+
+[package]
+format = "[$symbol$version]($style) "
+style = "fg:#9aa5ce"
+
+[nix_shell]
+format = "[❄️ $name]($style) "
+style = "fg:#9aa5ce"
+
+[zig]
+symbol = "🦎 "
+format = "[$symbol$version]($style) "
+style = "fg:#7dcfff"
+detect_extensions = ["zig", "zon"]
+detect_files = ["build.zig"]
+
+[rust]
+symbol = "🦀 "
+format = "[$symbol$version]($style) "
+style = "fg:#e0af68"
+detect_extensions = ["rs"]
+detect_files = ["Cargo.toml", "rust-toolchain", "rust-toolchain.toml"]
+
+[golang]
+symbol = "🐹 "
+format = "[$symbol$version]($style) "
+style = "fg:#7dcfff"
+detect_extensions = ["go"]
+detect_files = ["go.mod", "go.work", "Gopkg.toml"]
+
+[nodejs]
+symbol = "⬢ "
+format = "[$symbol$version]($style) "
+style = "fg:#9ece6a"
+detect_extensions = ["js", "mjs", "cjs", "ts", "tsx"]
+detect_files = ["package.json", "pnpm-lock.yaml", "yarn.lock", "bun.lockb", "deno.json"]
+
+[python]
+symbol = "🐍 "
+format = "[$symbol$version]($style) "
+style = "fg:#c0caf5"
+detect_extensions = ["py"]
+detect_files = ["requirements.txt", "pyproject.toml", "Pipfile", "setup.py"]
+
+[ruby]
+symbol = "💎 "
+format = "[$symbol$version]($style) "
+style = "fg:#f7768e"
+detect_extensions = ["rb"]
+detect_files = ["Gemfile", "Gemfile.lock"]
+
+[docker_context]
+symbol = "🐳 "
+format = "[$symbol$context]($style) "
+style = "fg:#7dcfff"
+
+[custom.nixver]
+command = "nix --version | head -n1 | awk '{print $3}'"
+detect_files = ["flake.nix", "shell.nix"]
+style = "fg:#9aa5ce"
+format = "[❄️ $output]($style) "
+
+[status]
+style = "fg:#f7768e"
+format = "[✖ $status]($style) "
+disabled = false
+map_symbol = true
+
+[jobs]
+symbol = " "
+style = "fg:#9aa5ce"
+format = "[$symbol$number]($style) "
+number_threshold = 1
