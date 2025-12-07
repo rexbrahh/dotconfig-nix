@@ -1,9 +1,9 @@
 add_newline = false
 scan_timeout = 50
 # Left line: dir+git on the left, host/time on the right.
-format = "$directory$git_branch$git_status$fill$hostname$time$line_break$character"
+format = "$directory$git_branch$git_status$git_state$git_commit$fill$hostname$time$line_break$character"
 # Right prompt (still right-aligned on line 1; Starship hides it if no space).
-right_format = "$status$jobs$zig$rust$golang$nodejs$python$ruby$docker_context$package$nix_shell$custom.nixver"
+right_format = "$status$cmd_duration$jobs$zig$rust$golang$nodejs$python$ruby$docker_context$package$nix_shell$custom.nixver"
 
 [aws]
 disabled = true
@@ -28,7 +28,18 @@ format = "[$symbol$branch]($style) "
 
 [git_status]
 style = "fg:#7dcfff"
-format = "[$all_status$ahead_behind]($style)"
+format = "[$all_status$ahead_behind]($style) "
+
+[git_state]
+format = "([$state( $progress_current/$progress_total)]($style)) "
+style = "fg:#f7768e"
+
+[git_commit]
+commit_hash_length = 7
+only_detached = false
+style = "fg:#9aa5ce"
+tag_disabled = true
+format = "[$hash]($style) "
 
 [hostname]
 ssh_only = false
@@ -98,6 +109,18 @@ detect_files = ["Gemfile", "Gemfile.lock"]
 symbol = "🐳 "
 format = "[$symbol$context]($style) "
 style = "fg:#7dcfff"
+
+[kubernetes]
+disabled = true
+detect_files = ["kubeconfig", ".kube/config"]
+format = "[$context]($style) "
+style = "bg:#f7768e fg:#1a1b26"
+contexts.prod.style = "bg:#f7768e fg:#1a1b26"
+
+[cmd_duration]
+min_time = 800
+format = "[$duration]($style) "
+style = "fg:#9aa5ce"
 
 [custom.nixver]
 command = "nix --version | head -n1 | awk '{print $3}'"
