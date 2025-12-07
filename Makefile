@@ -17,13 +17,21 @@ NIXNAME ?= $(DEFAULT_NIXNAME)
 # Disk device to partition/format during bootstrap0 (override for nvme/vda, etc.)
 DISK ?= /dev/sda
 
+# VM build/run knobs
+VM_CPUS ?= 4
+VM_RAM ?= 4096
+VM_SSH_PORT ?= 2222
+VM_QCOW2 ?= ./iso/$(NIXNAME).qcow2
+VM_ISO ?= ./iso/$(NIXNAME).iso
+VM_NET ?= user,hostfwd=tcp::$(VM_SSH_PORT)-:22
+
 # SSH opts for a fresh ISO (no host key, password auth only)
 SSH_OPTIONS = -o PubkeyAuthentication=no -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no
 
 # Path to this repo
 MAKEFILE_DIR := $(patsubst %/,%,$(dir $(abspath $(lastword $(MAKEFILE_LIST)))))
 
-.PHONY: switch test cache vm/bootstrap0 vm/bootstrap vm/copy vm/switch vm/secrets
+.PHONY: switch test cache vm/bootstrap0 vm/bootstrap vm/copy vm/switch vm/secrets vm/preflight vm/disko-dry-run vm/disko-apply vm/qcow2 vm/run vm/check
 
 switch:
 ifeq ($(UNAME),Darwin)
@@ -76,6 +84,46 @@ vm/bootstrap0:
 		' /mnt/etc/nixos/configuration.nix; \
 		NIXPKGS_ALLOW_UNFREE=1 nixos-install --no-root-passwd && reboot; \
 	"
+
+# Preflight: ensure tools exist before VM workflows.
+vm/preflight:
+	@command -v nix >/dev/null || { echo "nix missing"; exit 1; }
+	@command -v qemu-img >/dev/null || { echo "qemu-img missing"; exit 1; }
+	@command -v qemu-system-aarch64 >/dev/null || command -v qemu-system-x86_64 >/dev/null || { echo "qemu-system missing"; exit 1; }
+	@command -v disko >/dev/null || echo "note: disko not in PATH; will use nix run nixpkgs#disko"
+
+# Dry-run the declarative disk layout.
+vm/disko-dry-run:
+	nix run nixpkgs#disko -- --mode dry-run --argstr device $(DISK) hosts/nixos-vm-m4/disko.nix
+
+# Apply the declarative disk layout (destructive).
+vm/disko-apply:
+	@if [ "$${CONFIRM:-}" != "1" ]; then echo "Set CONFIRM=1 to run destructive disko apply"; exit 1; fi
+	nix run nixpkgs#disko -- --mode disko --argstr device $(DISK) hosts/nixos-vm-m4/disko.nix
+
+# Create a blank qcow2 disk (useful for qemu tests).
+vm/qcow2:
+	mkdir -p $(dir $(VM_QCOW2))
+	qemu-img create -f qcow2 $(VM_QCOW2) 40G
+
+# Launch qemu with port-forwarded SSH; requires VM_ISO to exist.
+vm/run:
+	@if [ ! -f $(VM_ISO) ]; then echo "Missing VM_ISO ($(VM_ISO)); set VM_ISO to your installer ISO"; exit 1; fi
+	qemu-system-aarch64 \
+		-machine virt,highmem=off \
+		-cpu host \
+		-smp $(VM_CPUS) \
+		-m $(VM_RAM) \
+		-accel hvf \
+		-drive file=$(VM_QCOW2),if=virtio,format=qcow2 \
+		-cdrom $(VM_ISO) \
+		-nic $(VM_NET) \
+		-serial mon:stdio \
+		-display none
+
+# Flake eval + tests (safe to run before a real bootstrap).
+vm/check:
+	nix flake check --impure
 
 # After bootstrap0, copy this repo and activate the flake, then reboot into the new system.
 vm/bootstrap:

@@ -12,6 +12,8 @@ in {
       ./hardware-configuration.nix
       ../../modules/os/nixos/default.nix
       ../../modules/os/nixos/vmware-fusion.nix
+      ../../modules/os/nixos/vm/guest.nix
+      ../../modules/os/nixos/vm/network.nix
       ../../modules/os/nixos/desktop.nix
       ../../modules/os/nixos/docker.nix
     ]
