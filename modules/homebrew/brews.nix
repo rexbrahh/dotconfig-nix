@@ -1,5 +1,5 @@
 [
-  "stripe/stripe-cli/stripe"
+  "stripe-cli"
   "llvm"
   "autoconf-archive"
   "bison"
