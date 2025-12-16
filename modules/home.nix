@@ -13,6 +13,9 @@
 in {
   # Home Manager release compatibility (don’t change lightly)
   home.stateVersion = "25.05";
+  # This flake pins nixpkgs independently of Home Manager, so suppress the
+  # release-mismatch warning and rely on `nix flake check` instead.
+  home.enableNixpkgsReleaseCheck = false;
   programs.home-manager.enable = true;
 
   # Choose your login shell (per-user)
@@ -273,7 +276,7 @@ in {
 
   # fuck corepack
   # home.file.".nix-profile/bin/corepack".enable = false;
-  
+
   # User-scoped packages managed by Home Manager
   home.packages = with pkgs; [
     git
@@ -290,9 +293,9 @@ in {
     rsync
     gnupg
     uv
-    
+
     # nodejs_20
-    
+
     python312
     rustup
     go

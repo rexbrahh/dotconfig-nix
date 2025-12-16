@@ -1,4 +1,8 @@
-{lib, pkgs, ...}: {
+{
+  lib,
+  pkgs,
+  ...
+}: {
   # VM-friendly defaults; override per-host as needed.
   services.qemuGuest.enable = lib.mkDefault true;
 

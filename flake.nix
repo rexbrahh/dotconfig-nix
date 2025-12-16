@@ -6,8 +6,11 @@
   # per-user nix.conf if you want third-party caches.
 
   inputs = {
-    # Pick a channel you like; “nixpkgs-unstable” gives newest packages.
-    nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
+    # Primary channel: stable by default (reduce churn for system configs).
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.05";
+
+    # Secondary channel: pull newer packages selectively via `pkgs.unstable.*`.
+    nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
 
     # nix-darwin: declarative macOS (system-level) management
     darwin.url = "github:LnL7/nix-darwin";
@@ -24,18 +27,18 @@
     # Manage the Homebrew installation declaratively
     nix-homebrew.url = "github:zhaofengli/nix-homebrew";
     # Pin Homebrew itself; this determines the brew CLI version installed
-    nix-homebrew.inputs.brew-src.url = "github:Homebrew/brew/5.0.4";
+    nix-homebrew.inputs.brew-src.url = "github:Homebrew/brew/5.0.5";
 
     # Secrets management (age/agenix scaffold)
     agenix.url = "github:ryantm/agenix";
 
-    # Stable channel for selective pinning alongside unstable
-    nixpkgs-stable.url = "github:NixOS/nixpkgs/nixos-25.05";
+    # (nixpkgs is already stable; keep unstable separate for selective use)
   };
 
   outputs = inputs @ {
     self,
     nixpkgs,
+    nixpkgs-unstable,
     darwin,
     home-manager,
     nix-index-database,
@@ -52,17 +55,18 @@
       "aarch64-linux"
     ];
     overlaysFor = system: [
-      (import ./overlays/default.nix)
       (
         final: prev: let
-          stable = import inputs."nixpkgs-stable" {
+          unstable = import inputs."nixpkgs-unstable" {
             inherit system;
             config = prev.config;
           };
         in {
-          stable = stable;
+          stable = prev;
+          unstable = unstable;
         }
       )
+      (import ./overlays/default.nix)
     ];
     pkgsFor = genAttrs supportedSystems (
       system:
@@ -77,7 +81,7 @@
     darwinConfigurations."macbook" = darwin.lib.darwinSystem {
       system = primarySystem;
       modules = [
-        # Overlay: expose `pkgs.stable` from nixpkgs-stable while base = nixpkgs (unstable)
+        # Overlay: expose `pkgs.unstable` (and a `pkgs.stable` alias)
         ({...}: {nixpkgs.overlays = overlaysFor primarySystem;})
         # Install & manage Homebrew itself (pinned)
         nix-homebrew.darwinModules.nix-homebrew
@@ -89,10 +93,12 @@
             user = "rexliu";
             # Override package metadata so patching embeds the correct version when
             # using a newer brew-src than upstream nix-homebrew's lockfile.
-            package = inputs.nix-homebrew.inputs.brew-src // {
-              name = "brew-5.0.4";
-              version = "5.0.4";
-            };
+            package =
+              inputs.nix-homebrew.inputs.brew-src
+              // {
+                name = "brew-5.0.5";
+                version = "5.0.5";
+              };
             # Declarative taps are optional; leave empty to avoid brew warnings
             taps = {};
           };
@@ -110,10 +116,38 @@
         agenix.darwinModules.default
 
         # Linux builder (speed up Linux builds from macOS; requires nix.enable)
-        ({config, lib, ...}: lib.mkIf config.nix.enable {nix.linux-builder.enable = true;})
+        ({
+          config,
+          lib,
+          ...
+        }:
+          lib.mkIf config.nix.enable {nix.linux-builder.enable = true;})
 
         # Optional: share nix-index database
         # programs.nix-index-database.comma.enable = true;
+      ];
+    };
+
+    # A variant config that does NOT manage the Homebrew installation via Nix.
+    #
+    # nix-homebrew intentionally disables `brew` self-updates by keeping Homebrew
+    # code in the Nix store. If you want upstream Homebrew to update itself
+    # (including the brew CLI), switch to this configuration and install
+    # Homebrew via the official installer (git clone under /opt/homebrew).
+    darwinConfigurations."macbook-mutable-brew" = darwin.lib.darwinSystem {
+      system = primarySystem;
+      modules = [
+        ({...}: {nixpkgs.overlays = overlaysFor primarySystem;})
+        home-manager.darwinModules.home-manager
+        ./hosts/macbook/darwin-configuration.nix
+        nix-index-database.darwinModules.nix-index
+        agenix.darwinModules.default
+        ({
+          config,
+          lib,
+          ...
+        }:
+          lib.mkIf config.nix.enable {nix.linux-builder.enable = true;})
       ];
     };
 
