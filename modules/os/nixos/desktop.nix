@@ -12,14 +12,13 @@
     };
   };
 
-  services.xserver.displayManager = {
+  services.displayManager = {
     gdm.enable = lib.mkDefault true;
     gdm.wayland = lib.mkDefault true;
+    defaultSession = lib.mkDefault "hyprland";
   };
 
-  services.displayManager.defaultSession = lib.mkDefault "hyprland";
-
-  services.xserver.desktopManager.gnome.enable = lib.mkDefault true;
+  services.desktopManager.gnome.enable = lib.mkDefault true;
 
   # Wayland compositor (Hyprland) with portals
   programs.hyprland.enable = lib.mkDefault true;
