@@ -6,14 +6,14 @@
   # per-user nix.conf if you want third-party caches.
 
   inputs = {
-    # Primary channel: stable by default (reduce churn for system configs).
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.05";
+    # Primary channel: stable by default (must match nix-darwin release branch on macOS).
+    nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-25.11-darwin";
 
     # Secondary channel: pull newer packages selectively via `pkgs.unstable.*`.
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
 
     # nix-darwin: declarative macOS (system-level) management
-    darwin.url = "github:LnL7/nix-darwin";
+    darwin.url = "github:LnL7/nix-darwin/nix-darwin-25.11";
     darwin.inputs.nixpkgs.follows = "nixpkgs";
 
     # Home Manager: user-level packages & dotfiles; integrate via nix-darwin module
