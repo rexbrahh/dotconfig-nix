@@ -23,7 +23,7 @@
       "autohide-delay" = 0.0;
       "autohide-time-modifier" = 0.21;
       persistent-apps = [
-        "/Applications/Safari.app"
+        "/Applications/Google Chrome.app"
         "/Applications/Ghostty.app"
         "/Applications/Things3.app"
         "/System/Applications/Mail.app"
