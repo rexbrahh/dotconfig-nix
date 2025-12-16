@@ -23,12 +23,13 @@
       "autohide-delay" = 0.0;
       "autohide-time-modifier" = 0.21;
       persistent-apps = [
-        "/Applications/Google Chrome.app"
-        "/Applications/Ghostty.app"
+        "/Applications/Google Chrome.app" 
         "/Applications/Things3.app"
         "/System/Applications/Mail.app"
         "/System/Applications/Calendar.app"
         "/System/Applications/Notes.app"
+        "/Applications/Ghostty.app"
+        "/Applications/Zed.app"
         "/Applications/Spotify.app"
       ];
     };
