@@ -27,7 +27,7 @@
         "/Applications/Things3.app"
         "/System/Applications/Mail.app"
         "/System/Applications/Calendar.app"
-        "/System/Applications/Notes.app"
+        "/System/Applications/Obsidian.app"
         "/Applications/Ghostty.app"
         "/Applications/Zed.app"
         "/Applications/Spotify.app"
