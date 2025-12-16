@@ -1,8 +1,7 @@
 {
   device ? "/dev/vda",
   swapSize ? "8G",
-}:
-{
+}: {
   disko.devices = {
     disk.main = {
       type = "disk";

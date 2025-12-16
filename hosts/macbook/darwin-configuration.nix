@@ -4,9 +4,7 @@
   config,
   pkgs,
   ...
-}: let
-  user = builtins.getEnv "USER"; # or: "rexliu"
-in {
+}: {
   imports = let
     secretsModule = ../../secrets/secrets.nix;
   in
@@ -32,14 +30,14 @@ in {
         "nix-command"
         "flakes"
       ];
-      warn-dirty = false;
+      warn-dirty = true;
       fallback = true;
       ssl-cert-file = "/nix/var/nix/profiles/default/etc/ssl/certs/ca-bundle.crt";
       trusted-users = [
         "root"
         "rexliu"
       ];
-      sandbox = lib.mkForce "relaxed";
+      sandbox = true;
       require-sigs = true;
       substituters = [
         "https://cache.nixos.org"

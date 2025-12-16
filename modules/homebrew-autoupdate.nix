@@ -1,5 +1,9 @@
-{ config, lib, pkgs, ... }:
-let
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}: let
   user = config.system.primaryUser or "rexliu";
   userHome =
     if builtins.hasAttr user config.users.users
@@ -35,11 +39,13 @@ in {
   config = lib.mkIf config.brewAutoUpdate.enable {
     launchd.user.agents."brew-autoupdate" = {
       serviceConfig = {
-        ProgramArguments = [ "${script}" ];
-        StartCalendarInterval = [{
-          Hour = config.brewAutoUpdate.hour;
-          Minute = config.brewAutoUpdate.minute;
-        }];
+        ProgramArguments = ["${script}"];
+        StartCalendarInterval = [
+          {
+            Hour = config.brewAutoUpdate.hour;
+            Minute = config.brewAutoUpdate.minute;
+          }
+        ];
         RunAtLoad = true;
         KeepAlive = false;
         StandardOutPath = "${userHome}/Library/Logs/brew-autoupdate.log";

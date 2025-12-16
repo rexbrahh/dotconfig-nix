@@ -25,6 +25,11 @@
       persistent-apps = [
         "/Applications/Brave Browser.app"
         "/Applications/Ghostty.app"
+        "/Applications/Things3.app"
+        "/System/Applications/Mail.app"
+        "/System/Applications/Calendar.app"
+        "/System/Applications/Notes.app"
+        "/Applications/Spotify.app"
       ];
     };
     finder = {
