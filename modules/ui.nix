@@ -24,8 +24,6 @@
       "autohide-time-modifier" = 0.21;
       persistent-apps = [
         "/Applications/Google Chrome.app" 
-        "/Applications/Things3.app"
-        "/System/Applications/Mail.app"
         "/System/Applications/Calendar.app"
         "/System/Applications/Obsidian.app"
         "/Applications/Ghostty.app"
