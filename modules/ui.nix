@@ -23,7 +23,7 @@
       "autohide-delay" = 0.0;
       "autohide-time-modifier" = 0.21;
       persistent-apps = [
-        "/Applications/Brave Browser.app" 
+        "/Applications/Helium.app" 
         "/System/Applications/Calendar.app"
         "/System/Applications/Obsidian.app"
         "/Applications/Ghostty.app"
