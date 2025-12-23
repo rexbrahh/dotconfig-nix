@@ -1,6 +1,6 @@
 {lib, ...}: {
   imports = [
-    ../../../modules/home.nix
+    ../../../modules/home
     ../../../modules/dotfiles/default.nix
     ../../../modules/profiles/dev-cpp.nix
     ../../../modules/profiles/dev-zig.nix

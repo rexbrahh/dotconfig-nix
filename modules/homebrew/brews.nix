@@ -1,5 +1,4 @@
 [
-  "chromedriver"
   "llvm"
   "autoconf-archive"
   "bison"
