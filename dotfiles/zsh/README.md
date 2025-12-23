@@ -1,7 +1,7 @@
 # Zsh setup (fish-like)
 
 Required pieces (Home Manager manages symlinks):
-- Starship prompt via `modules/home.nix`.
+- Starship prompt via `modules/home/shells.nix`.
 - Oh My Zsh with plugins: git, zsh-autosuggestions, zsh-syntax-highlighting, you-should-use, history-substring-search.
 
 Vendored (guarded) in `$ZSH_DEN`:

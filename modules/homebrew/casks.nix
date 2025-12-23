@@ -22,4 +22,5 @@
   "ssh-config-editor"
   "tableplus"
   "temurin"
+  "chromedriver"
 ]

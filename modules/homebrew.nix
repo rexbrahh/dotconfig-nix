@@ -14,6 +14,7 @@ in {
     taps = [
       "koekeishiya/formulae"
       "nextdns/tap"
+      "supabase/tap"
     ];
     global = {
       brewfile = true; # creates/uses Brewfile for visibility
