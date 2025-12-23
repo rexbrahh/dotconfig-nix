@@ -23,12 +23,8 @@
       "autohide-delay" = 0.0;
       "autohide-time-modifier" = 0.21;
       persistent-apps = [
-        "/Applications/Brave Browser.app" 
-        "/System/Applications/Calendar.app"
-        "/System/Applications/Obsidian.app"
+        "/Applications/Helium.app" 
         "/Applications/Ghostty.app"
-        "/Applications/Zed.app"
-        "/Applications/Spotify.app"
       ];
     };
     finder = {
