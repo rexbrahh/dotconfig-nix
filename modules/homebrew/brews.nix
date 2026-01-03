@@ -1,4 +1,5 @@
 [
+  "k6"
   "llvm"
   "autoconf-archive"
   "bison"
