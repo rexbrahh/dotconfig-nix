@@ -1,4 +1,6 @@
+
 [
+  "obsidian"
   "tailscale-app"
   "devtoys"
   "font-jetbrains-mono"
