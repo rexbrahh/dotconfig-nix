@@ -1,6 +1,5 @@
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:$HOME/.local/bin:/usr/local/bin:$PATH
-source <(fzf --zsh)
 # Path to your Oh My Zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
 ZSH_DISABLE_COMPFIX=true
@@ -79,7 +78,7 @@ ZSH_THEME=""
 # Add wisely, as too many plugins slow down shell startup.
 
 
-plugins=(git zsh-autosuggestions zsh-syntax-highlighting you-should-use history-substring-search)
+plugins=(git you-should-use history-substring-search)
 
 ZSH_DEN=$HOME/zsh-den
 mkdir -p "$ZSH_DEN"
@@ -90,7 +89,6 @@ fi
 fpath=("$ZSH_DEN/zsh-completions/src" $fpath)
 
 source $ZSH/oh-my-zsh.sh
-eval "$(starship init zsh)"
 
 # User configuration
 
@@ -131,6 +129,8 @@ export PATH="$HOME/.local/bin:$PATH"
 
 
 export TERM=xterm-256color
+export DIRENV_LOG_FORMAT=""
+export NIX_SHELL_PRESERVE_PROMPT=1
 
 function y() {
 	local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
@@ -191,7 +191,6 @@ if [[ ! -e $ZSH_DEN/forgit ]]; then
 fi
 [[ -r "$ZSH_DEN/zsh-autopair/autopair.zsh" ]] && source "$ZSH_DEN/zsh-autopair/autopair.zsh"
 [[ -r "$ZSH_DEN/zsh-abbrev-alias/zsh-abbrev-alias.plugin.zsh" ]] && source "$ZSH_DEN/zsh-abbrev-alias/zsh-abbrev-alias.plugin.zsh"
-[[ -r "$ZSH_DEN/zsh-autocomplete/zsh-autocomplete.plugin.zsh" ]] && source "$ZSH_DEN/zsh-autocomplete/zsh-autocomplete.plugin.zsh"
 
 # zden setup
 source "$ZSH_DEN/aliases.zsh"
@@ -215,8 +214,6 @@ if [[ -r "$ZSH_DEN/zsh-autocomplete/zsh-autocomplete.plugin.zsh" ]]; then
   source "$ZSH_DEN/zsh-autocomplete/zsh-autocomplete.plugin.zsh"
 fi
 
-eval "$(zoxide init zsh)"
-eval "$(direnv hook zsh)"
 setopt auto_cd
 setopt auto_pushd pushd_silent pushd_ignore_dups
 bindkey '^P' history-substring-search-up

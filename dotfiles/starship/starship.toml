@@ -60,7 +60,7 @@ format = "[$symbol$version]($style) "
 style = "fg:#9aa5ce"
 
 [nix_shell]
-format = "[❄️ $name]($style) "
+format = "[nix $name]($style) "
 style = "fg:#9aa5ce"
 
 [zig]
@@ -126,7 +126,7 @@ style = "fg:#9aa5ce"
 command = "nix --version | head -n1 | awk '{print $3}'"
 detect_files = ["flake.nix", "shell.nix"]
 style = "fg:#9aa5ce"
-format = "[❄️ $output]($style) "
+format = "[nix $output]($style) "
 
 [status]
 style = "fg:#f7768e"
