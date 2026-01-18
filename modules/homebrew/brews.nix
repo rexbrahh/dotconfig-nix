@@ -1,4 +1,5 @@
 [
+  "gitleaks"
   "k6"
   "llvm"
   "autoconf-archive"
@@ -7,6 +8,7 @@
   "nushell"
   "satococoa/tap/wtp"
   "joshmedeski/sesh/sesh"
+  "jesseduffield/lazydocker/lazydocker"
   "iperf3"
   "tailscale"
   "typst"
