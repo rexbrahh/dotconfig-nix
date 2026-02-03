@@ -1,4 +1,15 @@
 [
+  # Clawdbot dependencies
+  "himalaya"
+  "isync"
+  "switchaudio-osx"
+  "steipete/tap/gogcli"
+  "steipete/tap/peekaboo"
+  "steipete/tap/remindctl"
+  "steipete/tap/imsg"
+  "antoniorodr/memo/memo"
+  "yakitrak/yakitrak/obsidian-cli"
+  # ---
   "gitleaks"
   "k6"
   "llvm"
@@ -447,4 +458,10 @@
   "zoxide"
   "zsh"
   "zstd"
+  # Additional packages
+  "mlx"
+  "mlx-c"
+  "python@3.14"
+  "tmux"
+  "z3"
 ]

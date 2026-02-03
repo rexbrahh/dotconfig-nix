@@ -37,7 +37,7 @@ in {
           UseKeychain = "yes";
         };
     };
-    matchBlocks."gpu-box".extraOptions.ForwardAgent = "yes";
+    matchBlocks."gpu-box".extraOptions.ForwardAgent = "no";  # SECURITY: disabled agent forwarding
   };
 
   # Write Home Manager's SSH config to a separate include file.

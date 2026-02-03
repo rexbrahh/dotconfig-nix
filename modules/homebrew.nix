@@ -15,6 +15,10 @@ in {
       "koekeishiya/formulae"
       "nextdns/tap"
       "supabase/tap"
+      # Clawdbot dependencies
+      "steipete/tap"
+      "antoniorodr/memo"
+      "yakitrak/yakitrak"
     ];
     global = {
       brewfile = true; # creates/uses Brewfile for visibility
