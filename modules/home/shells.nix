@@ -48,7 +48,7 @@ in {
       {
         name = "fzf-tab";
         src = pkgs.zsh-fzf-tab;
-        file = "share/fzf-tab/fzf-tab.plugin.zsh";
+        file = "share/fzf-tab/fzf-tab.zsh";
       }
       {
         name = "zsh-autopair";
