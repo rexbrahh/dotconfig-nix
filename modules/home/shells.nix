@@ -104,22 +104,24 @@ in {
       gp = "git push";
     };
 
-    # Init content (runs early, before plugins)
-    initExtraFirst = ''
-      # Security: restrictive umask
-      umask 077
+    # Combined init content (mkBefore runs early, mkAfter runs late)
+    initContent = lib.mkMerge [
+      # Early init (before plugins)
+      (lib.mkBefore ''
+        # Security: restrictive umask
+        umask 077
 
-      # Performance: cache compinit (only rebuild once per day)
-      autoload -Uz compinit
-      if [[ -n $HOME/.zcompdump(#qN.mh+24) ]]; then
-        compinit
-      else
-        compinit -C
-      fi
-    '';
+        # Performance: cache compinit (only rebuild once per day)
+        autoload -Uz compinit
+        if [[ -n $HOME/.zcompdump(#qN.mh+24) ]]; then
+          compinit
+        else
+          compinit -C
+        fi
+      '')
 
-    # Main init content
-    initExtra = ''
+      # Main init content
+      ''
       # PATH additions
       export PATH="/run/current-system/sw/bin:$HOME/.nix-profile/bin:/nix/var/nix/profiles/default/bin:$PATH"
       export PATH="/opt/homebrew/bin:/opt/homebrew/sbin:$PATH"
@@ -235,7 +237,8 @@ in {
       if command -v comma >/dev/null; then
         alias ,="comma"
       fi
-    '';
+    ''
+    ];
   };
 
   # .zprofile for login shell hooks
