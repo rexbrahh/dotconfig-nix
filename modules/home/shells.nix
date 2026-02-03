@@ -44,12 +44,8 @@ in {
     };
 
     # Plugins managed by Nix (replaces ~/zsh-den git clones)
+    # NOTE: fzf-tab removed - binary module doesn't build on Darwin
     plugins = [
-      {
-        name = "fzf-tab";
-        src = pkgs.zsh-fzf-tab;
-        file = "share/fzf-tab/fzf-tab.zsh";
-      }
       {
         name = "zsh-autopair";
         src = pkgs.zsh-autopair;
