@@ -131,9 +131,9 @@ in {
       fi
       export NIX_PATH=$HOME/.nix-defexpr/channels''${NIX_PATH:+:$NIX_PATH}
 
-      # EMSDK
+      # EMSDK (silence all output - EMSDK_QUIET is buggy)
       if [ -f "$HOME/emsdk/emsdk_env.sh" ]; then
-        . "$HOME/emsdk/emsdk_env.sh" >/dev/null
+        . "$HOME/emsdk/emsdk_env.sh" >/dev/null 2>&1
       fi
 
       # Secrets (loaded from sops-managed file if available)
