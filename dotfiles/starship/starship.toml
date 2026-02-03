@@ -1,2 +1,95 @@
-# Starship prompt - using default configuration
-# See https://starship.rs/config/ for customization options
+# Starship prompt - minimal, performant configuration
+# Run `starship timings` to profile, `starship toggle <module>` to toggle
+
+scan_timeout = 30
+command_timeout = 500
+
+# --- Layout ---
+# Line 1: directory + git
+# Line 2: prompt character
+format = """
+$directory\
+$git_branch\
+$git_status\
+$git_state\
+$nix_shell\
+$line_break\
+$character"""
+
+# Right side: language versions + cmd duration (only shown when relevant)
+right_format = """
+$cmd_duration\
+$python\
+$nodejs\
+$rust\
+$golang\
+$zig"""
+
+# --- Core modules ---
+[directory]
+truncation_length = 3
+truncate_to_repo = true
+read_only = " ro"
+
+[git_branch]
+format = "on [$branch]($style) "
+
+[git_status]
+format = '([$all_status$ahead_behind]($style) )'
+
+[git_state]
+format = '([$state( $progress_current/$progress_total)]($style)) '
+
+[character]
+success_symbol = "[❯](bold green)"
+error_symbol = "[❯](bold red)"
+
+[cmd_duration]
+min_time = 2000
+format = "[$duration]($style) "
+
+[nix_shell]
+format = "[nix]($style) "
+
+# --- Language modules (only shown when detected) ---
+[python]
+format = "[$symbol$version]($style) "
+symbol = "py "
+
+[nodejs]
+format = "[$symbol$version]($style) "
+symbol = "node "
+
+[rust]
+format = "[$symbol$version]($style) "
+symbol = "rs "
+
+[golang]
+format = "[$symbol$version]($style) "
+symbol = "go "
+
+[zig]
+format = "[$symbol$version]($style) "
+symbol = "zig "
+
+# --- Disabled (performance or privacy) ---
+[gcloud]
+disabled = true
+
+[aws]
+disabled = true
+
+[azure]
+disabled = true
+
+[kubernetes]
+disabled = true
+
+[docker_context]
+disabled = true
+
+[package]
+disabled = true
+
+[pijul_channel]
+disabled = true

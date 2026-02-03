@@ -44,7 +44,7 @@ in {
     };
 
     # Plugins managed by Nix (replaces ~/zsh-den git clones)
-    # NOTE: fzf-tab removed - binary module doesn't build on Darwin
+    # NOTE: fzf-tab sourced manually in initContent to suppress Darwin module error
     plugins = [
       {
         name = "zsh-autopair";
@@ -118,6 +118,9 @@ in {
 
       # Main init content
       ''
+      # fzf-tab (sourced here to suppress Darwin binary module warning)
+      source ${pkgs.zsh-fzf-tab}/share/fzf-tab/fzf-tab.plugin.zsh 2>/dev/null
+
       # PATH additions
       export PATH="/run/current-system/sw/bin:$HOME/.nix-profile/bin:/nix/var/nix/profiles/default/bin:$PATH"
       export PATH="/opt/homebrew/bin:/opt/homebrew/sbin:$PATH"
