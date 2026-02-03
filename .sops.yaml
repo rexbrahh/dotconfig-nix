@@ -1,0 +1,19 @@
+# SOPS configuration for nix secrets
+# See: https://github.com/Mic92/sops-nix
+
+keys:
+  # User age keys (generated with `age-keygen`)
+  - &rexliu age1ng9sd4zmw44j59kvljls7rmgavktjeqnhua7pwwllxuevcns79cseqq5yn
+
+creation_rules:
+  # Secrets in the secrets/ directory
+  - path_regex: secrets/.*\.yaml$
+    key_groups:
+      - age:
+          - *rexliu
+
+  # Host-specific secrets (if needed in the future)
+  - path_regex: hosts/.*/secrets\.yaml$
+    key_groups:
+      - age:
+          - *rexliu

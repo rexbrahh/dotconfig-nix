@@ -7,5 +7,6 @@
     ./security.nix
     ./neovim.nix
     ./packages.nix
+    ./sops.nix
   ];
 }

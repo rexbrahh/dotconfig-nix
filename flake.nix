@@ -32,6 +32,10 @@
     # Secrets management (age/agenix scaffold)
     agenix.url = "github:ryantm/agenix";
 
+    # Secrets management (sops-nix - preferred)
+    sops-nix.url = "github:Mic92/sops-nix";
+    sops-nix.inputs.nixpkgs.follows = "nixpkgs";
+
     # (nixpkgs is already stable; keep unstable separate for selective use)
   };
 
@@ -44,6 +48,7 @@
     nix-index-database,
     nix-homebrew,
     agenix,
+    sops-nix,
     ...
   }: let
     inherit (nixpkgs.lib) genAttrs optionalAttrs;
@@ -80,6 +85,7 @@
     # --- nix-darwin host(s) ---
     darwinConfigurations."macbook" = darwin.lib.darwinSystem {
       system = primarySystem;
+      specialArgs = {inherit inputs;};
       modules = [
         # Overlay: expose `pkgs.unstable` (and a `pkgs.stable` alias)
         ({...}: {nixpkgs.overlays = overlaysFor primarySystem;})
@@ -115,6 +121,9 @@
         # Agenix secrets module (scaffold; define secrets in ./secrets)
         agenix.darwinModules.default
 
+        # sops-nix secrets module (preferred for new secrets)
+        sops-nix.darwinModules.sops
+
         # Linux builder (speed up Linux builds from macOS; requires nix.enable)
         ({
           config,
@@ -136,12 +145,14 @@
     # Homebrew via the official installer (git clone under /opt/homebrew).
     darwinConfigurations."macbook-mutable-brew" = darwin.lib.darwinSystem {
       system = primarySystem;
+      specialArgs = {inherit inputs;};
       modules = [
         ({...}: {nixpkgs.overlays = overlaysFor primarySystem;})
         home-manager.darwinModules.home-manager
         ./hosts/macbook/darwin-configuration.nix
         nix-index-database.darwinModules.nix-index
         agenix.darwinModules.default
+        sops-nix.darwinModules.sops
         ({
           config,
           lib,
@@ -155,11 +166,13 @@
     nixosConfigurations = {
       "nixos-vm-m4" = nixpkgs.lib.nixosSystem {
         system = "aarch64-linux";
+        specialArgs = {inherit inputs;};
         modules = [
           ({...}: {nixpkgs.overlays = overlaysFor "aarch64-linux";})
           ./hosts/nixos-vm-m4/configuration.nix
           home-manager.nixosModules.home-manager
           agenix.nixosModules.default
+          sops-nix.nixosModules.sops
         ];
       };
     };
@@ -169,6 +182,7 @@
       "server@ubuntu" = home-manager.lib.homeManagerConfiguration {
         pkgs = pkgsFor."x86_64-linux";
         modules = [
+          sops-nix.homeManagerModules.sops
           ./hosts/server-ubuntu/home.nix
         ];
       };

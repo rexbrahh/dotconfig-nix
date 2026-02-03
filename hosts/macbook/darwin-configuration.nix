@@ -87,6 +87,11 @@
     useGlobalPkgs = true;
     useUserPackages = true;
 
+    # Include sops-nix home-manager module for all users
+    sharedModules = [
+      inputs.sops-nix.homeManagerModules.sops
+    ];
+
     users.rexliu = import ./home.nix;
   };
   home-manager.backupFileExtension = "rebuild";

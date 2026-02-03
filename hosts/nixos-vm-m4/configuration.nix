@@ -57,6 +57,9 @@ in {
   home-manager = {
     useGlobalPkgs = true;
     useUserPackages = true;
+    sharedModules = [
+      inputs.sops-nix.homeManagerModules.sops
+    ];
     users.rexliu = import ./home.nix;
   };
 
