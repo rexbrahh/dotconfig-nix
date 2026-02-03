@@ -23,7 +23,7 @@
       "autohide-delay" = 0.0;
       "autohide-time-modifier" = 0.21;
       persistent-apps = [
-        "/Applications/Helium.app" 
+        "/Applications/Brave Browser.app" 
         "/Applications/Ghostty.app"
       ];
     };
