@@ -20,7 +20,9 @@
     ]
     # Declarative secrets (agenix; only import when the module exists)
     ++ lib.optional (builtins.pathExists secretsModule) secretsModule;
-  nix.enable = true;
+  # Determinate manages the Nix installation/daemon on this host.
+  # Keep nix-darwin from trying to manage Nix itself.
+  nix.enable = false;
   # Core Nix setup
   nix = {
     # Flakes + new CLI
@@ -46,7 +48,7 @@
       # Example extra cache public keys go here
     };
     gc = {
-      automatic = true;
+      automatic = false;
       interval = {
         Weekday = 0;
         Hour = 3;
@@ -55,7 +57,7 @@
       options = "--delete-older-than 14d";
     };
   };
-  nix.optimise.automatic = true;
+  nix.optimise.automatic = false;
   system.primaryUser = "rexliu";
 
   #home-manager.users.rexliu = import ./home.nix;
@@ -123,7 +125,7 @@
   # System packages moved to modules/packages.nix
 
   # Launch services & quality-of-life
-  # nix-daemon is managed automatically when `nix.enable = true`
+  # nix-daemon is managed by Determinate on this host (`nix.enable = false`)
   # Networking / hostname
   networking = {
     computerName = "MacBook";

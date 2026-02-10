@@ -25,4 +25,7 @@
   "tableplus"
   "temurin"
   "chromedriver"
+  "burp-suite"
+  "signal"
+  "space-saver"
 ]

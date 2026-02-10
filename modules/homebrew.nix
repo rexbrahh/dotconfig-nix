@@ -32,7 +32,9 @@ in {
       # by the scheduled launchd updater (modules/homebrew-autoupdate.nix).
       autoUpdate = false;
       upgrade = false;
-      cleanup = "zap";
+      # Safety: never use "zap" in declarative activation. "zap" removes app
+      # support/preferences/containers for unmanaged casks.
+      cleanup = "none";
     };
     brews = brews;
     casks = casks;
